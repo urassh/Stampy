@@ -62,3 +62,4 @@ fastlane/screenshots/**/*.png
 fastlane/test_output
 swiftpm/*
 *.xcuserstate
+Stampy.xcodeproj/project.xcworkspace/xcshareddata/
