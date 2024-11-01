@@ -64,4 +64,4 @@ swiftpm/*
 *.xcuserstate
 Stampy.xcodeproj/project.xcworkspace/xcshareddata/
 .DS_Store
-GoogleService-Info.plist
+Stampy/GoogleService-Info.plist
