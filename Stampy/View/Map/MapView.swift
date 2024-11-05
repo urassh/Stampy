@@ -22,7 +22,7 @@ struct MapView: View {
                         UserCardView()
                     }
                 }
-            }
+            }.padding()
         }
     }
 }
