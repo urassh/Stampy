@@ -12,9 +12,21 @@ struct ContentView: View {
         TabView {
             MapView()
                 .tabItem{
+                    Image(systemName: "map.fill")
                     Text("Map")
                 }
+            TodoView()
+                .tabItem {
+                    Image(systemName: "list.bullet.rectangle.fill")
+                    Text("Todo")
+                }
+            ProfileView()
+                .tabItem {
+                    Image(systemName: "person.fill")
+                    Text("Profile")
+                }
         }
+        
     }
 }
 

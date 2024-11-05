@@ -13,7 +13,15 @@ struct MapView: View {
         ZStack {
             Map()
             VStack {
+                Text("近くの頑張っている人🔥")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.vertical, 16)
+                
                 Spacer()
+                
+                Divider()
                 
                 ScrollView(.horizontal) {
                     HStack(spacing: 12) {
@@ -22,7 +30,7 @@ struct MapView: View {
                         UserCardView()
                     }
                 }
-            }
+            }.padding()
         }
     }
 }

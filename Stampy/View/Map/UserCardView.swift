@@ -50,8 +50,21 @@ struct UserCardView: View {
         }
         .padding(EdgeInsets.init(top: 20, leading: 20, bottom: 20, trailing: 20))
         .frame(width: 180, height: 300)
-        .background(Color.white.opacity(0.4))
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color.white.opacity(0.0),  // 透明な白
+                    Color.white.opacity(0.4)   // 不透明度が少し高い白
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
         .clipShape(RoundedRectangle(cornerRadius: 12))
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
+        )
     }
 }
 
