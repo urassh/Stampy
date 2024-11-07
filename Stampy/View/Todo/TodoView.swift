@@ -35,7 +35,7 @@ struct TodoView: View {
     ]
     
     var body: some View {
-        VStack {
+        VStack(spacing: 24) {
             if (todos.isEmpty) {
                 EmptyTodo
             } else {
@@ -47,11 +47,12 @@ struct TodoView: View {
                         Text("アプリ甲子園に提出する")
                             .font(.title)
                             .fontWeight(.bold)
-                        Divider()
                     }
                     
                     Spacer()
                 }
+                
+                AddButtonSection
                 
                 TodoList
             }
@@ -63,6 +64,32 @@ struct TodoView: View {
 extension TodoView {
     private var EmptyTodo: some View {
         Text("まだTodoがありません！")
+    }
+    
+    private var AddButtonSection : some View {
+        HStack {
+            AddButtonComponent(iconText: "🔥", title: "ゴールを変更", description: "あなたの一週間程度の目標を変更できます")
+            AddButtonComponent(iconText: "🌱", title: "新しいTodoを追加する")
+        }
+    }
+    
+    private func AddButtonComponent(iconText: String, title: String, description: String = "") -> some View {
+        VStack(alignment: .leading) {
+            Text(iconText)
+                .font(.largeTitle)
+            Spacer()
+            Text(title)
+                .font(.subheadline)
+                .fontWeight(.bold)
+            Text(description)
+                .font(.caption)
+                .fontWeight(.light)
+                .foregroundColor(.secondary)
+        }
+        .padding()
+        .frame(width: 180, height: 140, alignment: .leading)
+        .background(.gray.opacity(0.2))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
     
     private var TodoList: some View {
@@ -83,7 +110,6 @@ extension TodoView {
         }
     }
     
-    // Extracted function for a single row
     private func todoRow(for todo: Todo) -> some View {
         HStack {
             Button(action: toggleTodo) {
@@ -97,19 +123,23 @@ extension TodoView {
                     Button {
                         // 編集ボタンのアクション
                     } label: {
-                        Text("編集")
+                        Image(systemName: "pencil")
                     }
                     .tint(.blue)
+                    .fontWeight(.bold)
                     
-                    Button("削除", role: .destructive) {
-                        // 削除ボタンのアクション
+                    Button {
+                        // 編集ボタンのアクション
+                    } label: {
+                        Image(systemName: "trash")
                     }
+                    .tint(.red)
+                    .fontWeight(.bold)
                 }
         }
     }
     
     private func toggleTodo() {
-        // Implement the placeholder function logic here
         print("Toggle button pressed")
     }
 }
