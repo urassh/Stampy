@@ -12,6 +12,8 @@ struct Todo : Identifiable {
     let title: String
     let state: TodoState
     
+    static let Empty: Todo = .init(id: UUID(), user_id: UUID(), title: "", state: .NotYet)
+    
     static let ExampleYet: Todo = .init(id: UUID(), user_id: UUID(), title: "Example", state: .NotYet)
     static let ExampleDone: Todo = .init(id: UUID(), user_id: UUID(), title: "Example", state: .Done)
     
@@ -22,6 +24,10 @@ struct Todo : Identifiable {
     
     var isDone: Bool {
         state == .Done
+    }
+    
+    var isEmpty: Bool {
+        return !isDone && title.isEmpty
     }
 }
 
@@ -36,7 +42,7 @@ extension Todo.TodoState: CaseIterable {
     }
 }
 
-struct TodoView: View {
+struct TodoView: View, NewTodoDelegate {
     private let todos: [Todo] = [
         Todo.ExampleYet,
         Todo.ExampleDone,
@@ -65,9 +71,15 @@ struct TodoView: View {
             Text("GoalEditView")
         }
         .sheet(isPresented: $isShowAddTodo) {
-            Text("AddTodoView")
+            TodoSheet(delegate: self)
+                .presentationDetents([.medium])
         }
         
+    }
+    
+
+    func didAddTodo(_ todo: Todo) {
+        isShowAddTodo = false
     }
 }
 extension TodoView {
