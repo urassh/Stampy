@@ -11,7 +11,18 @@ protocol TodoDelegate {
     func changedTodo(_ todo: Todo)
 }
 
-enum TodoSheetType {
+enum TodoSheetType : Equatable {
+    static func == (lhs: TodoSheetType, rhs: TodoSheetType) -> Bool {
+        switch (lhs, rhs) {
+        case (.new, .new):
+            return true
+        case (.edit(let lhsTodo), .edit(let rhsTodo)):
+            return lhsTodo == rhsTodo // TodoがEquatableに準拠していればこれで比較可能
+        default:
+            return false
+        }
+    }
+    
     case new
     case edit(Todo)
 }
@@ -27,6 +38,8 @@ struct TodoSheet: View {
         
         if case .edit(let todo) = type {
             self.todo = todo
+            print("EDIT MODE")
+            print("todo title: \(todo.title)")
         }
     }
     
@@ -37,6 +50,10 @@ struct TodoSheet: View {
         case .edit:
             "「Todo」を編集"
         }
+    }
+    
+    var isNew: Bool {
+        type == .new
     }
     
     var body: some View {
@@ -64,7 +81,7 @@ struct TodoSheet: View {
                 Button {
                     delegate.changedTodo(todo)
                 } label: {
-                    Text("作成する")
+                    Text(isNew ? "作成する" : "更新する")
                         .foregroundStyle(.white)
                 }
                 .padding()

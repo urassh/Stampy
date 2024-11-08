@@ -4,16 +4,16 @@
 //
 //  Created by 浦山秀斗 on 2024/11/05.
 //
+
 import SwiftUI
 
-struct Todo : Identifiable {
+struct Todo : Identifiable, Equatable {
     let id: UUID
     let user_id: UUID
     var title: String
     let state: TodoState
     
     static let Empty: Todo = .init(id: UUID(), user_id: UUID(), title: "", state: .NotYet)
-    
     static let ExampleYet: Todo = .init(id: UUID(), user_id: UUID(), title: "Example", state: .NotYet)
     static let ExampleDone: Todo = .init(id: UUID(), user_id: UUID(), title: "Example", state: .Done)
     
@@ -51,8 +51,10 @@ struct TodoView: View, TodoDelegate {
         Todo.ExampleYet
     ]
     
-    @State var isShowGoalEdit: Bool = false
+    @State private var isShowGoalEdit: Bool = false
     @State private var isShowAddTodo: Bool = false
+    @State private var isShowEditTodo: Bool = false
+    @State private var selectedTodo: Todo? = nil
     
     var body: some View {
         VStack(spacing: 24) {
@@ -67,12 +69,17 @@ struct TodoView: View, TodoDelegate {
             }
         }
         .padding()
-        .sheet(isPresented: $isShowGoalEdit) {
-            Text("GoalEditView")
+        .sheet(isPresented: $isShowEditTodo) {
+            TodoSheet(type: .edit(selectedTodo!), delegate: self)
+                .presentationDetents([.medium])
         }
         .sheet(isPresented: $isShowAddTodo) {
             TodoSheet(type: .new, delegate: self)
                 .presentationDetents([.medium])
+        }
+        .onChange(of: selectedTodo) {
+            if (selectedTodo == nil) { return }
+            isShowEditTodo = true
         }
     }
 
@@ -80,6 +87,7 @@ struct TodoView: View, TodoDelegate {
         isShowAddTodo = false
     }
 }
+
 extension TodoView {
     private var GoalSection: some View {
         HStack {
@@ -100,14 +108,14 @@ extension TodoView {
         Text("まだTodoがありません！")
     }
     
-    private var AddButtonSection : some View {
+    private var AddButtonSection: some View {
         HStack {
             AddButtonComponent(iconText: "🔥", title: "ゴールを変更", description: "あなたの一週間程度の目標を変更できます", isShow: $isShowGoalEdit)
             AddButtonComponent(iconText: "🌱", title: "新しいTodoを追加する", isShow: $isShowAddTodo)
         }
     }
     
-    private func AddButtonComponent(iconText: String, title: String, description: String = "", isShow :Binding<Bool>) -> some View {
+    private func AddButtonComponent(iconText: String, title: String, description: String = "", isShow: Binding<Bool>) -> some View {
         Button {
             isShow.wrappedValue.toggle()
         } label: {
@@ -163,7 +171,7 @@ extension TodoView {
             Text(todo.title)
                 .swipeActions {
                     Button {
-                        // 編集ボタンのアクション
+                        selectedTodo = todo
                     } label: {
                         Image(systemName: "pencil")
                     }
@@ -171,7 +179,7 @@ extension TodoView {
                     .fontWeight(.bold)
                     
                     Button {
-                        // 編集ボタンのアクション
+                        // 削除ボタンのアクション
                     } label: {
                         Image(systemName: "trash")
                     }
@@ -182,11 +190,10 @@ extension TodoView {
     }
     
     private func toggleTodo() {
-        print("Toggle button pressed")
+        //toglebutton pressed
     }
 }
 
 #Preview {
     TodoView()
 }
-
