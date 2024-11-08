@@ -45,7 +45,7 @@ struct TodoView: View {
         Todo.ExampleYet
     ]
     
-    @State private var isShowGoalEdit: Bool = false
+    @State var isShowGoalEdit: Bool = false
     @State private var isShowAddTodo: Bool = false
     
     var body: some View {
@@ -61,6 +61,12 @@ struct TodoView: View {
             }
         }
         .padding()
+        .sheet(isPresented: $isShowGoalEdit) {
+            Text("GoalEditView")
+        }
+        .sheet(isPresented: $isShowAddTodo) {
+            Text("AddTodoView")
+        }
         
     }
 }
@@ -86,14 +92,14 @@ extension TodoView {
     
     private var AddButtonSection : some View {
         HStack {
-            AddButtonComponent(iconText: "🔥", title: "ゴールを変更", description: "あなたの一週間程度の目標を変更できます")
-            AddButtonComponent(iconText: "🌱", title: "新しいTodoを追加する")
+            AddButtonComponent(iconText: "🔥", title: "ゴールを変更", description: "あなたの一週間程度の目標を変更できます", isShow: $isShowGoalEdit)
+            AddButtonComponent(iconText: "🌱", title: "新しいTodoを追加する", isShow: $isShowAddTodo)
         }
     }
     
-    private func AddButtonComponent(iconText: String, title: String, description: String = "") -> some View {
+    private func AddButtonComponent(iconText: String, title: String, description: String = "", isShow :Binding<Bool>) -> some View {
         Button {
-            
+            isShow.wrappedValue.toggle()
         } label: {
             VStack(alignment: .leading) {
                 Text(iconText)
