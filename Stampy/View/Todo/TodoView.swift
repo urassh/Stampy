@@ -74,17 +74,25 @@ extension TodoView {
     }
     
     private func AddButtonComponent(iconText: String, title: String, description: String = "") -> some View {
-        VStack(alignment: .leading) {
-            Text(iconText)
-                .font(.largeTitle)
-            Spacer()
-            Text(title)
-                .font(.subheadline)
-                .fontWeight(.bold)
-            Text(description)
-                .font(.caption)
-                .fontWeight(.light)
-                .foregroundColor(.secondary)
+        Button {
+            
+        } label: {
+            VStack(alignment: .leading) {
+                Text(iconText)
+                    .font(.largeTitle)
+                Spacer()
+                
+                Text(title)
+                    .font(.subheadline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.black.opacity(0.8))
+                    .multilineTextAlignment(.leading)
+                Text(description)
+                    .font(.caption)
+                    .fontWeight(.light)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.leading)
+            }
         }
         .padding()
         .frame(width: 180, height: 140, alignment: .leading)
