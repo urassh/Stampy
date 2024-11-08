@@ -45,6 +45,9 @@ struct TodoView: View {
         Todo.ExampleYet
     ]
     
+    @State private var isShowGoalEdit: Bool = false
+    @State private var isShowAddTodo: Bool = false
+    
     var body: some View {
         VStack(spacing: 24) {
             if (todos.isEmpty) {
