@@ -16,11 +16,12 @@ struct CustomTextField: View {
     let initialText: String
     let placeholder: String
     var delegate: CustomTextFieldDelegate?
-    @State var text: String = ""
+    @State var text: String
     
     init(initialText: String, placeholder: String) {
         self.initialText = initialText
         self.placeholder = placeholder
+        text = initialText
     }
     
     var placeholderColor: Color {
