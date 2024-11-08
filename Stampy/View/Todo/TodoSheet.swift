@@ -27,19 +27,24 @@ enum TodoSheetType : Equatable {
     case edit(Todo)
 }
 
-struct TodoSheet: View {
+struct TodoSheet: View, CustomTextFieldDelegate {
     let type: TodoSheetType
     let delegate: TodoDelegate
-    @State var todo: Todo = .Empty
+    @State var todo: Todo
     
     init(type: TodoSheetType, delegate: TodoDelegate) {
         self.type = type
         self.delegate = delegate
         
-        if case .edit(let todo) = type {
+        if case .new = type {
+            self.todo = .Empty
+            print("NEW MODE")
+        } else if case .edit(let todo) = type {
             self.todo = todo
             print("EDIT MODE")
             print("todo title: \(todo.title)")
+        } else {
+            fatalError("ERROR: TodoSheetType is not supported.")
         }
     }
     
@@ -56,13 +61,17 @@ struct TodoSheet: View {
         type == .new
     }
     
+    func textDidChange(to newText: String) {
+        todo = todo.newTitle(newText)
+    }
+    
     var body: some View {
         VStack {
             Text(titleText)
                 .font(.title)
                 .fontWeight(.bold)
             
-            CustomTextField(text: $todo.title, placeholder: "Todo")
+            CustomTextField(initialText: todo.title, placeholder: "Todo")
             
             HStack {
                 Button {

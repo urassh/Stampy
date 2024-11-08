@@ -7,21 +7,32 @@
 
 import SwiftUI
 
+protocol CustomTextFieldDelegate {
+    func textDidChange(to newText: String)
+}
+
 struct CustomTextField: View {
-    @Binding var text: String
     @FocusState var isTyping: Bool
+    let initialText: String
     let placeholder: String
+    var delegate: CustomTextFieldDelegate?
+    @State var text: String = ""
+    
+    init(initialText: String, placeholder: String) {
+        self.initialText = initialText
+        self.placeholder = placeholder
+    }
     
     var placeholderColor: Color {
         if (isTyping) { return .blue }
-        if (text.isEmpty) { return .primary }
+        if (initialText.isEmpty) { return .primary }
         return .clear
     }
     
     var body: some View {
         VStack {
             ZStack(alignment: .leading) {
-                TextField("", text: $text)
+                TextField(initialText, text: $text)
                     .padding(.leading)
                     .frame(height: 55)
                     .focused($isTyping)
@@ -30,6 +41,10 @@ struct CustomTextField: View {
                         isTyping ? Color.blue : Color.primary
                         , in: RoundedRectangle(cornerRadius: 14).stroke(lineWidth: 2)
                     )
+                    .onChange(of: text) {
+                        delegate?.textDidChange(to: text)
+                    }
+                    
                 Text(placeholder)
                     .padding(.horizontal, 5)
                     .background(.white.opacity(isTyping ? 1 : 0))
@@ -45,5 +60,5 @@ struct CustomTextField: View {
 }
 
 #Preview {
-    CustomTextField(text: .constant("default"), placeholder: "email")
+    CustomTextField(initialText: "default", placeholder: "email")
 }

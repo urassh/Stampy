@@ -10,12 +10,12 @@ import SwiftUI
 struct Todo : Identifiable, Equatable {
     let id: UUID
     let user_id: UUID
-    var title: String
+    let title: String
     let state: TodoState
     
     static let Empty: Todo = .init(id: UUID(), user_id: UUID(), title: "", state: .NotYet)
     static let ExampleYet: Todo = .init(id: UUID(), user_id: UUID(), title: "Example", state: .NotYet)
-    static let ExampleDone: Todo = .init(id: UUID(), user_id: UUID(), title: "Example", state: .Done)
+    static let ExampleDone: Todo = .init(id: UUID(), user_id: UUID(), title: "ExampleComplete!!", state: .Done)
     
     enum TodoState {
         case NotYet
@@ -28,6 +28,10 @@ struct Todo : Identifiable, Equatable {
     
     var isEmpty: Bool {
         return !isDone && title.isEmpty
+    }
+    
+    func newTitle(_ title: String) -> Self {
+        .init(id: id, user_id: user_id, title: title, state: state)
     }
 }
 
@@ -69,9 +73,13 @@ struct TodoView: View, TodoDelegate {
             }
         }
         .padding()
-        .sheet(isPresented: $isShowEditTodo) {
+        .sheet(isPresented: $isShowEditTodo, onDismiss: {
+            isShowAddTodo = false
+            selectedTodo = nil
+        }) {
             TodoSheet(type: .edit(selectedTodo!), delegate: self)
                 .presentationDetents([.medium])
+                
         }
         .sheet(isPresented: $isShowAddTodo) {
             TodoSheet(type: .new, delegate: self)
