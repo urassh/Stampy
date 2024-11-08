@@ -25,6 +25,17 @@ struct Todo : Identifiable {
     }
 }
 
+extension Todo.TodoState: CaseIterable {
+    var description: String {
+        switch self {
+        case .NotYet:
+            return "未完了"
+        case .Done:
+            return "完了"
+        }
+    }
+}
+
 struct TodoView: View {
     private let todos: [Todo] = [
         Todo.ExampleYet,
@@ -39,18 +50,7 @@ struct TodoView: View {
             if (todos.isEmpty) {
                 EmptyTodo
             } else {
-                HStack {
-                    VStack(alignment: .leading) {
-                        Text("🔥Goal")
-                            .font(.largeTitle)
-                            .fontWeight(.heavy)
-                        Text("アプリ甲子園に提出する")
-                            .font(.title)
-                            .fontWeight(.bold)
-                    }
-                    
-                    Spacer()
-                }
+                GoalSection
                 
                 AddButtonSection
                 
@@ -62,6 +62,21 @@ struct TodoView: View {
     }
 }
 extension TodoView {
+    private var GoalSection: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text("🔥Goal")
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                Text("アプリ甲子園に提出する")
+                    .font(.title)
+                    .fontWeight(.bold)
+            }
+            
+            Spacer()
+        }
+    }
+    
     private var EmptyTodo: some View {
         Text("まだTodoがありません！")
     }
@@ -149,17 +164,6 @@ extension TodoView {
     
     private func toggleTodo() {
         print("Toggle button pressed")
-    }
-}
-
-extension Todo.TodoState: CaseIterable {
-    var description: String {
-        switch self {
-        case .NotYet:
-            return "未完了"
-        case .Done:
-            return "完了"
-        }
     }
 }
 
