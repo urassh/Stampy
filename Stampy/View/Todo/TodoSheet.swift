@@ -7,31 +7,37 @@
 
 import SwiftUI
 
-protocol TodoDelegate {}
-
-protocol NewTodoDelegate : TodoDelegate {
-    func didAddTodo(_ todo: Todo)
+protocol TodoDelegate {
+    func changedTodo(_ todo: Todo)
 }
 
-protocol EditTodoDelegate : TodoDelegate {
-    func didUpdateTodo(_ todo: Todo)
+enum TodoSheetType {
+    case new
+    case edit(Todo)
 }
 
 struct TodoSheet: View {
+    let type: TodoSheetType
     let delegate: TodoDelegate
+    @State var todo: Todo = .Empty
     
-    var titleText: String {
-        switch (delegate) {
-        case is NewTodoDelegate:
-            "「Todo」を作成"
-        case is EditTodoDelegate:
-            "「Todo」を編集"
-        default:
-            fatalError("Cannot self conformance with TodoDelegate")
+    init(type: TodoSheetType, delegate: TodoDelegate) {
+        self.type = type
+        self.delegate = delegate
+        
+        if case .edit(let todo) = type {
+            self.todo = todo
         }
     }
     
-    @State var text: String = ""
+    var titleText: String {
+        switch (type) {
+        case .new:
+            "「Todo」を作成"
+        case .edit:
+            "「Todo」を編集"
+        }
+    }
     
     var body: some View {
         VStack {
@@ -39,7 +45,7 @@ struct TodoSheet: View {
                 .font(.title)
                 .fontWeight(.bold)
             
-            CustomTextField(text: $text, placeholder: "Todo")
+            CustomTextField(text: $todo.title, placeholder: "Todo")
             
             HStack {
                 Button {
@@ -56,7 +62,7 @@ struct TodoSheet: View {
                 Spacer()
                 
                 Button {
-                    
+                    delegate.changedTodo(todo)
                 } label: {
                     Text("作成する")
                         .foregroundStyle(.white)
@@ -71,14 +77,12 @@ struct TodoSheet: View {
     }
 }
 
-struct MockNewTodoDelegate: NewTodoDelegate {
-    func didAddTodo(_ todo: Todo) {}
-}
-
-struct MockEditTodoDelegate: EditTodoDelegate {
-    func didUpdateTodo(_ todo: Todo) {}
+struct Mock : TodoDelegate {
+    func changedTodo(_ todo: Todo) {
+        
+    }
 }
 
 #Preview {
-    TodoSheet(delegate: MockNewTodoDelegate())
+    TodoSheet(type: .new, delegate: Mock())
 }

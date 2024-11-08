@@ -9,7 +9,7 @@ import SwiftUI
 struct Todo : Identifiable {
     let id: UUID
     let user_id: UUID
-    let title: String
+    var title: String
     let state: TodoState
     
     static let Empty: Todo = .init(id: UUID(), user_id: UUID(), title: "", state: .NotYet)
@@ -42,7 +42,7 @@ extension Todo.TodoState: CaseIterable {
     }
 }
 
-struct TodoView: View, NewTodoDelegate {
+struct TodoView: View, TodoDelegate {
     private let todos: [Todo] = [
         Todo.ExampleYet,
         Todo.ExampleDone,
@@ -71,14 +71,12 @@ struct TodoView: View, NewTodoDelegate {
             Text("GoalEditView")
         }
         .sheet(isPresented: $isShowAddTodo) {
-            TodoSheet(delegate: self)
+            TodoSheet(type: .new, delegate: self)
                 .presentationDetents([.medium])
         }
-        
     }
-    
 
-    func didAddTodo(_ todo: Todo) {
+    func changedTodo(_ todo: Todo) {
         isShowAddTodo = false
     }
 }
