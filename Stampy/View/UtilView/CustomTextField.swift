@@ -11,12 +11,17 @@ struct CustomTextField: View {
     @Binding var text: String
     @FocusState var isTyping: Bool
     let placeholder: String
-    let defaultText: String
+    
+    var placeholderColor: Color {
+        if (isTyping) { return .blue }
+        if (text.isEmpty) { return .primary }
+        return .clear
+    }
     
     var body: some View {
         VStack {
             ZStack(alignment: .leading) {
-                TextField(defaultText, text: $text)
+                TextField("", text: $text)
                     .padding(.leading)
                     .frame(height: 55)
                     .focused($isTyping)
@@ -27,8 +32,8 @@ struct CustomTextField: View {
                     )
                 Text(placeholder)
                     .padding(.horizontal, 5)
-                    .background(.white.opacity(isTyping || !text.isEmpty ? 1 : 0))
-                    .foregroundStyle(isTyping || !text.isEmpty ? .blue : .primary)
+                    .background(.white.opacity(isTyping ? 1 : 0))
+                    .foregroundStyle(placeholderColor)
                     .padding(.leading).offset(y: isTyping ? -27 : 0)
                     .onTapGesture {
                         isTyping.toggle()
@@ -40,5 +45,5 @@ struct CustomTextField: View {
 }
 
 #Preview {
-    CustomTextField(text: .constant(""), placeholder: "email", defaultText: "")
+    CustomTextField(text: .constant("default"), placeholder: "email")
 }
