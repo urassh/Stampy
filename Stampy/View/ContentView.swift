@@ -8,7 +8,7 @@
 import SwiftUI
 
 class LoginUser {
-    static let shared: AppUser = .init(id: "1", name: "urassh")
+    static let shared: AppUser = .init(id: "12345678-1234-1234-1234-1234567890AB", name: "urassh")
     
     private init() {}
 }
