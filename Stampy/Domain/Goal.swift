@@ -20,4 +20,6 @@ struct Goal : Identifiable {
         self.id = UUID()
         self.title = title
     }
+    
+    static let Empty: Goal = .init(title: "")
 }

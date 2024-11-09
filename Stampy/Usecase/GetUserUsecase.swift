@@ -6,7 +6,7 @@
 //
 
 class GetUserUsecase {
-    private let userRepository: UserRepositoryProtocol
+    private let userRepository: UserRepositoryProtocol = UserRepository()
     
     init(userRepository: UserRepositoryProtocol) {
         self.userRepository = userRepository
