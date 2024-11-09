@@ -9,10 +9,18 @@ import Foundation
 
 class ProfileViewModel: ObservableObject {
     @Published var weekGoal: Goal?
+
+    func getLoginUser() -> AppUser {
+        LoginUser.shared
+    }
     
     func fetchWeekGoal() async {
         let loginUser = LoginUser.shared
         let getWeekGoal = GetWeekGoalUseCase()
-        weekGoal = await getWeekGoal.execute(user_id: loginUser.id)
+        let fetchedGoal = await getWeekGoal.execute(user_id: loginUser.id)
+        
+        DispatchQueue.main.async {
+            self.weekGoal = fetchedGoal
+        }
     }
 }
