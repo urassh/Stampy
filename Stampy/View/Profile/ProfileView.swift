@@ -8,6 +8,8 @@ import SwiftUI
 import MapKit
 
 struct ProfileView : View {
+    @ObservedObject var viewmodel: ProfileViewModel = ProfileViewModel()
+    
     var body: some View {
         ZStack {
             Background
@@ -15,10 +17,20 @@ struct ProfileView : View {
             VStack(spacing: 32) {
                 UserInfoSection
                 
-                GoalCard
+                if (viewmodel.weekGoal != nil) {
+                    GoalCard
+                } else {
+                    ProgressView()
+                }
+                
             }
             .padding()
+        }.onAppear {
+            Task {
+                await viewmodel.fetchWeekGoal()
+            }
         }
+        
     }
 }
 
@@ -44,11 +56,11 @@ extension ProfileView {
                         .strokeBorder(Color.white.opacity(0.65), lineWidth: 4)
                 }
                 .shadow(radius: 4)
-            Text("urassh")
+            Text(viewmodel.getLoginUser().name)
                 .foregroundStyle(Color.white)
                 .font(.title2)
             
-            Text("@urassh_enginner")
+            Text("@\(LoginUser.shared.id)")
                 .foregroundStyle(Color.white.opacity(0.9))
                 .font(.callout)
         }
@@ -64,11 +76,11 @@ extension ProfileView {
                     .fontWeight(.semibold)
                 Spacer()
             }
-            Text("RailsTutorialを終わらせる。")
+            Text(viewmodel.weekGoal!.title)
                 .font(.title)
                 .fontWeight(.semibold)
             
-            Text("2024/10/11 に作成")
+            Text("\(viewmodel.weekGoal!.createdAt.toFormattedString()) に作成")
                 .font(.callout)
                 .opacity(0.6)
         }
