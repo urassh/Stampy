@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+class LoginUser {
+    static let shared: AppUser = .init(id: "1", name: "urassh")
+    
+    private init() {}
+}
+
 struct ContentView: View {
     var body: some View {
         TabView {
