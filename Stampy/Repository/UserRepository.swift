@@ -13,7 +13,6 @@ class UserRepository : UserRepositoryProtocol {
     
     func get(id: String) async -> AppUser? {
         guard let userRecord = await userGateway.fetch(id: id) else { return nil }
-
         
         return AppUser(id: userRecord.uid, name: userRecord.name)
     }

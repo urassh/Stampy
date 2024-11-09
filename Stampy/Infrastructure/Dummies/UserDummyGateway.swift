@@ -7,8 +7,8 @@
 
 class UserDummyGateway: UserGatewayProtocol {
     private var users: [UserRecord] = [
-        UserRecord(uid: "1", name: "urassh", goal_id: "1"),
-        UserRecord(uid: "2", name: "atushi", goal_id: "2"),
+        UserRecord(uid: "1", name: "urassh"),
+        UserRecord(uid: "2", name: "atushi"),
     ]
     
     func fetch(id: String) async -> UserRecord? {

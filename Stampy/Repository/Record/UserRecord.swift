@@ -8,5 +8,4 @@
 struct UserRecord : Codable {
     let uid: String
     let name: String
-    let goal_id: String
 }
