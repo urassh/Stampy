@@ -6,5 +6,5 @@
 //
 
 protocol UserRepositoryProtocol {
-    func get(id: String) async -> AppUser
+    func get(id: String) async -> AppUser?
 }
