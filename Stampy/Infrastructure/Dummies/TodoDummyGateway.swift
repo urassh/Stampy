@@ -8,7 +8,7 @@
 import Foundation
 
 class TodoDummyGateway: TodoGatewayProtocol {
-    private var todos: [TodoRecord] = [
+    private static var todos: [TodoRecord] = [
         TodoRecord(
             id: "11111111-1111-1111-1111-111111111111",
             title: "Learn SwiftUI",
@@ -75,6 +75,10 @@ class TodoDummyGateway: TodoGatewayProtocol {
     ]
 
     func fetchTodos(goal_id: String) -> [TodoRecord] {
-        return todos.filter { $0.goal_id == goal_id }
+        return Self.todos.filter { $0.goal_id == goal_id }
+    }
+    
+    func addTodo(todoRecord: TodoRecord) async {
+        Self.todos.append(todoRecord)
     }
 }

@@ -6,5 +6,6 @@
 //
 
 protocol TodoGatewayProtocol {
-    func fetchTodos(goal_id: String) -> [TodoRecord]
+    func fetchTodos(goal_id: String) async -> [TodoRecord]
+    func addTodo(todoRecord: TodoRecord) async
 }

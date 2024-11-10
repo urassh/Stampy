@@ -55,8 +55,8 @@ class TodoViewModel : ObservableObject {
         }
     }
     
-    func newCoordinator(todo: Todo, onComplete: @escaping () -> Void) -> TodoDelegate {
-        return NewTodoCoordinator(parent: self, todo: todo, onComplete: onComplete)
+    func newCoordinator(onComplete: @escaping () -> Void) -> TodoDelegate {
+        return NewTodoCoordinator(parent: self, onComplete: onComplete)
     }
     
     func editCoordinator(todo: Todo, onComplete: @escaping () -> Void) -> TodoDelegate {
@@ -65,12 +65,10 @@ class TodoViewModel : ObservableObject {
     
     class NewTodoCoordinator: TodoDelegate {
         let parent: TodoViewModel
-        let todo: Todo
         let onComplete: () -> Void
         
-        init(parent: TodoViewModel, todo: Todo, onComplete: @escaping () -> Void) {
+        init(parent: TodoViewModel, onComplete: @escaping () -> Void) {
             self.parent = parent
-            self.todo = todo
             self.onComplete = onComplete
         }
         

@@ -15,7 +15,7 @@ class TodoRepository : TodoRepositoryProtocol {
     private let todoGateway: TodoGatewayProtocol = TodoDummyGateway()
     
     func getTodos(from goal: Goal) async -> [Todo] {
-        let todoRecords = todoGateway.fetchTodos(goal_id: goal.id.uuidString)
+        let todoRecords = await todoGateway.fetchTodos(goal_id: goal.id.uuidString)
         
         return todoRecords.compactMap { record -> Todo? in
             var state: Todo.TodoStatus
@@ -29,6 +29,18 @@ class TodoRepository : TodoRepositoryProtocol {
                 return nil
             }
         }
+    }
+    
+    func addTodo(to todo: Todo, in goal: Goal) async {
+        let todoRecord = TodoRecord(
+            id: todo.id.uuidString,
+            title: todo.title,
+            goal_id: goal.id.uuidString,
+            status: todo.status.toRecordString,
+            createdAt: todo.createdAt
+        )
+        
+        await todoGateway.addTodo(todoRecord: todoRecord)
     }
 }
 

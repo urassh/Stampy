@@ -30,7 +30,7 @@ struct Todo : Identifiable, Equatable {
         return !isDone && title.isEmpty
     }
     
-    func newTitle(_ title: String) -> Self {
-        .init(id: id, title: title, status: status, createdAt: createdAt)
+    func newTitle(_ newTitle: String) -> Self {
+        .init(id: id, title: newTitle, status: status, createdAt: createdAt)
     }
 }

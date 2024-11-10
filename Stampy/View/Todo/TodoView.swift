@@ -40,7 +40,7 @@ struct TodoView: View {
                 
         }
         .sheet(isPresented: $isShowAddTodo) {
-            TodoSheet(type: .new, delegate: viewmodel.newCoordinator(todo: selectedTodo!, onComplete: {
+            TodoSheet(type: .new, delegate: viewmodel.newCoordinator(onComplete: {
                 isShowAddTodo = false
                 selectedTodo = nil
             }))
