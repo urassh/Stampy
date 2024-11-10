@@ -7,4 +7,5 @@
 
 protocol TodoRepositoryProtocol {
     func getTodos(from goal: Goal) async -> [Todo]
+    func addTodo(to todo: Todo, in goal: Goal) async
 }
