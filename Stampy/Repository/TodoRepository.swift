@@ -28,8 +28,6 @@ class TodoRepository : TodoRepositoryProtocol {
                 print("invaid todo status: \(error)")
                 return nil
             }
-            
-            
         }
     }
 }
