@@ -6,13 +6,9 @@
 //
 
 class GetWeekTodosUseCase {
+    private let todoRepository: TodoRepositoryProtocol = TodoRepository()
+    
     func execute(from goal: Goal) async -> [Todo] {
-        return [
-            Todo.ExampleYet,
-            Todo.ExampleDone,
-            Todo.ExampleYet,
-            Todo.ExampleDone,
-            Todo.ExampleYet
-        ]
+        await todoRepository.getTodos(from: goal)
     }
 }
