@@ -48,7 +48,7 @@ class TodoRepository : TodoRepositoryProtocol {
     }
     
     func deleteTodo(todo_id: UUID) async {
-        <#code#>
+        await todoGateway.deleteTodo(todo_id: todo_id.uuidString)
     }
 }
 
