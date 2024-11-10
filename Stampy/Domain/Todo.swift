@@ -11,10 +11,11 @@ struct Todo : Identifiable, Equatable {
     let id: UUID
     let title: String
     let state: TodoState
+    let createdAt: Date
     
-    static let Empty: Todo = .init(id: UUID(), title: "", state: .NotYet)
-    static let ExampleYet: Todo = .init(id: UUID(), title: "Example", state: .NotYet)
-    static let ExampleDone: Todo = .init(id: UUID(), title: "ExampleComplete!!", state: .Done)
+    static let Empty: Todo = .init(id: UUID(), title: "", state: .NotYet, createdAt: Date())
+    static let ExampleYet: Todo = .init(id: UUID(), title: "Example", state: .NotYet, createdAt: Date())
+    static let ExampleDone: Todo = .init(id: UUID(), title: "ExampleComplete!!", state: .Done, createdAt: Date())
     
     enum TodoState {
         case NotYet
@@ -30,7 +31,7 @@ struct Todo : Identifiable, Equatable {
     }
     
     func newTitle(_ title: String) -> Self {
-        .init(id: id, title: title, state: state)
+        .init(id: id, title: title, state: state, createdAt: createdAt)
     }
 }
 
