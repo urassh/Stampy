@@ -71,6 +71,14 @@ class TodoViewModel : ObservableObject {
         }
     }
     
+    func deleteTodo(_ todo: Todo) {
+        Task {
+            guard let goal = weekGoal else { return }
+            await DeleteTodoUseCase().execute(todo: todo)
+            getTodos(for: goal)
+        }
+    }
+    
     class NewTodoCoordinator: TodoDelegate {
         let parent: TodoViewModel
         let onComplete: () -> Void

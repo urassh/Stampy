@@ -150,7 +150,7 @@ extension TodoView {
                     .fontWeight(.bold)
                     
                     Button {
-                        // 削除ボタンのアクション
+                        viewmodel.deleteTodo(todo)
                     } label: {
                         Image(systemName: "trash")
                     }
