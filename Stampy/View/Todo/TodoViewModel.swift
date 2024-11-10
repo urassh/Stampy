@@ -54,4 +54,49 @@ class TodoViewModel : ObservableObject {
             }
         }
     }
+    
+    func newCoordinator(todo: Todo, onComplete: @escaping () -> Void) -> TodoDelegate {
+        return NewTodoCoordinator(parent: self, todo: todo, onComplete: onComplete)
+    }
+    
+    func editCoordinator(todo: Todo, onComplete: @escaping () -> Void) -> TodoDelegate {
+        return EditTodoCoordinator(parent: self, todo: todo, onComplete: onComplete)
+    }
+    
+    class NewTodoCoordinator: TodoDelegate {
+        let parent: TodoViewModel
+        let todo: Todo
+        let onComplete: () -> Void
+        
+        init(parent: TodoViewModel, todo: Todo, onComplete: @escaping () -> Void) {
+            self.parent = parent
+            self.todo = todo
+            self.onComplete = onComplete
+        }
+        
+        func changedTodo(_ todo: Todo) {
+            Task {
+                guard let goal = parent.weekGoal else { return }
+                await AddTodoUseCase().execute(to: todo, in: goal)
+                parent.fetchTodos(for: goal)
+                onComplete()
+            }
+        }
+    }
+    
+    class EditTodoCoordinator: TodoDelegate {
+        let parent: TodoViewModel
+        let todo: Todo
+        let onComplete: () -> Void
+        
+        init(parent: TodoViewModel, todo: Todo, onComplete: @escaping () -> Void) {
+            self.parent = parent
+            self.todo = todo
+            self.onComplete = onComplete
+        }
+        
+        func changedTodo(_ todo: Todo) {
+            //Todoをeditした時の処理をここで呼び出す。
+        }
+    }
 }

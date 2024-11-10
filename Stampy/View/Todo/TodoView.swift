@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TodoView: View, TodoDelegate {
+struct TodoView: View {
     @ObservedObject var viewmodel: TodoViewModel = .init()
     
     @State private var isShowGoalEdit: Bool = false
@@ -32,22 +32,24 @@ struct TodoView: View, TodoDelegate {
             isShowAddTodo = false
             selectedTodo = nil
         }) {
-            TodoSheet(type: .edit(selectedTodo!), delegate: self)
+            TodoSheet(type: .edit(selectedTodo!), delegate: viewmodel.editCoordinator(todo: selectedTodo!, onComplete: {
+                isShowEditTodo = false
+                selectedTodo = nil
+            }))
                 .presentationDetents([.medium])
                 
         }
         .sheet(isPresented: $isShowAddTodo) {
-            TodoSheet(type: .new, delegate: self)
+            TodoSheet(type: .new, delegate: viewmodel.newCoordinator(todo: selectedTodo!, onComplete: {
+                isShowAddTodo = false
+                selectedTodo = nil
+            }))
                 .presentationDetents([.medium])
         }
         .onChange(of: selectedTodo) {
             if (selectedTodo == nil) { return }
             isShowEditTodo = true
         }
-    }
-
-    func changedTodo(_ todo: Todo) {
-        isShowAddTodo = false
     }
 }
 
