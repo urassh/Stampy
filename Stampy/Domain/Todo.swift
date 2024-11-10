@@ -17,7 +17,7 @@ struct Todo : Identifiable, Equatable {
     static let ExampleYet: Todo = .init(id: UUID(), title: "Example", state: .NotYet, createdAt: Date())
     static let ExampleDone: Todo = .init(id: UUID(), title: "ExampleComplete!!", state: .Done, createdAt: Date())
     
-    enum TodoState {
+    enum TodoState: CaseIterable {
         case NotYet
         case Done
     }
@@ -32,16 +32,5 @@ struct Todo : Identifiable, Equatable {
     
     func newTitle(_ title: String) -> Self {
         .init(id: id, title: title, state: state, createdAt: createdAt)
-    }
-}
-
-extension Todo.TodoState: CaseIterable {
-    var description: String {
-        switch self {
-        case .NotYet:
-            return "未完了"
-        case .Done:
-            return "完了"
-        }
     }
 }

@@ -13,6 +13,10 @@ class TodoRepository : TodoRepositoryProtocol {
     }
     
     func execute(from goal: Goal) async -> [Todo] {
-        todoGateway.fetchTodos(goal_id: goal.id.uuidString)
+        let todoRecords = todoGateway.fetchTodos(goal_id: goal.id.uuidString)
+        
+        return todoRecords.map { record in
+            return Todo(id: record.id, title: record.title, state: <#T##Todo.TodoState#>, createdAt: <#T##Date#>)
+        }
     }
 }

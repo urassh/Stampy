@@ -161,6 +161,17 @@ extension TodoView {
     }
 }
 
+extension Todo.TodoState {
+    var description: String {
+        switch self {
+        case .NotYet:
+            return "未完了"
+        case .Done:
+            return "完了"
+        }
+    }
+}
+
 #Preview {
     TodoView()
 }
