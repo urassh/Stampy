@@ -7,6 +7,10 @@
 
 import Foundation
 
+enum TodoStatusError: Error {
+    case invalidStatus(String)
+}
+
 class TodoRepository : TodoRepositoryProtocol {
     private let todoGateway: TodoGatewayProtocol
     
@@ -25,7 +29,7 @@ class TodoRepository : TodoRepositoryProtocol {
                 guard let todoId = UUID(uuidString: record.id) else { return nil }
                 return Todo(id: todoId, title: record.title, status: state, createdAt: record.createdAt)
             } catch {
-                print("invaid todo status: \(error)")
+                print("\(error)")
                 return nil
             }
         }
@@ -40,7 +44,7 @@ extension String {
         case "Done":
             return .Done
         default:
-            throw fatalError("invaid todo state: \(self)")
+            throw TodoStatusError.invalidStatus("invalid todo status: \(self)")
         }
     }
 }
