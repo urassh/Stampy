@@ -131,7 +131,9 @@ extension TodoView {
     
     private func todoRow(for todo: Todo) -> some View {
         HStack {
-            Button(action: toggleTodo) {
+            Button(action: {
+                viewmodel.toggleTodoStatus(todo)
+            }) {
                 Image(systemName: todo.isDone ? "checkmark.circle.fill" : "circle.dashed")
                     .foregroundColor(.blue)
                     .font(.title2)
@@ -156,10 +158,6 @@ extension TodoView {
                     .fontWeight(.bold)
                 }
         }
-    }
-    
-    private func toggleTodo() {
-        //toglebutton pressed
     }
 }
 
