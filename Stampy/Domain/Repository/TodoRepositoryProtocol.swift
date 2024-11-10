@@ -11,4 +11,5 @@ protocol TodoRepositoryProtocol {
     func getTodos(from goal: Goal) async -> [Todo]
     func addTodo(to todo: Todo, in goal: Goal) async
     func updateTodo(todo_id: UUID, title: String, status: Todo.TodoStatus) async
+    func deleteTodo(todo_id: UUID) async
 }

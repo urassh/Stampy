@@ -97,4 +97,12 @@ class TodoDummyGateway: TodoGatewayProtocol {
             print("Todo with id \(todo_id) not found.")
         }
     }
+    
+    func deleteTodo(todo_id: String) async {
+        if let index = Self.todos.firstIndex(where: { $0.id == todo_id }) {
+            Self.todos.remove(at: index)
+        } else {
+            print("Todo with id \(todo_id) not found.")
+        }
+    }
 }
