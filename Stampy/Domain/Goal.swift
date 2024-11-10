@@ -23,4 +23,6 @@ struct Goal : Identifiable {
         self.title = title
         self.createdAt = .init()
     }
+    
+    static let Empty: Goal = .init(title: "")
 }

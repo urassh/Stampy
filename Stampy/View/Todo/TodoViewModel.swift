@@ -6,28 +6,51 @@
 //
 
 import SwiftUI
+import Combine
 
-class TodoViewModel : ObservableObject{
+class TodoViewModel : ObservableObject {
+    //FIXME: Viewの状態は明示的に表現すべき。(特にweekGoal)
+    //enumなどで表現しても良さそう。
+    //nil: 未読み込み
+    //Empty: まだWeekGoalが設定されていない or WeekGoalがない。
+    
     @Published var weekGoal: Goal? = nil
-    @Published var todos: [Todo] = [
-        Todo.ExampleYet,
-        Todo.ExampleDone,
-        Todo.ExampleYet,
-        Todo.ExampleDone,
-        Todo.ExampleYet
-    ]
+    @Published var todos: [Todo] = []
+    private let loginUser = LoginUser.shared
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
+        setupGoalObserver()
         getGoal()
     }
     
-    func getGoal() {
+    private func getGoal() {
         Task {
-            let loginUser = LoginUser.shared
-            let fetchedGoal = await GetWeekGoalUseCase().execute(user_id: loginUser.id)
+            guard let fetchedGoal = await GetWeekGoalUseCase().execute(user_id: loginUser.id) else {
+                weekGoal = .Empty
+                return
+            }
             
             DispatchQueue.main.async {
                 self.weekGoal = fetchedGoal
+            }
+        }
+    }
+    
+    private func setupGoalObserver() {
+        $weekGoal
+            .compactMap { $0 }
+            .sink { [weak self] goal in
+                self?.fetchTodos(for: goal)
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func fetchTodos(for goal: Goal) {
+        Task {
+            let fetchedTodos = await GetWeekTodosUseCase().execute(from: goal)
+            DispatchQueue.main.async { [weak self] in
+                self?.todos = fetchedTodos
             }
         }
     }
