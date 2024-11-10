@@ -94,7 +94,12 @@ class TodoViewModel : ObservableObject {
         }
         
         func changedTodo(_ todo: Todo) {
-            //Todoをeditした時の処理をここで呼び出す。
+            Task {
+                guard let goal = parent.weekGoal else { return }
+                await RenameTodoUseCase().execute(todo: todo)
+                parent.getTodos(for: goal)
+                onComplete()
+            }
         }
     }
 }

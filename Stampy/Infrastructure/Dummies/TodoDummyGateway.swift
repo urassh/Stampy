@@ -81,4 +81,20 @@ class TodoDummyGateway: TodoGatewayProtocol {
     func addTodo(todoRecord: TodoRecord) async {
         Self.todos.append(todoRecord)
     }
+    
+    func updateTodo(todo_id: String, title: String, status: String) async {
+        if let index = Self.todos.firstIndex(where: { $0.id == todo_id }) {
+            let beforeTodo = Self.todos[index]
+            let newTodo = TodoRecord(
+                id: beforeTodo.id,
+                title: title,
+                goal_id: beforeTodo.goal_id,
+                status: status,
+                createdAt: beforeTodo.createdAt
+            )
+            Self.todos[index] = newTodo
+        } else {
+            print("Todo with id \(todo_id) not found.")
+        }
+    }
 }

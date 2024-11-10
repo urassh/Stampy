@@ -42,6 +42,10 @@ class TodoRepository : TodoRepositoryProtocol {
         
         await todoGateway.addTodo(todoRecord: todoRecord)
     }
+    
+    func updateTodo(todo_id: UUID, title: String, status: Todo.TodoStatus) async {
+        await todoGateway.updateTodo(todo_id: todo_id.uuidString, title: title, status: status.toRecordString)
+    }
 }
 
 extension String {
