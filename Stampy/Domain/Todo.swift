@@ -10,20 +10,20 @@ import Foundation
 struct Todo : Identifiable, Equatable {
     let id: UUID
     let title: String
-    let state: TodoState
+    let status: TodoStatus
     let createdAt: Date
     
-    static let Empty: Todo = .init(id: UUID(), title: "", state: .NotYet, createdAt: Date())
-    static let ExampleYet: Todo = .init(id: UUID(), title: "Example", state: .NotYet, createdAt: Date())
-    static let ExampleDone: Todo = .init(id: UUID(), title: "ExampleComplete!!", state: .Done, createdAt: Date())
+    static let Empty: Todo = .init(id: UUID(), title: "", status: .NotYet, createdAt: Date())
+    static let ExampleYet: Todo = .init(id: UUID(), title: "Example", status: .NotYet, createdAt: Date())
+    static let ExampleDone: Todo = .init(id: UUID(), title: "ExampleComplete!!", status: .Done, createdAt: Date())
     
-    enum TodoState: CaseIterable {
+    enum TodoStatus: CaseIterable {
         case NotYet
         case Done
     }
     
     var isDone: Bool {
-        state == .Done
+        status == .Done
     }
     
     var isEmpty: Bool {
@@ -31,6 +31,6 @@ struct Todo : Identifiable, Equatable {
     }
     
     func newTitle(_ title: String) -> Self {
-        .init(id: id, title: title, state: state, createdAt: createdAt)
+        .init(id: id, title: title, status: status, createdAt: createdAt)
     }
 }

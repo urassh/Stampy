@@ -111,16 +111,16 @@ extension TodoView {
     
     private var TodoList: some View {
         List {
-            ForEach(Todo.TodoState.allCases, id: \.self) { state in
+            ForEach(Todo.TodoStatus.allCases, id: \.self) { state in
                 todoSection(for: state)
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
     
-    private func todoSection(for state: Todo.TodoState) -> some View {
+    private func todoSection(for state: Todo.TodoStatus) -> some View {
         Section(header: Text(state.description)) {
-            let filteredTodos = viewmodel.todos.filter { $0.state == state }
+            let filteredTodos = viewmodel.todos.filter { $0.status == state }
             ForEach(filteredTodos) { todo in
                 todoRow(for: todo)
             }
@@ -161,7 +161,7 @@ extension TodoView {
     }
 }
 
-extension Todo.TodoState {
+extension Todo.TodoStatus {
     var description: String {
         switch self {
         case .NotYet:
