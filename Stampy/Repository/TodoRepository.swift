@@ -14,7 +14,7 @@ enum TodoStatusError: Error {
 class TodoRepository : TodoRepositoryProtocol {
     private let todoGateway: TodoGatewayProtocol = TodoDummyGateway()
     
-    func execute(from goal: Goal) async -> [Todo] {
+    func getTodos(from goal: Goal) async -> [Todo] {
         let todoRecords = todoGateway.fetchTodos(goal_id: goal.id.uuidString)
         
         return todoRecords.compactMap { record -> Todo? in
