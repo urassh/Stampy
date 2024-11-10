@@ -47,13 +47,7 @@ extension Todo.TodoState: CaseIterable {
 }
 
 struct TodoView: View, TodoDelegate {
-    private let todos: [Todo] = [
-        Todo.ExampleYet,
-        Todo.ExampleDone,
-        Todo.ExampleYet,
-        Todo.ExampleDone,
-        Todo.ExampleYet
-    ]
+    @ObservedObject var viewmodel: TodoViewModel = .init()
     
     @State private var isShowGoalEdit: Bool = false
     @State private var isShowAddTodo: Bool = false
@@ -62,13 +56,13 @@ struct TodoView: View, TodoDelegate {
     
     var body: some View {
         VStack(spacing: 24) {
-            if (todos.isEmpty) {
+            GoalSection
+            
+            AddButtonSection
+            
+            if (viewmodel.todos.isEmpty) {
                 EmptyTodo
             } else {
-                GoalSection
-                
-                AddButtonSection
-                
                 TodoList
             }
         }
@@ -100,12 +94,16 @@ extension TodoView {
     private var GoalSection: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("🔥Goal")
-                    .font(.largeTitle)
-                    .fontWeight(.heavy)
-                Text("アプリ甲子園に提出する")
-                    .font(.title)
-                    .fontWeight(.bold)
+                if (viewmodel.weekGoal == nil) {
+                    Text("今週のゴールがまだ設定されていません。")
+                } else {
+                    Text("🔥Goal")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                    Text(viewmodel.weekGoal!.title)
+                        .font(.title)
+                        .fontWeight(.bold)
+                }
             }
             
             Spacer()
@@ -161,7 +159,7 @@ extension TodoView {
     
     private func todoSection(for state: Todo.TodoState) -> some View {
         Section(header: Text(state.description)) {
-            let filteredTodos = todos.filter { $0.state == state }
+            let filteredTodos = viewmodel.todos.filter { $0.state == state }
             ForEach(filteredTodos) { todo in
                 todoRow(for: todo)
             }
