@@ -63,6 +63,14 @@ class TodoViewModel : ObservableObject {
         return EditTodoCoordinator(parent: self, todo: todo, onComplete: onComplete)
     }
     
+    func toggleTodoStatus(_ todo: Todo) {
+        Task {
+            guard let goal = weekGoal else { return }
+            await ChangeTodoStatusUseCase().execute(todo: todo)
+            getTodos(for: goal)
+        }
+    }
+    
     class NewTodoCoordinator: TodoDelegate {
         let parent: TodoViewModel
         let onComplete: () -> Void
