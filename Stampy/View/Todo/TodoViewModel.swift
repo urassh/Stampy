@@ -41,12 +41,12 @@ class TodoViewModel : ObservableObject {
         $weekGoal
             .compactMap { $0 }
             .sink { [weak self] goal in
-                self?.fetchTodos(for: goal)
+                self?.getTodos(for: goal)
             }
             .store(in: &cancellables)
     }
     
-    private func fetchTodos(for goal: Goal) {
+    private func getTodos(for goal: Goal) {
         Task {
             let fetchedTodos = await GetWeekTodosUseCase().execute(from: goal)
             DispatchQueue.main.async { [weak self] in
@@ -76,7 +76,7 @@ class TodoViewModel : ObservableObject {
             Task {
                 guard let goal = parent.weekGoal else { return }
                 await AddTodoUseCase().execute(to: todo, in: goal)
-                parent.fetchTodos(for: goal)
+                parent.getTodos(for: goal)
                 onComplete()
             }
         }
