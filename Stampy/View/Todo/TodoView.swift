@@ -37,10 +37,7 @@ struct TodoView: View {
             }
         }
         .padding()
-        .sheet(isPresented: $isShowEditTodo, onDismiss: {
-            isShowAddTodo = false
-            selectedTodo = nil
-        }) {
+        .sheet(isPresented: $isShowEditTodo) {
             TodoSheet(type: .edit(selectedTodo!), delegate: viewmodel.editTodoCoordinator(todo: selectedTodo!, onComplete: {
                 isShowEditTodo = false
                 selectedTodo = nil
@@ -72,12 +69,12 @@ extension TodoView {
     private var GoalSection: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("🔥Goal")
-                    .font(.largeTitle)
-                    .fontWeight(.heavy)
-                Text(viewmodel.weekGoal!.title)
-                    .font(.title)
-                    .fontWeight(.bold)
+                    Text("🔥Goal")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                    Text(viewmodel.weekGoal!.title)
+                        .font(.title)
+                        .fontWeight(.bold)
             }
             
             Spacer()
@@ -90,7 +87,6 @@ extension TodoView {
             Text("まだTodoがありません！")
             Spacer()
         }
-        
     }
     
     private var AddButtonSection: some View {
