@@ -29,4 +29,16 @@ class GoalDummyGateway: GoalGatewayProtocol {
         let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
         return Self.goals.first { $0.user_id == user_id && $0.createdAt >= oneWeekAgo }
     }
+    
+    func update(goal_id: String, title: String) async {
+        if let index = Self.goals.firstIndex(where: { $0.id == goal_id }) {
+            let beforeGoal = Self.goals[index]
+            let newGoal = GoalRecord(
+                id: beforeGoal.id,
+                user_id: beforeGoal.user_id,
+                title: title,
+                createdAt: beforeGoal.createdAt)
+            Self.goals[index] = newGoal
+        }
+    }
 }
