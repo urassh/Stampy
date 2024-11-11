@@ -20,7 +20,7 @@ class ProfileViewModel: ObservableObject {
         let fetchedGoal = await getWeekGoal.execute(user_id: loginUser.id)
         
         DispatchQueue.main.async {
-            self.weekGoal = fetchedGoal
+            self.weekGoal = fetchedGoal == nil ? .Empty : fetchedGoal
         }
     }
 }
