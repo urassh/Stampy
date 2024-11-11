@@ -17,22 +17,28 @@ struct TodoView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            GoalSection
-            
-            AddButtonSection
-            
-            if (viewmodel.todos.isEmpty) {
-                EmptyTodo
+            if (viewmodel.weekGoal == nil || viewmodel.weekGoal!.title.isEmpty) {
+                Text("今週のゴールがまだ設定されていません。")
+                    .font(.title3)
+                    .fontWeight(.semibold)
+                TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
+                    
+                })
             } else {
-                TodoList
+                GoalSection
+                
+                AddButtonSection
+                
+                if (viewmodel.todos.isEmpty) {
+                    EmptyTodo
+                } else {
+                    TodoList
+                }
             }
         }
         .padding()
-        .sheet(isPresented: $isShowEditTodo, onDismiss: {
-            isShowAddTodo = false
-            selectedTodo = nil
-        }) {
-            TodoSheet(type: .edit(selectedTodo!), delegate: viewmodel.editCoordinator(todo: selectedTodo!, onComplete: {
+        .sheet(isPresented: $isShowEditTodo) {
+            TodoSheet(type: .edit(selectedTodo!), delegate: viewmodel.editTodoCoordinator(todo: selectedTodo!, onComplete: {
                 isShowEditTodo = false
                 selectedTodo = nil
             }))
@@ -40,10 +46,16 @@ struct TodoView: View {
                 
         }
         .sheet(isPresented: $isShowAddTodo) {
-            TodoSheet(type: .new, delegate: viewmodel.newCoordinator(onComplete: {
+            TodoSheet(type: .new, delegate: viewmodel.newTodoCoordinator {
                 isShowAddTodo = false
                 selectedTodo = nil
-            }))
+            })
+                .presentationDetents([.medium])
+        }
+        .sheet(isPresented: $isShowGoalEdit) {
+            TitleSheet(type: .edit(viewmodel.weekGoal!), delegate: viewmodel.editGoalCoordinator {
+                isShowGoalEdit = false
+            })
                 .presentationDetents([.medium])
         }
         .onChange(of: selectedTodo) {
@@ -57,16 +69,12 @@ extension TodoView {
     private var GoalSection: some View {
         HStack {
             VStack(alignment: .leading) {
-                if (viewmodel.weekGoal == nil) {
-                    Text("今週のゴールがまだ設定されていません。")
-                } else {
                     Text("🔥Goal")
                         .font(.largeTitle)
                         .fontWeight(.heavy)
                     Text(viewmodel.weekGoal!.title)
                         .font(.title)
                         .fontWeight(.bold)
-                }
             }
             
             Spacer()
@@ -74,7 +82,11 @@ extension TodoView {
     }
     
     private var EmptyTodo: some View {
-        Text("まだTodoがありません！")
+        VStack {
+            Spacer()
+            Text("まだTodoがありません！")
+            Spacer()
+        }
     }
     
     private var AddButtonSection: some View {
@@ -122,8 +134,11 @@ extension TodoView {
     
     private func todoSection(for state: Todo.TodoStatus) -> some View {
         Section(header: Text(state.description)) {
-            let filteredTodos = viewmodel.todos.filter { $0.status == state }
-            ForEach(filteredTodos) { todo in
+            let filteredTodos = viewmodel.todos.filter {
+                return $0.status == state
+            }
+            
+            ForEach(filteredTodos, id: \.id) { todo in
                 todoRow(for: todo)
             }
         }
