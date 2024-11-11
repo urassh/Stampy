@@ -28,9 +28,12 @@ struct UserCardView: View {
     
     var body: some View {
         VStack {
-            RoundedRectangle(cornerRadius: 12)
+            Image("Sample")
+                .resizable()
                 .frame(width: 120, height: 120)
-                .foregroundStyle(.blue)
+                .clipShape (
+                    RoundedRectangle(cornerRadius: 12)
+                )
             
             VStack(alignment: .leading) {
                 Text("urassh")
@@ -53,12 +56,12 @@ struct UserCardView: View {
         .background(
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color.white.opacity(0.0),  // 透明な白
-                    Color.white.opacity(0.4)   // 不透明度が少し高い白
+                    Color.white.opacity(0.2),
+                    Color.white.opacity(0.6)
                 ]),
                 startPoint: .top,
                 endPoint: .bottom
-            )
+            ).blur(radius: 4.0)
         )
         .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(

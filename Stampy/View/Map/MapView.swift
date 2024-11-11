@@ -11,7 +11,7 @@ import MapKit
 struct MapView: View {
     var body: some View {
         ZStack {
-            Map()
+            Map(position: .constant(.userLocation(fallback: .automatic)))
             VStack {
                 Text("近くの頑張っている人🔥")
                     .font(.largeTitle)
@@ -30,7 +30,8 @@ struct MapView: View {
                         UserCardView()
                     }
                 }
-            }.padding()
+            }
+            .padding()
         }
     }
 }
