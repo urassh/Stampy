@@ -11,28 +11,12 @@ protocol TodoDelegate {
     func changedTodo(_ todo: Todo)
 }
 
-enum TodoSheetType : Equatable {
-    static func == (lhs: TodoSheetType, rhs: TodoSheetType) -> Bool {
-        switch (lhs, rhs) {
-        case (.new, .new):
-            return true
-        case (.edit(let lhsTodo), .edit(let rhsTodo)):
-            return lhsTodo == rhsTodo // TodoがEquatableに準拠していればこれで比較可能
-        default:
-            return false
-        }
-    }
-    
-    case new
-    case edit(Todo)
-}
-
 struct TodoSheet: View, CustomTextFieldDelegate {
-    let type: TodoSheetType
+    let type: SheetType<Todo>
     let delegate: TodoDelegate
     @State var todo: Todo
     
-    init(type: TodoSheetType, delegate: TodoDelegate) {
+    init(type: SheetType<Todo>, delegate: TodoDelegate) {
         self.type = type
         self.delegate = delegate
         
@@ -52,10 +36,6 @@ struct TodoSheet: View, CustomTextFieldDelegate {
         case .edit:
             "「Todo」を編集"
         }
-    }
-    
-    var isNew: Bool {
-        type == .new
     }
     
     func textDidChange(to newText: String) {
@@ -87,7 +67,7 @@ struct TodoSheet: View, CustomTextFieldDelegate {
                 Button {
                     delegate.changedTodo(todo)
                 } label: {
-                    Text(isNew ? "作成する" : "更新する")
+                    Text(type.isNew ? "作成する" : "更新する")
                         .foregroundStyle(.white)
                 }
                 .padding()

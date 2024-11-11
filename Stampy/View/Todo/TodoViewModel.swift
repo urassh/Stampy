@@ -55,12 +55,20 @@ class TodoViewModel : ObservableObject {
         }
     }
     
-    func newCoordinator(onComplete: @escaping () -> Void) -> TodoDelegate {
+    func newTodoCoordinator(onComplete: @escaping () -> Void) -> TodoDelegate {
         return NewTodoCoordinator(parent: self, onComplete: onComplete)
     }
     
-    func editCoordinator(todo: Todo, onComplete: @escaping () -> Void) -> TodoDelegate {
+    func editTodoCoordinator(todo: Todo, onComplete: @escaping () -> Void) -> TodoDelegate {
         return EditTodoCoordinator(parent: self, todo: todo, onComplete: onComplete)
+    }
+    
+    func newGoalCoordinator(onComplete: @escaping () -> Void) -> GoalDelegate {
+        return NewGoalCoordinator(parent: self, onComplete: onComplete)
+    }
+    
+    func editGoalCoordinator(onComplete: @escaping () -> Void) -> GoalDelegate {
+        return EditGoalCoordinator(parent: self, goal: weekGoal!, onComplete: onComplete)
     }
     
     func toggleTodoStatus(_ todo: Todo) {
@@ -78,7 +86,9 @@ class TodoViewModel : ObservableObject {
             getTodos(for: goal)
         }
     }
-    
+}
+
+extension TodoViewModel {
     class NewTodoCoordinator: TodoDelegate {
         let parent: TodoViewModel
         let onComplete: () -> Void
@@ -116,6 +126,47 @@ class TodoViewModel : ObservableObject {
                 parent.getTodos(for: goal)
                 onComplete()
             }
+        }
+    }
+    
+    class NewGoalCoordinator: GoalDelegate {
+        let parent: TodoViewModel
+        let onComplete: () -> Void
+        
+        init(parent: TodoViewModel, onComplete: @escaping () -> Void) {
+            self.parent = parent
+            self.onComplete = onComplete
+        }
+        
+        func changedGoal(_ goal: Goal) {
+            parent.weekGoal = goal
+            
+            //post week goal usecase
+            
+            
+            parent.getTodos(for: goal)
+            onComplete()
+        }
+    }
+    
+    
+    class EditGoalCoordinator: GoalDelegate {
+        let parent: TodoViewModel
+        let goal: Goal
+        let onComplete: () -> Void
+        
+        init(parent: TodoViewModel, goal: Goal, onComplete: @escaping () -> Void) {
+            self.parent = parent
+            self.goal = goal
+            self.onComplete = onComplete
+        }
+        
+        func changedGoal(_ goal: Goal) {
+            parent.weekGoal = goal
+            
+            //update week goal usecase
+            
+            onComplete()
         }
     }
 }

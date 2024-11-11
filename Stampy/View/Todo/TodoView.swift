@@ -32,7 +32,7 @@ struct TodoView: View {
             isShowAddTodo = false
             selectedTodo = nil
         }) {
-            TodoSheet(type: .edit(selectedTodo!), delegate: viewmodel.editCoordinator(todo: selectedTodo!, onComplete: {
+            TodoSheet(type: .edit(selectedTodo!), delegate: viewmodel.editTodoCoordinator(todo: selectedTodo!, onComplete: {
                 isShowEditTodo = false
                 selectedTodo = nil
             }))
@@ -40,14 +40,16 @@ struct TodoView: View {
                 
         }
         .sheet(isPresented: $isShowAddTodo) {
-            TodoSheet(type: .new, delegate: viewmodel.newCoordinator(onComplete: {
+            TodoSheet(type: .new, delegate: viewmodel.newTodoCoordinator {
                 isShowAddTodo = false
                 selectedTodo = nil
-            }))
+            })
                 .presentationDetents([.medium])
         }
         .sheet(isPresented: $isShowGoalEdit) {
-            TitleSheet()
+            TitleSheet(type: .edit(viewmodel.weekGoal!), delegate: viewmodel.editGoalCoordinator {
+                isShowGoalEdit = false
+            })
                 .presentationDetents([.medium])
         }
         .onChange(of: selectedTodo) {
@@ -63,6 +65,10 @@ extension TodoView {
             VStack(alignment: .leading) {
                 if (viewmodel.weekGoal == nil) {
                     Text("今週のゴールがまだ設定されていません。")
+                        .font(.largeTitle)
+                    TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
+                        
+                    })
                 } else {
                     Text("🔥Goal")
                         .font(.largeTitle)
