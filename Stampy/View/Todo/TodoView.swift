@@ -46,6 +46,10 @@ struct TodoView: View {
             }))
                 .presentationDetents([.medium])
         }
+        .sheet(isPresented: $isShowGoalEdit) {
+            TitleSheet()
+                .presentationDetents([.medium])
+        }
         .onChange(of: selectedTodo) {
             if (selectedTodo == nil) { return }
             isShowEditTodo = true
