@@ -162,11 +162,14 @@ extension TodoViewModel {
         }
         
         func changedGoal(_ goal: Goal) {
-            parent.weekGoal = goal
-            
-            //update week goal usecase
-            
-            onComplete()
+            Task {
+                parent.weekGoal = goal
+                
+                //update week goal usecase
+                await EditGoalUseCase().execute(goal: goal)
+                
+                onComplete()
+            }
         }
     }
 }

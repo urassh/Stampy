@@ -15,6 +15,8 @@ class ProfileViewModel: ObservableObject {
     }
     
     func fetchWeekGoal() async {
+        print("fetchWeekGoal")
+        
         let loginUser = LoginUser.shared
         let getWeekGoal = GetWeekGoalUseCase()
         let fetchedGoal = await getWeekGoal.execute(user_id: loginUser.id)
