@@ -8,7 +8,7 @@
 import Foundation
 
 class GoalDummyGateway: GoalGatewayProtocol {
-    private var goals: [GoalRecord] = [
+    private static var goals: [GoalRecord] = [
             GoalRecord(
                 id: "12345678-1234-1234-1234-1234567890AB",
                 user_id: "12345678-1234-1234-1234-1234567890AB",
@@ -22,11 +22,11 @@ class GoalDummyGateway: GoalGatewayProtocol {
         ]
     
     func fetchFromUser(user_id: String) async -> [GoalRecord] {
-        return goals.filter { $0.user_id == user_id }
+        return Self.goals.filter { $0.user_id == user_id }
     }
     
     func fetchWeekGoal(user_id: String) async -> GoalRecord? {
         let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
-        return goals.first { $0.user_id == user_id && $0.createdAt >= oneWeekAgo }
+        return Self.goals.first { $0.user_id == user_id && $0.createdAt >= oneWeekAgo }
     }
 }

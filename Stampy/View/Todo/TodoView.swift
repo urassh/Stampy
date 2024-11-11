@@ -7,53 +7,8 @@
 
 import SwiftUI
 
-struct Todo : Identifiable, Equatable {
-    let id: UUID
-    let user_id: UUID
-    let title: String
-    let state: TodoState
-    
-    static let Empty: Todo = .init(id: UUID(), user_id: UUID(), title: "", state: .NotYet)
-    static let ExampleYet: Todo = .init(id: UUID(), user_id: UUID(), title: "Example", state: .NotYet)
-    static let ExampleDone: Todo = .init(id: UUID(), user_id: UUID(), title: "ExampleComplete!!", state: .Done)
-    
-    enum TodoState {
-        case NotYet
-        case Done
-    }
-    
-    var isDone: Bool {
-        state == .Done
-    }
-    
-    var isEmpty: Bool {
-        return !isDone && title.isEmpty
-    }
-    
-    func newTitle(_ title: String) -> Self {
-        .init(id: id, user_id: user_id, title: title, state: state)
-    }
-}
-
-extension Todo.TodoState: CaseIterable {
-    var description: String {
-        switch self {
-        case .NotYet:
-            return "未完了"
-        case .Done:
-            return "完了"
-        }
-    }
-}
-
-struct TodoView: View, TodoDelegate {
-    private let todos: [Todo] = [
-        Todo.ExampleYet,
-        Todo.ExampleDone,
-        Todo.ExampleYet,
-        Todo.ExampleDone,
-        Todo.ExampleYet
-    ]
+struct TodoView: View {
+    @ObservedObject var viewmodel: TodoViewModel = .init()
     
     @State private var isShowGoalEdit: Bool = false
     @State private var isShowAddTodo: Bool = false
@@ -62,13 +17,13 @@ struct TodoView: View, TodoDelegate {
     
     var body: some View {
         VStack(spacing: 24) {
-            if (todos.isEmpty) {
+            GoalSection
+            
+            AddButtonSection
+            
+            if (viewmodel.todos.isEmpty) {
                 EmptyTodo
             } else {
-                GoalSection
-                
-                AddButtonSection
-                
                 TodoList
             }
         }
@@ -77,12 +32,18 @@ struct TodoView: View, TodoDelegate {
             isShowAddTodo = false
             selectedTodo = nil
         }) {
-            TodoSheet(type: .edit(selectedTodo!), delegate: self)
+            TodoSheet(type: .edit(selectedTodo!), delegate: viewmodel.editCoordinator(todo: selectedTodo!, onComplete: {
+                isShowEditTodo = false
+                selectedTodo = nil
+            }))
                 .presentationDetents([.medium])
                 
         }
         .sheet(isPresented: $isShowAddTodo) {
-            TodoSheet(type: .new, delegate: self)
+            TodoSheet(type: .new, delegate: viewmodel.newCoordinator(onComplete: {
+                isShowAddTodo = false
+                selectedTodo = nil
+            }))
                 .presentationDetents([.medium])
         }
         .onChange(of: selectedTodo) {
@@ -90,22 +51,22 @@ struct TodoView: View, TodoDelegate {
             isShowEditTodo = true
         }
     }
-
-    func changedTodo(_ todo: Todo) {
-        isShowAddTodo = false
-    }
 }
 
 extension TodoView {
     private var GoalSection: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("🔥Goal")
-                    .font(.largeTitle)
-                    .fontWeight(.heavy)
-                Text("アプリ甲子園に提出する")
-                    .font(.title)
-                    .fontWeight(.bold)
+                if (viewmodel.weekGoal == nil) {
+                    Text("今週のゴールがまだ設定されていません。")
+                } else {
+                    Text("🔥Goal")
+                        .font(.largeTitle)
+                        .fontWeight(.heavy)
+                    Text(viewmodel.weekGoal!.title)
+                        .font(.title)
+                        .fontWeight(.bold)
+                }
             }
             
             Spacer()
@@ -152,16 +113,16 @@ extension TodoView {
     
     private var TodoList: some View {
         List {
-            ForEach(Todo.TodoState.allCases, id: \.self) { state in
+            ForEach(Todo.TodoStatus.allCases, id: \.self) { state in
                 todoSection(for: state)
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
     
-    private func todoSection(for state: Todo.TodoState) -> some View {
+    private func todoSection(for state: Todo.TodoStatus) -> some View {
         Section(header: Text(state.description)) {
-            let filteredTodos = todos.filter { $0.state == state }
+            let filteredTodos = viewmodel.todos.filter { $0.status == state }
             ForEach(filteredTodos) { todo in
                 todoRow(for: todo)
             }
@@ -170,7 +131,9 @@ extension TodoView {
     
     private func todoRow(for todo: Todo) -> some View {
         HStack {
-            Button(action: toggleTodo) {
+            Button(action: {
+                viewmodel.toggleTodoStatus(todo)
+            }) {
                 Image(systemName: todo.isDone ? "checkmark.circle.fill" : "circle.dashed")
                     .foregroundColor(.blue)
                     .font(.title2)
@@ -187,7 +150,7 @@ extension TodoView {
                     .fontWeight(.bold)
                     
                     Button {
-                        // 削除ボタンのアクション
+                        viewmodel.deleteTodo(todo)
                     } label: {
                         Image(systemName: "trash")
                     }
@@ -196,9 +159,16 @@ extension TodoView {
                 }
         }
     }
-    
-    private func toggleTodo() {
-        //toglebutton pressed
+}
+
+extension Todo.TodoStatus {
+    var description: String {
+        switch self {
+        case .Yet:
+            return "未完了"
+        case .Done:
+            return "完了"
+        }
     }
 }
 

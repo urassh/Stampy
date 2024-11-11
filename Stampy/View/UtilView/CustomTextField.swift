@@ -15,12 +15,13 @@ struct CustomTextField: View {
     @FocusState var isTyping: Bool
     let initialText: String
     let placeholder: String
-    var delegate: CustomTextFieldDelegate?
+    var delegate: CustomTextFieldDelegate
     @State var text: String
     
-    init(initialText: String, placeholder: String) {
+    init(initialText: String, placeholder: String, delegate: CustomTextFieldDelegate) {
         self.initialText = initialText
         self.placeholder = placeholder
+        self.delegate = delegate
         text = initialText
     }
     
@@ -43,7 +44,7 @@ struct CustomTextField: View {
                         , in: RoundedRectangle(cornerRadius: 14).stroke(lineWidth: 2)
                     )
                     .onChange(of: text) {
-                        delegate?.textDidChange(to: text)
+                        delegate.textDidChange(to: text)
                     }
                     
                 Text(placeholder)
@@ -60,6 +61,12 @@ struct CustomTextField: View {
     }
 }
 
+struct CustomTextFieldDelegateMock : CustomTextFieldDelegate {
+    func textDidChange(to newText: String) {
+        //
+    }
+}
+
 #Preview {
-    CustomTextField(initialText: "default", placeholder: "email")
+    CustomTextField(initialText: "default", placeholder: "email", delegate: CustomTextFieldDelegateMock())
 }
