@@ -19,7 +19,8 @@ struct TodoView: View {
         VStack(spacing: 24) {
             if (viewmodel.weekGoal == nil || viewmodel.weekGoal!.title.isEmpty) {
                 Text("今週のゴールがまだ設定されていません。")
-                    .font(.largeTitle)
+                    .font(.title3)
+                    .fontWeight(.semibold)
                 TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
                     
                 })
@@ -84,7 +85,12 @@ extension TodoView {
     }
     
     private var EmptyTodo: some View {
-        Text("まだTodoがありません！")
+        VStack {
+            Spacer()
+            Text("まだTodoがありません！")
+            Spacer()
+        }
+        
     }
     
     private var AddButtonSection: some View {

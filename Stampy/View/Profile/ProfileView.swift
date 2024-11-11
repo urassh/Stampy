@@ -17,12 +17,13 @@ struct ProfileView : View {
             VStack(spacing: 32) {
                 UserInfoSection
                 
-                if (viewmodel.weekGoal != nil) {
-                    GoalCard
-                } else {
+                if (viewmodel.weekGoal == nil) {
                     ProgressView()
+                } else if (viewmodel.weekGoal!.title.isEmpty) {
+                    EmptyCard
+                } else {
+                    GoalCard
                 }
-                
             }
             .padding()
         }.onAppear {
@@ -91,7 +92,21 @@ extension ProfileView {
             RoundedRectangle(cornerRadius: 12)
         )
         .border(Color.white.opacity(0.1), width: 1).clipShape(RoundedRectangle(cornerRadius: 12))
-        
+    }
+    
+    private var EmptyCard: some View {
+        VStack(alignment: .center, spacing: 12) {
+            Text("1 week ゴールがまだ設定されていません!!")
+                .font(.title)
+                .fontWeight(.semibold)
+        }
+        .padding()
+        .frame(maxWidth: .infinity)
+        .background(Color.white.opacity(0.1))
+        .clipShape(
+            RoundedRectangle(cornerRadius: 12)
+        )
+        .border(Color.white.opacity(0.1), width: 1).clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
 
