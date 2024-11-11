@@ -30,6 +30,10 @@ class GoalDummyGateway: GoalGatewayProtocol {
         return Self.goals.first { $0.user_id == user_id && $0.createdAt >= oneWeekAgo }
     }
     
+    func addGoal(record: GoalRecord) async {
+        Self.goals.append(record)
+    }
+    
     func update(goal_id: String, title: String) async {
         if let index = Self.goals.firstIndex(where: { $0.id == goal_id }) {
             let beforeGoal = Self.goals[index]

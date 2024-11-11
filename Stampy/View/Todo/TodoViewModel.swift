@@ -139,13 +139,17 @@ extension TodoViewModel {
         }
         
         func changedGoal(_ goal: Goal) {
-            parent.weekGoal = goal
-            
-            //post week goal usecase
-            
-            
-            parent.getTodos(for: goal)
-            onComplete()
+            Task {
+                await AddGoalUseCase().execute(goal: goal, user: parent.loginUser)
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    parent.weekGoal? = goal
+                }
+                
+                parent.getTodos(for: goal)
+                onComplete()
+            }
         }
     }
     
@@ -163,10 +167,13 @@ extension TodoViewModel {
         
         func changedGoal(_ goal: Goal) {
             Task {
-                parent.weekGoal = goal
-                
                 //update week goal usecase
                 await EditGoalUseCase().execute(goal: goal)
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    parent.weekGoal? = goal
+                }
                 
                 onComplete()
             }

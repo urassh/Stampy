@@ -9,5 +9,6 @@ import Foundation
 
 protocol GoalRepositoryProtocol {
     func getWeekGoal(user_id: String) async -> Goal?
+    func addGoal(goal: Goal, user: AppUser) async
     func updateGoal(goal_id: UUID, title: String) async
 }

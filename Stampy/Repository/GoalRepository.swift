@@ -21,6 +21,11 @@ class GoalRepository : GoalRepositoryProtocol {
         )
     }
     
+    func addGoal(goal: Goal, user: AppUser) async {
+        let record = GoalRecord(id: goal.id.uuidString, user_id: user.id, title: goal.title, createdAt: goal.createdAt)
+        await goalGateway.addGoal(record: record)
+    }
+    
     func updateGoal(goal_id: UUID, title: String) async {
         await goalGateway.update(goal_id: goal_id.uuidString, title: title)
     }
