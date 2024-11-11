@@ -134,8 +134,11 @@ extension TodoView {
     
     private func todoSection(for state: Todo.TodoStatus) -> some View {
         Section(header: Text(state.description)) {
-            let filteredTodos = viewmodel.todos.filter { $0.status == state }
-            ForEach(filteredTodos) { todo in
+            let filteredTodos = viewmodel.todos.filter {
+                return $0.status == state
+            }
+            
+            ForEach(filteredTodos, id: \.id) { todo in
                 todoRow(for: todo)
             }
         }

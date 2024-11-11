@@ -101,7 +101,7 @@ extension TodoViewModel {
         func changedTodo(_ todo: Todo) {
             Task {
                 guard let goal = parent.weekGoal else { return }
-                await AddTodoUseCase().execute(to: todo, in: goal)
+                await AddTodoUseCase().execute(to: todo.setID(UUID()), in: goal)
                 parent.getTodos(for: goal)
                 onComplete()
             }

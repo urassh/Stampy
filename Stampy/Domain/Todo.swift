@@ -17,9 +17,17 @@ struct Todo : Identifiable, Equatable {
     static let ExampleYet: Todo = .init(id: UUID(), title: "Example", status: .Yet, createdAt: Date())
     static let ExampleDone: Todo = .init(id: UUID(), title: "ExampleComplete!!", status: .Done, createdAt: Date())
     
-    enum TodoStatus: CaseIterable {
+    enum TodoStatus: CaseIterable, Equatable {
         case Yet
         case Done
+        
+        static func == (lhs: TodoStatus, rhs: TodoStatus) -> Bool {
+            switch (lhs, rhs) {
+            case (.Yet, .Yet): return true
+            case (.Done, .Done): return true
+            default: return false
+            }
+        }
     }
     
     var isDone: Bool {
@@ -28,6 +36,10 @@ struct Todo : Identifiable, Equatable {
     
     var isEmpty: Bool {
         return !isDone && title.isEmpty
+    }
+    
+    func setID(_ id: UUID) -> Self {
+        .init(id: id, title: title, status: status, createdAt: createdAt)
     }
     
     func newTitle(_ newTitle: String) -> Self {

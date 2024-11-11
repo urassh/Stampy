@@ -39,6 +39,7 @@ struct TodoSheet: View, CustomTextFieldDelegate {
     }
     
     func textDidChange(to newText: String) {
+        
         todo = todo.newTitle(newText)
     }
     
