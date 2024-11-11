@@ -24,5 +24,9 @@ struct Goal : Identifiable {
         self.createdAt = .init()
     }
     
+    func newTitle(_ title: String) -> Goal {
+        .init(id: id, title: title, createdAt: createdAt)
+    }
+    
     static let Empty: Goal = .init(title: "")
 }
