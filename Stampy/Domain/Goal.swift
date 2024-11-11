@@ -29,4 +29,8 @@ struct Goal : Identifiable {
     }
     
     static let Empty: Goal = .init(title: "")
+    
+    func isEmpty() -> Bool {
+        title.isEmpty
+    }
 }

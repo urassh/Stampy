@@ -17,14 +17,22 @@ struct TodoView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            GoalSection
-            
-            AddButtonSection
-            
-            if (viewmodel.todos.isEmpty) {
-                EmptyTodo
+            if (viewmodel.weekGoal == nil || viewmodel.weekGoal!.title.isEmpty) {
+                Text("今週のゴールがまだ設定されていません。")
+                    .font(.largeTitle)
+                TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
+                    
+                })
             } else {
-                TodoList
+                GoalSection
+                
+                AddButtonSection
+                
+                if (viewmodel.todos.isEmpty) {
+                    EmptyTodo
+                } else {
+                    TodoList
+                }
             }
         }
         .padding()
@@ -63,20 +71,12 @@ extension TodoView {
     private var GoalSection: some View {
         HStack {
             VStack(alignment: .leading) {
-                if (viewmodel.weekGoal == nil) {
-                    Text("今週のゴールがまだ設定されていません。")
-                        .font(.largeTitle)
-                    TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
-                        
-                    })
-                } else {
-                    Text("🔥Goal")
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                    Text(viewmodel.weekGoal!.title)
-                        .font(.title)
-                        .fontWeight(.bold)
-                }
+                Text("🔥Goal")
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                Text(viewmodel.weekGoal!.title)
+                    .font(.title)
+                    .fontWeight(.bold)
             }
             
             Spacer()
