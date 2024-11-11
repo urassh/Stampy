@@ -11,7 +11,7 @@ class ChangeTodoStatusUseCase {
     
     func execute(todo: Todo) async {
         if (todo.isDone) {
-            await todoRepository.updateTodo(todo_id: todo.id, title: todo.title, status: Status.NotYet)
+            await todoRepository.updateTodo(todo_id: todo.id, title: todo.title, status: Status.Yet)
         } else {
             await todoRepository.updateTodo(todo_id: todo.id, title: todo.title, status: Status.Done)
         }

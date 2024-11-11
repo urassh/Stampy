@@ -13,12 +13,12 @@ struct Todo : Identifiable, Equatable {
     let status: TodoStatus
     let createdAt: Date
     
-    static let Empty: Todo = .init(id: UUID(), title: "", status: .NotYet, createdAt: Date())
-    static let ExampleYet: Todo = .init(id: UUID(), title: "Example", status: .NotYet, createdAt: Date())
+    static let Empty: Todo = .init(id: UUID(), title: "", status: .Yet, createdAt: Date())
+    static let ExampleYet: Todo = .init(id: UUID(), title: "Example", status: .Yet, createdAt: Date())
     static let ExampleDone: Todo = .init(id: UUID(), title: "ExampleComplete!!", status: .Done, createdAt: Date())
     
     enum TodoStatus: CaseIterable {
-        case NotYet
+        case Yet
         case Done
     }
     

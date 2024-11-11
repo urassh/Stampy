@@ -56,7 +56,7 @@ extension String {
     func toStatus() throws -> Todo.TodoStatus {
         switch self {
         case "Yet":
-            return .NotYet
+            return .Yet
         case "Done":
             return .Done
         default:
@@ -68,7 +68,7 @@ extension String {
 extension Todo.TodoStatus {
     var toRecordString: String {
         switch self {
-        case .NotYet:
+        case .Yet:
             return "Yet"
         case .Done:
             return "Done"

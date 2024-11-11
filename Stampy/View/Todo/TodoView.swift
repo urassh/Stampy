@@ -164,7 +164,7 @@ extension TodoView {
 extension Todo.TodoStatus {
     var description: String {
         switch self {
-        case .NotYet:
+        case .Yet:
             return "未完了"
         case .Done:
             return "完了"
