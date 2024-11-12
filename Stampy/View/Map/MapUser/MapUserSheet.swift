@@ -8,6 +8,13 @@
 import SwiftUI
 
 struct MapUserSheet : View {
+    static let stampPattern: [String] = [
+        "👍",
+        "👏",
+        "🔥",
+        "👀"
+    ]
+    
     var body: some View {
         VStack {
             HStack(spacing: 24) {
@@ -22,6 +29,7 @@ struct MapUserSheet : View {
                 RoundedRectangle(cornerRadius: 20)
             )
             
+            stampSection
         }
         .padding()
     }
@@ -71,6 +79,24 @@ extension MapUserSheet {
                 .font(.footnote)
                 .opacity(0.6)
         }
+    }
+    
+    private var stampSection: some View {
+        VStack (alignment: .leading) {
+            Text("スタンプを送る")
+                .font(.title2)
+                .fontWeight(.bold)
+            
+            ScrollView(.horizontal) {
+                HStack(spacing: 12) {
+                    ForEach (Self.stampPattern, id: \.self) { stamp in
+                        Text(stamp)
+                            .font(.system(size: 72))
+                    }
+                }
+            }.frame(height: 100)
+        }
+        .padding(.horizontal, 32)
     }
 }
 
