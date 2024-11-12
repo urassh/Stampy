@@ -17,11 +17,6 @@ struct MapView: View {
         ZStack {
             Map(position: $position)
             
-            if (isShowUserSheet) {
-                Color.black.opacity(0.5)
-                    .ignoresSafeArea()
-            }
-            
             VStack {
                 Text("近くの頑張っている人🔥")
                     .font(.largeTitle)
@@ -37,11 +32,18 @@ struct MapView: View {
                     HStack(spacing: 12) {
                         ForEach(viewmodel.mapUsers) { mapUser in
                             UserCardView(mapUser: mapUser)
+                                .onTapGesture {
+                                    isShowUserSheet = true
+                                }
                         }
                     }
                 }
             }
             .padding()
+        }
+        .sheet(isPresented: $isShowUserSheet) {
+            MapUserSheet()
+                .presentationDetents([.medium])
         }
     }
 }
