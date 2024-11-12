@@ -14,9 +14,11 @@ struct MapUserSheet : View {
         "🔥",
         "👀"
     ]
+    @State var message: String = ""
+    @FocusState var isFocus: Bool
     
     var body: some View {
-        VStack {
+        VStack (spacing: 24) {
             HStack(spacing: 24) {
                 userSection
                 
@@ -30,6 +32,8 @@ struct MapUserSheet : View {
             )
             
             stampSection
+            
+            messageSection
         }
         .padding()
     }
@@ -95,6 +99,25 @@ extension MapUserSheet {
                     }
                 }
             }.frame(height: 100)
+        }
+        .padding(.horizontal, 32)
+    }
+    
+    private var messageSection: some View {
+        HStack {
+            TextField("Aa", text: $message)
+                .padding()
+                .background(Color(uiColor: .secondarySystemBackground))
+                .clipShape(Capsule())
+                .overlay(
+                    Image(systemName: "face.smiling")
+                        .font(.title2)
+                        .padding(.trailing)
+                        .foregroundStyle(.gray), alignment: .trailing)
+                .onSubmit {
+                    // submit
+                }
+                .focused($isFocus)
         }
         .padding(.horizontal, 32)
     }
