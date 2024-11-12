@@ -9,9 +9,12 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
+    @State var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    
     var body: some View {
         ZStack {
-            Map()
+            Map(position: $position)
+            
             VStack {
                 Text("近くの頑張っている人🔥")
                     .font(.largeTitle)
@@ -30,7 +33,8 @@ struct MapView: View {
                         UserCardView()
                     }
                 }
-            }.padding()
+            }
+            .padding()
         }
     }
 }
