@@ -9,11 +9,18 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
+    @ObservedObject var viewmodel: MapViewModel = MapViewModel()
     @State var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    @State var isShowUserSheet: Bool = false
     
     var body: some View {
         ZStack {
             Map(position: $position)
+            
+            if (isShowUserSheet) {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea()
+            }
             
             VStack {
                 Text("近くの頑張っている人🔥")
@@ -28,9 +35,9 @@ struct MapView: View {
                 
                 ScrollView(.horizontal) {
                     HStack(spacing: 12) {
-                        UserCardView(mapUser: .sample)
-                        UserCardView(mapUser: .sample)
-                        UserCardView(mapUser: .sample)
+                        ForEach(viewmodel.mapUsers) { mapUser in
+                            UserCardView(mapUser: mapUser)
+                        }
                     }
                 }
             }
