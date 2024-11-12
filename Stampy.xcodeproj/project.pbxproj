@@ -20,33 +20,9 @@
 		10E0F5E12CD519C100A82BD4 /* Stampy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Stampy.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		101858882CE38BBA00F1880A /* Exceptions for "Stampy" folder in "Stampy" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Domain/MapUser.swift,
-			);
-			target = 10E0F5E02CD519C100A82BD4 /* Stampy */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-		101858892CE38BBA00F1880A /* Exceptions for "Stampy" folder in "Copy Bundle Resources" phase from "Stampy" target */ = {
-			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
-			buildPhase = 10E0F5DF2CD519C100A82BD4 /* Resources */;
-			membershipExceptions = (
-				Domain/MapUser.swift,
-			);
-		};
-/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		10E0F5E32CD519C100A82BD4 /* Stampy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				101858882CE38BBA00F1880A /* Exceptions for "Stampy" folder in "Stampy" target */,
-				101858892CE38BBA00F1880A /* Exceptions for "Stampy" folder in "Copy Bundle Resources" phase from "Stampy" target */,
-			);
 			path = Stampy;
 			sourceTree = "<group>";
 		};

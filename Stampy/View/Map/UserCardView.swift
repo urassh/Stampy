@@ -7,24 +7,8 @@
 
 import SwiftUI
 
-struct SampleUserCardModel : Identifiable {
-    let id: UUID = .init()
-    let todo: String
-    let isDone: Bool
-}
-
 struct UserCardView: View {
-    private let samples: [SampleUserCardModel] = [
-        .init(todo: "SwiftUIを勉強する", isDone: true),
-        .init(todo: "SwiftUIを勉強する", isDone: true),
-        .init(todo: "SwiftUIを勉強する", isDone: true),
-        .init(todo: "SwiftUIを勉強する", isDone: true),
-        .init(todo: "RailsTutorialを3章進める", isDone: false),
-        .init(todo: "RailsTutorialを3章進める", isDone: false),
-        .init(todo: "RailsTutorialを3章進める", isDone: false),
-        .init(todo: "RailsTutorialを3章進める", isDone: false),
-        
-    ]
+    let mapUser: MapUser
     
     var body: some View {
         VStack {
@@ -36,15 +20,15 @@ struct UserCardView: View {
                 )
             
             VStack(alignment: .leading) {
-                Text("urassh")
+                Text(mapUser.user.name)
                     .font(.headline)
-                Text("Swiftを頑張る")
+                Text(mapUser.goal.title)
                     .font(.title3)
                 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
-                        ForEach(samples) { sample in
-                            CheckBoxConst(label: sample.todo, isOn: sample.isDone)
+                        ForEach(mapUser.todos) { todo in
+                            CheckBoxConst(label: todo.title, isOn: todo.isDone)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -69,13 +53,4 @@ struct UserCardView: View {
                 .stroke(Color.gray.opacity(0.3), lineWidth: 1)
         )
     }
-}
-
-#Preview {
-    ZStack {
-        Rectangle()
-            .fill(Color.blue)
-        UserCardView()
-    }
-    
 }

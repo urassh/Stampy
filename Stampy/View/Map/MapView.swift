@@ -28,9 +28,9 @@ struct MapView: View {
                 
                 ScrollView(.horizontal) {
                     HStack(spacing: 12) {
-                        UserCardView()
-                        UserCardView()
-                        UserCardView()
+                        UserCardView(mapUser: .sample)
+                        UserCardView(mapUser: .sample)
+                        UserCardView(mapUser: .sample)
                     }
                 }
             }
