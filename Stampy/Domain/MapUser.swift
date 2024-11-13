@@ -29,15 +29,15 @@ struct MapUser : Identifiable, Equatable {
         lhs.id == rhs.id
     }
     
-    func CountAchievedGoal() -> Int {
+    var countAchievedGoal : Int {
         return goal.isWeekGoal() ? goalCount - 1 : goalCount
     }
     
-    func CountDoneTodo() -> Int {
+    var countDoneTodo : Int {
         todos.filter(\.isDone).count
     }
     
-    func AverageTasksPerDay() -> Float {
+    var averageTasksPerDay : Float {
         Float(todos.count) / 7.0
     }
 }

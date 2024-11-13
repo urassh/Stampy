@@ -89,7 +89,7 @@ extension MapUserSheet {
     
     private var userInfoSection: some View {
         VStack (alignment: .leading) {
-            Text("\(mapUser.CountDoneTodo())")
+            Text("\(mapUser.countDoneTodo)")
                 .font(.title2)
                 .bold()
             Text("Todo達成数")
@@ -98,7 +98,7 @@ extension MapUserSheet {
             
             Divider()
             
-            Text("\(mapUser.CountAchievedGoal())")
+            Text("\(mapUser.countAchievedGoal)")
                 .font(.title2)
                 .bold()
             Text("Goal達成数")
@@ -107,7 +107,7 @@ extension MapUserSheet {
             
             Divider()
             
-            Text("\(mapUser.AverageTasksPerDay().format())")
+            Text("\(mapUser.averageTasksPerDay.format())")
                 .font(.title2)
                 .bold()
             Text("1日の平均タスク")
