@@ -12,24 +12,21 @@ struct MapUserSheet : View {
         "👍",
         "👏",
         "🔥",
-        "👀"
+        "👀",
+        "👊",
+        "🤝"
     ]
     @State var message: String = ""
     @FocusState var isFocus: Bool
+    @State var isFront: Bool = true
     
     var body: some View {
-        VStack (spacing: 24) {
-            HStack(spacing: 24) {
-                userSection
-                
-                userInfoSection
-            }
-            .padding()
-            .frame(width: 320)
-            .background(Color.black.opacity(0.1))
-            .clipShape(
-                RoundedRectangle(cornerRadius: 20)
-            )
+        VStack (spacing: 16) {
+            Flip(isFront: isFront, front: {
+                userCardSection
+            }, back: {
+                userCardSection
+            })
             
             stampSection
             
@@ -40,6 +37,23 @@ struct MapUserSheet : View {
 }
 
 extension MapUserSheet {
+    private var userCardSection: some View {
+        HStack(spacing: 24) {
+            userSection
+            
+            userInfoSection
+        }
+        .padding()
+        .frame(width: 320)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color(.secondarySystemBackground))
+                .shadow(radius: 8)
+        ).onTapGesture {
+            isFront.toggle()
+        }
+    }
+    
     private var userSection: some View {
         VStack(alignment: .leading) {
             Image("Sample")
@@ -95,22 +109,22 @@ extension MapUserSheet {
                 HStack(spacing: 12) {
                     ForEach (Self.stampPattern, id: \.self) { stamp in
                         Text(stamp)
-                            .font(.system(size: 72))
+                            .font(.system(size: 52))
                     }
                 }
-            }.frame(height: 100)
+            }.frame(height: 60)
         }
         .padding(.horizontal, 32)
     }
     
     private var messageSection: some View {
         HStack {
-            TextField("Aa", text: $message)
+            TextField("応援のメッセージを書こう!!", text: $message)
                 .padding()
                 .background(Color(uiColor: .secondarySystemBackground))
                 .clipShape(Capsule())
                 .overlay(
-                    Image(systemName: "face.smiling")
+                    Image(systemName: "paperplane")
                         .font(.title2)
                         .padding(.trailing)
                         .foregroundStyle(.gray), alignment: .trailing)
