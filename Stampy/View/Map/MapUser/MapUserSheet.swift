@@ -89,7 +89,7 @@ extension MapUserSheet {
     
     private var userInfoSection: some View {
         VStack (alignment: .leading) {
-            Text("32")
+            Text("\(mapUser.CountDoneTodo())")
                 .font(.title2)
                 .bold()
             Text("Todo達成数")
@@ -98,7 +98,7 @@ extension MapUserSheet {
             
             Divider()
             
-            Text("4")
+            Text("\(mapUser.CountAchievedGoal())")
                 .font(.title2)
                 .bold()
             Text("Goal達成数")
@@ -107,7 +107,7 @@ extension MapUserSheet {
             
             Divider()
             
-            Text("4.5")
+            Text("\(mapUser.AverageTasksPerDay().format())")
                 .font(.title2)
                 .bold()
             Text("1日の平均タスク")
@@ -170,6 +170,12 @@ extension MapUserSheet {
     }
 }
 
+extension Float {
+    func format() -> String {
+        return String(format: "%.1f", self)
+    }
+}
+
 #Preview {
     MapUserSheet(mapUser: MapUser(
         user: AppUser(id: "1", name: "urassh"),
@@ -179,6 +185,7 @@ extension MapUserSheet {
             Todo(id: UUID(), title: "Task2", status: .Yet, createdAt: Date()),
             Todo(id: UUID(), title: "Task3", status: .Yet, createdAt: Date()),
             Todo(id: UUID(), title: "Task4", status: .Yet, createdAt: Date())
-        ]
+        ],
+        goalCount: 1
     ))
 }
