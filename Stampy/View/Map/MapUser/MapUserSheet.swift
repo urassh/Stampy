@@ -19,13 +19,24 @@ struct MapUserSheet : View {
     @State var message: String = ""
     @FocusState var isFocus: Bool
     @State var isFront: Bool = true
+    let mapUser = MapUser(
+        user: AppUser(id: "1", name: "urassh"),
+        goal: Goal(id: UUID(), title: "SwiftUI 勉強中", createdAt: Date()),
+        todo: [
+            Todo(id: UUID(), title: "Task1", status: .Done, createdAt: Date()),
+            Todo(id: UUID(), title: "Task2", status: .Yet, createdAt: Date()),
+            Todo(id: UUID(), title: "Task3", status: .Yet, createdAt: Date()),
+            Todo(id: UUID(), title: "Task4", status: .Yet, createdAt: Date())
+        ]
+        
+    )
     
     var body: some View {
         VStack (spacing: 16) {
             Flip(isFront: isFront, front: {
                 userCardSection
             }, back: {
-                userCardSection
+                todoCardSection
             })
             
             stampSection
@@ -44,7 +55,7 @@ extension MapUserSheet {
             userInfoSection
         }
         .padding()
-        .frame(width: 320)
+        .frame(width: 320, height: 200)
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color(.secondarySystemBackground))
@@ -67,6 +78,22 @@ extension MapUserSheet {
             Text("@urassh_engineer")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
+        }
+    }
+    
+    private var todoCardSection: some View {
+        HStack(spacing: 24) {
+            userSection
+            todoSection
+        }
+        .padding()
+        .frame(width: 320, height: 200)
+        .background(
+            RoundedRectangle(cornerRadius: 20)
+                .fill(Color(.secondarySystemBackground))
+                .shadow(radius: 8)
+        ).onTapGesture {
+            isFront.toggle()
         }
     }
     
@@ -96,6 +123,22 @@ extension MapUserSheet {
             Text("1日の平均タスク")
                 .font(.footnote)
                 .opacity(0.6)
+        }
+    }
+    
+    private var todoSection: some View {
+        VStack {
+            Text("「Rails Tutorialを完了する」")
+                .font(.title3)
+                .fontWeight(.bold)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(mapUser.todos) { todo in
+                        CheckBoxConst(label: todo.title, isOn: todo.isDone)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
         }
     }
     
