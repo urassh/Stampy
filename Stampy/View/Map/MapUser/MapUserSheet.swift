@@ -34,9 +34,9 @@ struct MapUserSheet : View {
     var body: some View {
         VStack (spacing: 16) {
             Flip(isFront: isFront, front: {
-                userCardSection
-            }, back: {
                 todoCardSection
+            }, back: {
+                userCardSection
             })
             
             stampSection
@@ -162,7 +162,7 @@ extension MapUserSheet {
     
     private var messageSection: some View {
         HStack {
-            TextField("応援のメッセージを書こう!!", text: $message)
+            TextField("達成後にかけたい言葉を書こう!!", text: $message)
                 .padding()
                 .background(Color(uiColor: .secondarySystemBackground))
                 .clipShape(Capsule())
