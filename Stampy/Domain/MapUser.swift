@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MapUser : Identifiable {
+struct MapUser : Identifiable, Equatable {
     var id: String {
         user.id
     }
@@ -22,4 +22,8 @@ struct MapUser : Identifiable {
     }
     
     static let sample: MapUser = .init(user: LoginUser.shared, goal: .Empty.newTitle("SampleGoal!"), todo: [.ExampleDone, .ExampleDone, .ExampleYet, .ExampleYet])
+    
+    static func == (lhs: MapUser, rhs: MapUser) -> Bool {
+        lhs.id == rhs.id
+    }
 }

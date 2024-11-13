@@ -19,17 +19,7 @@ struct MapUserSheet : View {
     @State var message: String = ""
     @FocusState var isFocus: Bool
     @State var isFront: Bool = true
-    let mapUser = MapUser(
-        user: AppUser(id: "1", name: "urassh"),
-        goal: Goal(id: UUID(), title: "SwiftUI 勉強中", createdAt: Date()),
-        todo: [
-            Todo(id: UUID(), title: "Task1", status: .Done, createdAt: Date()),
-            Todo(id: UUID(), title: "Task2", status: .Yet, createdAt: Date()),
-            Todo(id: UUID(), title: "Task3", status: .Yet, createdAt: Date()),
-            Todo(id: UUID(), title: "Task4", status: .Yet, createdAt: Date())
-        ]
-        
-    )
+    let mapUser: MapUser
     
     var body: some View {
         VStack (spacing: 16) {
@@ -71,11 +61,11 @@ extension MapUserSheet {
                 .resizable()
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
-            Text("urassh")
+            Text(mapUser.user.name)
                 .font(.title3)
                 .fontWeight(.bold)
                 .foregroundStyle(.secondary)
-            Text("@urassh_engineer")
+            Text("@\(mapUser.id)")
                 .font(.footnote)
                 .foregroundStyle(.secondary)
         }
@@ -127,8 +117,8 @@ extension MapUserSheet {
     }
     
     private var todoSection: some View {
-        VStack {
-            Text("「Rails Tutorialを完了する」")
+        VStack (alignment: .leading) {
+            Text("「\(mapUser.goal.title)」")
                 .font(.title3)
                 .fontWeight(.bold)
             ScrollView {
@@ -181,5 +171,14 @@ extension MapUserSheet {
 }
 
 #Preview {
-    MapUserSheet()
+    MapUserSheet(mapUser: MapUser(
+        user: AppUser(id: "1", name: "urassh"),
+        goal: Goal(id: UUID(), title: "SwiftUI 勉強中", createdAt: Date()),
+        todo: [
+            Todo(id: UUID(), title: "Task1", status: .Done, createdAt: Date()),
+            Todo(id: UUID(), title: "Task2", status: .Yet, createdAt: Date()),
+            Todo(id: UUID(), title: "Task3", status: .Yet, createdAt: Date()),
+            Todo(id: UUID(), title: "Task4", status: .Yet, createdAt: Date())
+        ]
+    ))
 }

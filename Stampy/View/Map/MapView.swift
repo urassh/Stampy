@@ -12,6 +12,7 @@ struct MapView: View {
     @ObservedObject var viewmodel: MapViewModel = MapViewModel()
     @State var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State var isShowUserSheet: Bool = false
+    @State var selectMapUser: MapUser?
     
     var body: some View {
         ZStack {
@@ -33,7 +34,7 @@ struct MapView: View {
                         ForEach(viewmodel.mapUsers) { mapUser in
                             UserCardView(mapUser: mapUser)
                                 .onTapGesture {
-                                    isShowUserSheet = true
+                                    selectMapUser = mapUser
                                 }
                         }
                     }
@@ -41,8 +42,15 @@ struct MapView: View {
             }
             .padding()
         }
-        .sheet(isPresented: $isShowUserSheet) {
-            MapUserSheet()
+        .onChange(of: selectMapUser) {
+            if (selectMapUser == nil) { return }
+            isShowUserSheet = true
+        }
+        .sheet(isPresented: $isShowUserSheet, onDismiss: {
+            isShowUserSheet = false
+            selectMapUser = nil
+        }) {
+            MapUserSheet(mapUser: selectMapUser!)
                 .presentationDetents([.medium])
         }
     }
