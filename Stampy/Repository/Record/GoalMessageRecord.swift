@@ -18,9 +18,9 @@ struct GoalMessageRecord {
         let type: String = {
             switch goalMessage {
             case is TextMessage:
-                return "text"
+                return TextMessage.type
             case is StampMessage:
-                return "stamp"
+                return StampMessage.type
             default:
                 return "invalid"
             }

@@ -32,9 +32,9 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
                 
                 return {
                     switch record.type {
-                    case "text":
+                    case TextMessage.type:
                         return TextMessage(id: id, text: record.content, goal: goal, sender: sender)
-                    case "stamp":
+                    case StampMessage.type:
                         guard let stamp = Stamp.fromString(record.content) else { return nil }
                         return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender)
                     default:
