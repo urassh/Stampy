@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct MapUserSheet : View {
     static let stampPattern: [String] = [
@@ -186,6 +187,6 @@ extension Float {
             Todo(id: UUID(), title: "Task3", status: .Yet, createdAt: Date()),
             Todo(id: UUID(), title: "Task4", status: .Yet, createdAt: Date())
         ],
-        goalCount: 1
+        position: CLLocationCoordinate2D(latitude: 35.681111, longitude: 139.766667)
     ))
 }

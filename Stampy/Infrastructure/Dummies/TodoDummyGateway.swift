@@ -9,20 +9,20 @@ import Foundation
 
 class TodoDummyGateway: TodoGatewayProtocol {
     private static var todos: [TodoRecord] = [
-//        TodoRecord(
-//            id: "11111111-1111-1111-1111-111111111111",
-//            title: "Learn SwiftUI",
-//            goal_id: "12345678-1234-1234-1234-1234567890AB",
-//            status: "Yet",
-//            createdAt: Date().addingTimeInterval(-2 * 24 * 60 * 60) // 2 days ago
-//        ),
-//        TodoRecord(
-//            id: "22222222-2222-2222-2222-222222222222",
-//            title: "Complete Swift project",
-//            goal_id: "12345678-1234-1234-1234-1234567890AB",
-//            status: "Done",
-//            createdAt: Date().addingTimeInterval(-5 * 24 * 60 * 60) // 5 days ago
-//        ),
+        TodoRecord(
+            id: "11111111-1111-1111-1111-111111111111",
+            title: "Learn SwiftUI",
+            goal_id: "12345678-1234-1234-1234-1234567890AB",
+            status: "Yet",
+            createdAt: Date().addingTimeInterval(-2 * 24 * 60 * 60) // 2 days ago
+        ),
+        TodoRecord(
+            id: "22222222-2222-2222-2222-222222222222",
+            title: "Complete Swift project",
+            goal_id: "12345678-1234-1234-1234-1234567890AB",
+            status: "Done",
+            createdAt: Date().addingTimeInterval(-5 * 24 * 60 * 60) // 5 days ago
+        ),
 //        TodoRecord(
 //            id: "33333333-3333-3333-3333-333333333333",
 //            title: "Practice Ruby",

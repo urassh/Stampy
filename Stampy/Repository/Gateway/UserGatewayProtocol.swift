@@ -7,5 +7,4 @@
 
 protocol UserGatewayProtocol {
     func fetch(id: String) async -> UserRecord?
-    func fetchAll() async -> [UserRecord]
 }

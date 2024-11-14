@@ -20,9 +20,9 @@ class GetMapUsersUseCase {
         for location in locations {
             let clLocation = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
             let user = await userRepository.get(id: location.user_id)
-            let goal = await goalRepository.getWeekGoal(user_id: user!.id)
-            let todos = await todoRepository.getTodos(from: goal!)
-            let mapUser = MapUser(user: user!, goal: goal!, todo: todos, position: clLocation)
+            let goal = await goalRepository.getWeekGoal(user_id: user!.id) ?? .Empty
+            let todos = goal.isEmpty() ? [] : await todoRepository.getTodos(from: goal)
+            let mapUser = MapUser(user: user!, goal: goal, todo: todos, position: clLocation)
             mapUsers.append(mapUser)
         }
         

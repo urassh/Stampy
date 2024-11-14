@@ -9,11 +9,11 @@ import Foundation
 
 class GoalDummyGateway: GoalGatewayProtocol {
     private static var goals: [GoalRecord] = [
-//            GoalRecord(
-//                id: "12345678-1234-1234-1234-1234567890AB",
-//                user_id: "12345678-1234-1234-1234-1234567890AB",
-//                title: "Ruby on Rails を頑張る!!",
-//                createdAt: Date().addingTimeInterval(-3 * 24 * 60 * 60)), // 3日前
+            GoalRecord(
+                id: "12345678-1234-1234-1234-1234567890AB",
+                user_id: "12345678-1234-1234-1234-1234567890AB",
+                title: "Ruby on Rails を頑張る!!",
+                createdAt: Date().addingTimeInterval(-3 * 24 * 60 * 60)), // 3日前
 //            GoalRecord(
 //                id: "87654321-4321-4321-4321-BA0987654321",
 //                user_id: "87654321-4321-4321-4321-BA0987654321",
