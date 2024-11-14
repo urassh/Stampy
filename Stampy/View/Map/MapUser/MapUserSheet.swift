@@ -16,6 +16,7 @@ struct MapUserSheet : View {
     @State var message: String = ""
     @FocusState var isFocus: Bool
     @State var isFront: Bool = true
+    @State var pushStamp: Stamp?
     let mapUser: MapUser
     let delegate: SendGoalMessageDelegate
     
@@ -139,8 +140,26 @@ extension MapUserSheet {
             ScrollView(.horizontal) {
                 HStack(spacing: 12) {
                     ForEach (Stamp.allCases, id: \.self) { stamp in
-                        Text(stamp.toUIString)
-                            .font(.system(size: 52))
+                        Button {
+//                            Task {
+//                                await delegate.send(message: StampMessage(id: UUID(), stamp: stamp, goal: mapUser.goal, sender: mapUser.user))
+//                            }
+                            
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                pushStamp = stamp
+                            }
+                        } label: {
+                            Text(stamp.toUIString)
+                                .font(.system(size: 52))
+                                .scaleEffect(pushStamp == stamp ? 1.2 : 1.0)
+                        }
+                        .onChange(of: pushStamp) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                withAnimation {
+                                    pushStamp = nil
+                                }
+                            }
+                        }
                     }
                 }
             }.frame(height: 60)
