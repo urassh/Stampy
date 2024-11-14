@@ -9,6 +9,7 @@ import Foundation
 
 protocol GoalMessage {
     var id: UUID { get }
+    var content: String { get }
     var goal: Goal { get }
     var sender: AppUser { get }
 }
@@ -18,6 +19,8 @@ struct TextMessage : Identifiable, GoalMessage {
     let text: String
     let goal: Goal
     let sender: AppUser
+    
+    var content: String { text }
 }
 
 struct StampMessage : Identifiable, GoalMessage {
@@ -25,4 +28,6 @@ struct StampMessage : Identifiable, GoalMessage {
     let stamp: Stamp
     let goal: Goal
     let sender: AppUser
+    
+    var content: String { stamp.toString }
 }
