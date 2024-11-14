@@ -6,6 +6,6 @@
 //
 
 protocol GoalMessageRepositoryProtocol {
-    func getGoalMessages(goalId: String) async -> [GoalMessage]
+    func getGoalMessages(goal: Goal) async -> [GoalMessage]
     func saveGoalMessage(goalMessage: GoalMessage) async
 }
