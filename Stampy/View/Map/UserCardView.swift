@@ -22,7 +22,7 @@ struct UserCardView: View {
             VStack(alignment: .leading) {
                 Text(mapUser.user.name)
                     .font(.headline)
-                Text(mapUser.goal.title)
+                Text(mapUser.goal.isEmpty() ? "まだ目標がありません!!" : mapUser.goal.title)
                     .font(.title3)
                 
                 ScrollView {

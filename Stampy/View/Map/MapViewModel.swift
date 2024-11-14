@@ -8,15 +8,19 @@
 import Foundation
 
 class MapViewModel : ObservableObject {
-    @Published var mapUsers: [MapUser] = [
-        .sample,
-        .sample,
-        .sample,
-        .sample,
-        .sample,
-        .sample,
-        .sample,
-        .sample,
-    ]
+    @Published var mapUsers: [MapUser] = []
     
+    init() {
+        getMapUsers()
+    }
+    
+    private func getMapUsers() {
+        Task {
+            let fetchedMapUsers = await GetMapUsersUseCase().execute()
+            
+            DispatchQueue.main.async {
+                self.mapUsers = fetchedMapUsers
+            }
+        }
+    }
 }

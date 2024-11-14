@@ -33,4 +33,10 @@ struct Goal : Identifiable {
     func isEmpty() -> Bool {
         title.isEmpty
     }
+    
+    func isWeekGoal() -> Bool {
+        let calendar = Calendar.current
+        let weekOfYear = calendar.dateComponents([.weekOfYear], from: createdAt).weekOfYear!
+        return weekOfYear == calendar.dateComponents([.weekOfYear], from: .init()).weekOfYear!
+    }
 }
