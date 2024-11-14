@@ -98,10 +98,10 @@ extension MapUserSheet {
             
             Divider()
             
-            Text("\(mapUser.countAchievedGoal)")
+            Text("\(mapUser.countAllTodo)")
                 .font(.title2)
                 .bold()
-            Text("Goal達成数")
+            Text("全Todo数")
                 .font(.footnote)
                 .opacity(0.6)
             
