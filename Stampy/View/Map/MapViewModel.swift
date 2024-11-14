@@ -14,7 +14,7 @@ class MapViewModel : ObservableObject {
         getMapUsers()
     }
     
-    private func getMapUsers() {
+    func getMapUsers() {
         Task {
             let fetchedMapUsers = await GetMapUsersUseCase().execute()
             
