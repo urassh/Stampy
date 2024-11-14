@@ -21,17 +21,13 @@ class GoalDummyGateway: GoalGatewayProtocol {
 //                createdAt: Date().addingTimeInterval(-10 * 24 * 60 * 60)) // 10日前
         ]
     
-    func fetchFromUser(user_id: String) async -> [GoalRecord] {
+    func fetch(user_id: String) async -> [GoalRecord] {
         return Self.goals.filter { $0.user_id == user_id }
     }
     
     func fetchWeekGoal(user_id: String) async -> GoalRecord? {
         let oneWeekAgo = Calendar.current.date(byAdding: .day, value: -7, to: Date())!
         return Self.goals.first { $0.user_id == user_id && $0.createdAt >= oneWeekAgo }
-    }
-    
-    func fetchGoal(goal_id: String) async -> GoalRecord? {
-        return Self.goals.first { $0.id == goal_id }
     }
     
     func addGoal(record: GoalRecord) async {
