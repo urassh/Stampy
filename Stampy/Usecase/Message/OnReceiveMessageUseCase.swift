@@ -7,9 +7,9 @@
 
 /// 他のユーザからメッセージを受け取った時に実行したい処理を受け取るためのユースケース
 class OnReceiveMessageUseCase {
-    private var onReceiveHandlers: [() -> GoalMessage] = []
+    private let goalMessageRepository: GoalMessageRepositoryProtocol = GoalMessageRepository()
     
-    func execute(onReceiveMessage: @escaping () -> GoalMessage) {
-        
+    func execute(goal: Goal, onReceiveMessage: @escaping (any GoalMessage) -> Void) {
+        goalMessageRepository.registerOnReceiveHandler(goal: goal, handler: onReceiveMessage)
     }
 }
