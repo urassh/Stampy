@@ -26,6 +26,14 @@ struct TextMessage : Identifiable, GoalMessage {
     static var type: String {
         "text"
     }
+    
+    func isAvailableShow(todos: [Todo]) -> Bool {
+        let hasYetTodo = todos.contains(where: { todo in
+            todo.isYet
+        })
+        
+        return !hasYetTodo
+    }
 }
 
 struct StampMessage : Identifiable, GoalMessage {
