@@ -13,16 +13,6 @@ protocol GoalMessage {
     var sender: AppUser { get }
 }
 
-enum Stamp {
-    case good
-    case clap
-    case heart
-    case fire
-    case watch
-    case rock
-    case handshake
-}
-
 struct TextMessage : Identifiable, GoalMessage {
     let id: UUID
     let text: String
