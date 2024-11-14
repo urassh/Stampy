@@ -53,6 +53,9 @@ struct MapView: View {
             MapUserSheet(mapUser: selectMapUser!)
                 .presentationDetents([.medium])
         }
+        .onAppear {
+            viewmodel.getMapUsers()
+        }
     }
 }
 

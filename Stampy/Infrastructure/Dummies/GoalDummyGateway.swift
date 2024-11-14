@@ -21,7 +21,7 @@ class GoalDummyGateway: GoalGatewayProtocol {
 //                createdAt: Date().addingTimeInterval(-10 * 24 * 60 * 60)) // 10日前
         ]
     
-    func fetchFromUser(user_id: String) async -> [GoalRecord] {
+    func fetch(user_id: String) async -> [GoalRecord] {
         return Self.goals.filter { $0.user_id == user_id }
     }
     

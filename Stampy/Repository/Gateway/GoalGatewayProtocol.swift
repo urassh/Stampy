@@ -6,8 +6,8 @@
 //
 
 protocol GoalGatewayProtocol {
-    func fetchFromUser(user_id: String) async -> [GoalRecord]
     func fetchWeekGoal(user_id: String) async -> GoalRecord?
+    func fetch(user_id: String) async -> [GoalRecord]
     func addGoal(record: GoalRecord) async
     func update(goal_id: String, title: String) async
 }

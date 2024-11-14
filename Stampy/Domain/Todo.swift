@@ -34,6 +34,10 @@ struct Todo : Identifiable, Equatable {
         status == .Done
     }
     
+    var isYet: Bool {
+        status == .Yet
+    }
+    
     var isEmpty: Bool {
         return !isDone && title.isEmpty
     }

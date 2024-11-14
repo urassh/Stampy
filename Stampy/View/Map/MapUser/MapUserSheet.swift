@@ -12,6 +12,7 @@ struct MapUserSheet : View {
     static let stampPattern: [String] = [
         "👍",
         "👏",
+        "❤️",
         "🔥",
         "👀",
         "👊",
