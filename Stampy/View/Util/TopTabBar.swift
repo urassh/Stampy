@@ -55,8 +55,7 @@ struct TopTabBar: View {
             .background {
                 if let selectedTabId,
                    let color = tabs.first(where: { $0.id == selectedTabId })?.color {
-                    Rectangle()
-                        .fill(color)
+                    color
                         .matchedGeometryEffect(id: selectedTabId, in: tabNamespace, isSource: false)
                 }
             }

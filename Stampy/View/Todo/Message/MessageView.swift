@@ -14,7 +14,7 @@ import SwiftUI
 struct MessageView: View {
     private static let tabs: [TopTabBar.Tab] = [
         .init(title: "スタンプ", color: .cyan, content: AnyView(StampListView())),
-        .init(title: "メッセージ", color: .green, content: AnyView(Text("Trending Content"))),
+        .init(title: "メッセージ", color: .green, content: AnyView(MessageListView())),
     ]
     
     var body: some View {
