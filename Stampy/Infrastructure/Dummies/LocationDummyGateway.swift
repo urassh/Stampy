@@ -5,6 +5,8 @@
 //  Created by 浦山秀斗 on 2024/11/13.
 //
 
+import CoreLocation
+
 class LocationDummyGateway : LocationGatewayProtocol {
     private static var locations: [LocationRecord] = [
         LocationRecord(id: "1", user_id: "12345678-1234-1234-1234-1234567890AB", latitude: 35.689499999999996, longitude: 139.76949999999999),
@@ -13,6 +15,10 @@ class LocationDummyGateway : LocationGatewayProtocol {
     
     func getAll() async -> [LocationRecord] {
         Self.locations
+    }
+    
+    func getNearby(location: CLLocationCoordinate2D) async -> [LocationRecord] {
+        []
     }
     
     func get(user_id: String) async -> LocationRecord? {

@@ -6,17 +6,14 @@
 //
 
 import Foundation
+import CoreLocation
 
 class MapViewModel : ObservableObject {
     @Published var mapUsers: [MapUser] = []
     
-    init() {
-        getMapUsers()
-    }
-    
-    func getMapUsers() {
+    func getMapUsers(from location: CLLocationCoordinate2D) {
         Task {
-            let fetchedMapUsers = await GetMapUsersUseCase().execute()
+            let fetchedMapUsers = await GetMapUsersUseCase().execute(location)
             let loginUser = LoginUser.shared.loginUser
             let filterdUsers = fetchedMapUsers.filter { $0.user.id != loginUser.id }
             

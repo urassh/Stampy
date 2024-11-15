@@ -13,9 +13,9 @@ class GetMapUsersUseCase {
     private let goalRepository: GoalRepositoryProtocol = GoalRepository()
     private let todoRepository: TodoRepositoryProtocol = TodoRepository()
     
-    func execute() async -> [MapUser] {
+    func execute(_ location: CLLocationCoordinate2D) async -> [MapUser] {
         var mapUsers: [MapUser] = []
-        let locations = await locationRepository.getAll()
+        let locations = await locationRepository.getNearby(location)
         
         for location in locations {
             let clLocation = CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude)
