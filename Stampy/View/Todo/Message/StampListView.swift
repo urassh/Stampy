@@ -26,7 +26,7 @@ extension StampListView {
             ZStack {
                 Image("Sample")
                     .resizable()
-                    .frame(width: 64, height: 64)
+                    .frame(width: 72, height: 72)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 
                 Text("👍")
