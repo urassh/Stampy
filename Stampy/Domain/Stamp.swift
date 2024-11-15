@@ -52,6 +52,10 @@ enum Stamp {
         }
     }
     
+    static var random: Stamp {
+        allCases.randomElement()!
+    }
+    
     static var allCases: [Stamp] {
         [.good, .clap, .heart, .fire, .watch, .rock, .handshake]
     }

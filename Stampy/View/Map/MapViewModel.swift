@@ -15,6 +15,11 @@ class MapViewModel : ObservableObject {
         Task {
             let fetchedMapUsers = await GetMapUsersUseCase().execute(location)
             let loginUser = LoginUser.shared.loginUser
+            
+            for mapUser in fetchedMapUsers {
+                await PostMessageUseCase().execute(message: StampMessage(id: UUID(), stamp: Stamp.random, goal: mapUser.goal, sender: loginUser, createdAt: Date()))
+            }
+            
             let filterdUsers = fetchedMapUsers.filter { $0.user.id != loginUser.id }
             
             DispatchQueue.main.async {
