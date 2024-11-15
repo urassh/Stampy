@@ -12,7 +12,7 @@ enum TodoStatusError: Error {
 }
 
 class TodoRepository : TodoRepositoryProtocol {
-    private let todoGateway: TodoGatewayProtocol = TodoDummyGateway()
+    private let todoGateway: TodoGatewayProtocol = TodoGateway()
     
     func getTodos(from goal: Goal) async -> [Todo] {
         let todoRecords = await todoGateway.fetchTodos(goal_id: goal.id.uuidString)
