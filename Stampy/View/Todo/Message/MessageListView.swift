@@ -23,23 +23,36 @@ struct MessageListView : View {
 extension MessageListView {
     private var messageCell: some View {
         HStack {
-            ZStack {
-                Image("Sample")
-                    .resizable()
-                    .frame(width: 64, height: 64)
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-                Text("👍")
-                    .font(.title2)
-                    .background(
-                        Circle()
-                            .foregroundStyle(.white)
-                    )
-                    .offset(x: 30, y: 20)
-            }
+            Image("Sample")
+                .resizable()
+                .frame(width: 72, height: 72)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             
+            Spacer()
             
-            VStack {
-                Text("うらっしゅさんから「GOOD」が送られました!! ")
+            VStack (alignment: .leading) {
+                Text("うらっしゅ")
+                    .font(.callout)
+                
+                HStack (alignment: .top, spacing: 4) {
+                    Text("NEW")
+                        .foregroundStyle(.pink)
+                        .font(.callout)
+                        .bold()
+                    
+                    Text("メッセージが届いています!!")
+                        .foregroundStyle(.secondary)
+                        .font(.callout)
+                        .bold()
+                        
+                    
+                }
+                
+                Spacer()
+                
+                Text("3分前")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
         }
     }
