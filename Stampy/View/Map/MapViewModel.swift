@@ -17,9 +17,11 @@ class MapViewModel : ObservableObject {
     func getMapUsers() {
         Task {
             let fetchedMapUsers = await GetMapUsersUseCase().execute()
+            let loginUser = LoginUser.shared.loginUser
+            let filterdUsers = fetchedMapUsers.filter { $0.user.id != loginUser.id }
             
             DispatchQueue.main.async {
-                self.mapUsers = fetchedMapUsers
+                self.mapUsers = filterdUsers
             }
         }
     }
