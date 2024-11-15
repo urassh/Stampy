@@ -31,6 +31,7 @@ struct ProfileView : View {
         }.onAppear {
             Task {
                 await viewmodel.fetchWeekGoal()
+                viewmodel.getImage()
             }
         }
         
@@ -50,8 +51,9 @@ extension ProfileView {
     
     private var UserInfoSection: some View {
         VStack {
-            Image("Sample")
+            viewmodel.image
                 .resizable()
+                .scaledToFill()
                 .frame(width: 140, height: 140)
                 .clipShape(Circle())
                 .overlay {

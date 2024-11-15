@@ -19,6 +19,7 @@ struct MapUserSheet : View {
     @FocusState var isFocus: Bool
     @State var isFront: Bool = true
     @State var pushStamp: Stamp?
+    @State var image: Image = Image(systemName: "person.circle.fill")
     let mapUser: MapUser
     let delegate: SendGoalMessageDelegate
     
@@ -35,6 +36,15 @@ struct MapUserSheet : View {
             messageSection
         }
         .padding()
+        .onAppear {
+            Task {
+                let image = await GetImageUseCase().execute(id: mapUser.user.id)
+                
+                DispatchQueue.main.async {
+                    self.image = image
+                }
+            }
+        }
     }
 }
 
@@ -58,8 +68,9 @@ extension MapUserSheet {
     
     private var userSection: some View {
         VStack(alignment: .leading) {
-            Image("Sample")
+            image
                 .resizable()
+                .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipShape(Circle())
             Text(mapUser.user.name)
