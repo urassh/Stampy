@@ -11,12 +11,17 @@ import SwiftUI
 class SignUpViewModel: ObservableObject {
     let loginUser = LoginUser.shared
     
+    @Published var name: String = ""
     @Published var email: String = ""
     @Published var confirmEmail: String = ""
     @Published var password: String = ""
     @Published var selectedImage: UIImage?
     @Published var errorMessage: String = ""
     @Published var showImagePicker: Bool = false
+    
+    var nameCoordinator: NameCoordinator {
+        return NameCoordinator(parent: self)
+    }
     
     var emailCoordinator: EmailCoordinator {
         return EmailCoordinator(parent: self)
@@ -42,13 +47,25 @@ class SignUpViewModel: ObservableObject {
         }
         
         Task {
-            if let appUser = await SignUpUseCase().execute(email: email, password: password, image: image) {
+            if let appUser = await SignUpUseCase().execute(email: email, password: password, image: image, name: name) {
                 loginUser.signIn(user: appUser, email: email, password: password)
             } else {
                 DispatchQueue.main.async {
                     self.errorMessage = "アカウント作成に失敗しました"
                 }
             }
+        }
+    }
+    
+    class NameCoordinator: CustomTextFieldDelegate {
+        let parent: SignUpViewModel
+        
+        init(parent: SignUpViewModel) {
+            self.parent = parent
+        }
+        
+        func textDidChange(to newText: String) {
+            parent.name = newText
         }
     }
     

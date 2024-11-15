@@ -9,7 +9,7 @@ import Foundation
 import FirebaseFirestore
 
 class UserGateway: UserGatewayProtocol {
-    let db = Firestore.firestore()
+   let db = Firestore.firestore()
     
     func fetch(id: String) async -> UserRecord? {
         do {
@@ -17,7 +17,16 @@ class UserGateway: UserGatewayProtocol {
             
             return userRecord
         } catch {
+            print(error.localizedDescription)
             return nil
+        }
+    }
+    
+    func create(id: String, name: String) async {
+        do {
+            try await db.collection("users").document(id).setData(["id": id, "name": name])
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

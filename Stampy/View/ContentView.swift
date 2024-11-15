@@ -12,7 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            if !false {
+            if !loginUser.isSigningIn {
                 SignInView()
             } else {
                 TabView {
@@ -37,6 +37,8 @@ struct ContentView: View {
         .onAppear {
             Task {
                 if let email = loginUser.email, let password = loginUser.password {
+                    print("email", email)
+                    print("password", password)
                     if let appUser = await SignInUseCase().execute(email: email, password: password) {
                         loginUser.signIn(user: appUser, email: email, password: password)
                     }

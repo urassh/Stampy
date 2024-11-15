@@ -14,4 +14,8 @@ class UserDummyGateway: UserGatewayProtocol {
     func fetch(id: String) async -> UserRecord? {
         Self.users.first(where: { $0.uid == id })
     }
+    
+    func create(id: String, name: String) async {
+        
+    }
 }

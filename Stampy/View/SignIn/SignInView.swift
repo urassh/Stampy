@@ -17,8 +17,8 @@ struct SignInView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                CustomTextField(initialText: "", placeholder: "email", delegate: viewmodel.emailCoordinator)
-                CustomTextField(initialText: "", placeholder: "password", delegate: viewmodel.passwordCoordinator)
+                CustomTextField(initialText: "", placeholder: "email",delegate: viewmodel.emailCoordinator)
+                CustomTextField(initialText: "", placeholder: "password", isPassword: true, delegate: viewmodel.passwordCoordinator)
                     .padding(.bottom, 20)
                 
                 if !viewmodel.errorMessage.isEmpty {
@@ -31,6 +31,7 @@ struct SignInView: View {
                 } label: {
                     Text("SignIn")
                         .foregroundStyle(.white)
+                        .fontWeight(.bold)
                 }
                 .padding()
                 .background(.blue.opacity(0.8))

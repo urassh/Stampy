@@ -12,11 +12,10 @@ struct SignUpView: View {
     @ObservedObject var viewmodel: SignUpViewModel = .init()
     
     @State private var selectedItem: PhotosPickerItem? = nil
-    @State private var selectedImage: UIImage? = nil
     
     var body: some View {
-        VStack {
-            if let selectedImage {
+        ScrollView {
+            if let selectedImage = viewmodel.selectedImage {
                 Image(uiImage: selectedImage)
                     .resizable()
                     .scaledToFill()
@@ -44,14 +43,15 @@ struct SignUpView: View {
                 Task {
                     if let data = try? await newItem?.loadTransferable(type: Data.self),
                        let uiImage = UIImage(data: data) {
-                        selectedImage = uiImage
+                        viewmodel.selectedImage = uiImage
                     }
                 }
             }
             
+            CustomTextField(initialText: "", placeholder: "name", delegate: viewmodel.nameCoordinator)
             CustomTextField(initialText: "", placeholder: "email", delegate: viewmodel.emailCoordinator)
             CustomTextField(initialText: "", placeholder: "confirm email", delegate: viewmodel.confirmEmailCoordinator)
-            CustomTextField(initialText: "", placeholder: "password", delegate: viewmodel.passwordCoordinator)
+            CustomTextField(initialText: "", placeholder: "password", isPassword: true, delegate: viewmodel.passwordCoordinator)
                 .padding(.bottom, 20)
             
             if !viewmodel.errorMessage.isEmpty {
@@ -64,6 +64,7 @@ struct SignUpView: View {
             } label: {
                 Text("SignUp")
                     .foregroundStyle(.white)
+                    .fontWeight(.bold)
             }
             .padding()
             .background(.blue.opacity(0.8))
