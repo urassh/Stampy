@@ -13,6 +13,8 @@ protocol SendGoalMessageDelegate {
 }
 
 struct MapUserSheet : View {
+    @ObservedObject var loginUser = LoginUser.shared
+    
     @State var message: String = ""
     @FocusState var isFocus: Bool
     @State var isFront: Bool = true
@@ -142,7 +144,7 @@ extension MapUserSheet {
                     ForEach (Stamp.allCases, id: \.self) { stamp in
                         Button {
                             Task {
-                                await delegate.send(message: StampMessage(id: UUID(), stamp: stamp, goal: mapUser.goal, sender: mapUser.user, createdAt: Date()))
+                                await delegate.send(message: StampMessage(id: UUID(), stamp: stamp, goal: mapUser.goal, sender: loginUser.loginUser, createdAt: Date()))
                             }
                             
                             withAnimation(.easeInOut(duration: 0.2)) {
@@ -197,7 +199,7 @@ extension MapUserSheet {
     }
     
     private func sendMessage() async {
-        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user, isRead: false, createdAt: Date()))
+        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: loginUser.loginUser, isRead: false, createdAt: Date()))
         message = ""
     }
 }
