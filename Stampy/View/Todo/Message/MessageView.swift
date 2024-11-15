@@ -13,9 +13,10 @@ import SwiftUI
 
 struct MessageView: View {
     @ObservedObject private var viewmodel: MessageViewModel
+    private let initID: UUID = UUID()
     private var tabs: [TopTabBar.Tab] {
         [
-            .init(title: "スタンプ", color: .cyan, content: AnyView(StampListView(stampMessages: viewmodel.stampMessages))),
+            .init(id: initID, title: "スタンプ", color: .cyan, content: AnyView(StampListView(stampMessages: viewmodel.stampMessages))),
             .init(title: "メッセージ", color: .green, content: AnyView(MessageListView(viewmodel: viewmodel)))
         ]
     }
@@ -25,7 +26,7 @@ struct MessageView: View {
     }
     
     var body: some View {
-        TopTabBar(tabs: tabs, selectedTabId: tabs[0].id)
+        TopTabBar(tabs: tabs, selectedTabId: initID)
             .onAppear {
                 Task {
                     await viewmodel.getMessages()

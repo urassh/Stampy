@@ -80,9 +80,23 @@ struct TopTabBar: View {
 
 extension TopTabBar {
     struct Tab: Identifiable {
-        var id: UUID = .init()
+        let id: UUID
         let title: String
         let color: Color
         let content: AnyView
+        
+        init(id: UUID, title: String, color: Color, content: AnyView) {
+            self.id = id
+            self.title = title
+            self.color = color
+            self.content = content
+        }
+        
+        init(title: String, color: Color, content: AnyView) {
+            self.id = UUID()
+            self.title = title
+            self.color = color
+            self.content = content
+        }
     }
 }
