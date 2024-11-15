@@ -61,6 +61,7 @@ struct CustomTextField: View {
                     
                 Text(placeholder)
                     .padding(.horizontal, 5)
+                    .opacity(!isTyping && !text.isEmpty ? 0 : 1)
                     .background(.white.opacity(isTyping ? 1 : 0))
                     .foregroundStyle(placeholderColor)
                     .padding(.leading).offset(y: isTyping ? -27 : 0)

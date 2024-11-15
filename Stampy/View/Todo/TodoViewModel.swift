@@ -16,6 +16,8 @@ class TodoViewModel : ObservableObject {
     
     @Published var weekGoal: Goal? = nil
     @Published var todos: [Todo] = []
+    @Published var todoDone = false
+    
     private let loginUser = LoginUser.shared.loginUser
     private var cancellables = Set<AnyCancellable>()
     
@@ -76,6 +78,17 @@ class TodoViewModel : ObservableObject {
     
     func toggleTodoStatus(_ todo: Todo) {
         Task {
+            if !todo.isDone {
+                withAnimation {
+                    DispatchQueue.main.async {
+                        self.todoDone = true
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        self.todoDone = false
+                    }
+                }
+            }
             guard let goal = weekGoal else { return }
             await ChangeTodoStatusUseCase().execute(todo: todo)
             getTodos(for: goal)

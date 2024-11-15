@@ -61,13 +61,15 @@ extension ProfileView {
                         .strokeBorder(Color.white.opacity(0.65), lineWidth: 4)
                 }
                 .shadow(radius: 4)
+            
             Text(viewmodel.getLoginUser().name)
                 .foregroundStyle(Color.white)
-                .font(.title2)
+                .font(.title)
+                .fontWeight(.bold)
             
             Text("@\(LoginUser.shared.loginUser.id)")
                 .foregroundStyle(Color.white.opacity(0.9))
-                .font(.callout)
+                .font(.body)
         }
     }
     
@@ -91,6 +93,7 @@ extension ProfileView {
         }
         .padding()
         .frame(maxWidth: .infinity)
+        .foregroundStyle(.white)
         .background(Color.white.opacity(0.1))
         .clipShape(
             RoundedRectangle(cornerRadius: 12)

@@ -20,7 +20,7 @@ struct MessageListView: View {
         ZStack {
             ScrollView {
                 ForEach(viewmodel.textMessages) { message in
-                    messageCell(message)
+                    TextMessageCell(message: message)
                         .padding(.all, 8)
                         .onTapGesture {
                             if message.isAvailableShow(todos: viewmodel.getTodos) {
@@ -45,6 +45,7 @@ struct MessageListView: View {
             }) {
                 MessageDetailSheet(message: selectedMessage!)
                     .presentationDetents([.medium])
+                    .presentationBackground(Material.ultraThin)
             }
             .alert(isPresented: $isShowAlert) { // Alert modifier
                 Alert(
@@ -53,49 +54,6 @@ struct MessageListView: View {
                     dismissButton: .default(Text("OK"))
                 )
             }
-        }
-    }
-}
-
-extension MessageListView {
-    private func messageCell(_ message: TextMessage) -> some View {
-        HStack (spacing: 12){
-            Image("Sample")
-                .resizable()
-                .frame(width: 72, height: 72)
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-            
-            VStack(alignment: .leading) {
-                Text(message.sender.name)
-                    .font(.callout)
-                
-                if message.isRead {
-                    Text(message.content)
-                        .foregroundStyle(.secondary)
-                        .font(.callout)
-                        .bold()
-                } else {
-                    HStack(alignment: .top, spacing: 4) {
-                        Text("NEW")
-                            .foregroundStyle(.pink)
-                            .font(.callout)
-                            .bold()
-                        
-                        Text("メッセージが届いています!!")
-                            .foregroundStyle(.secondary)
-                            .font(.callout)
-                            .bold()
-                    }
-                }
-                
-                Spacer()
-                
-                Text(message.createdAt.formattedElapsedTime())
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-            }
-            
-            Spacer()
         }
     }
 }

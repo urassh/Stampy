@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import EffectsLibrary
 
 struct TodoView: View {
     @ObservedObject var viewmodel: TodoViewModel = .init()
@@ -16,21 +17,23 @@ struct TodoView: View {
     @State private var selectedTodo: Todo? = nil
     
     var body: some View {
-        VStack(spacing: 24) {
-            if (viewmodel.weekGoal == nil || viewmodel.weekGoal!.title.isEmpty) {
-                Text("今週のゴールがまだ設定されていません。")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
+        ZStack {
+            VStack(spacing: 24) {
+                if (viewmodel.weekGoal == nil || viewmodel.weekGoal!.title.isEmpty) {
+                    Text("今週のゴールがまだ設定されていません。")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
+                        
+                    })
+                } else {
+                    GoalSection
                     
-                })
-            } else {
-                GoalSection
-                
-                ButtonSection
-                
-                ActiveSection
+                    ActiveSection
+                }
             }
+            
+            ParticleSystem(todoDone: $viewmodel.todoDone)
         }
         .padding()
         .sheet(isPresented: $activeSheetState.binding(for: .editTodo)) {
@@ -70,17 +73,70 @@ struct TodoView: View {
 extension TodoView {
     private var GoalSection: some View {
         HStack {
-            VStack(alignment: .leading) {
-                    Text("🔥Goal")
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
-                    Text(viewmodel.weekGoal!.title)
-                        .font(.title)
-                        .fontWeight(.bold)
+            if activeSectionState == .message {
+                Button {
+                    withAnimation {
+                        activeSectionState = .todoList
+                    }
+                } label: {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                            .fontWeight(.bold)
+                        
+                        Text("Todo")
+                            .fontWeight(.bold)
+                    }
+                    .foregroundStyle(.cardBackground)
+                }
+                .buttonStyle(PlainButtonStyle())
+                Spacer()
             }
             
-            Spacer()
+            VStack(alignment: activeSectionState == .message ? .trailing : .leading) {
+                Text("🔥Goal")
+                    .font(.title)
+                    .fontWeight(.bold)
+                Text(viewmodel.weekGoal!.title)
+                    .font(.largeTitle)
+                    .fontWeight(.heavy)
+                
+            }
+            
+            if activeSectionState == .todoList {
+                Spacer()
+                Button {
+                    withAnimation {
+                        activeSectionState = .message
+                    }
+                } label: {
+                    HStack {
+                        Text("Message")
+                            .fontWeight(.bold)
+                        
+                        Image(systemName: "chevron.right")
+                            .fontWeight(.bold)
+                    }
+                    .foregroundStyle(.cardBackground)
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
         }
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    let threshold: CGFloat = 0
+                    
+                    if value.translation.width > threshold {
+                        withAnimation {
+                            activeSectionState = .todoList
+                        }
+                    } else if value.translation.width < -threshold {
+                        withAnimation {
+                            activeSectionState = .message
+                        }
+                    }
+                }
+        )
     }
     
     private var ActiveSection: some View {
@@ -88,8 +144,10 @@ extension TodoView {
             switch activeSectionState {
             case .todoList:
                 TodoList
+                    .transition(.move(edge: .leading))
             case .message:
                 MessageView(goal: viewmodel.weekGoal!, todos: viewmodel.todos)
+                    .transition(.move(edge: .trailing))
             }
         }
     }
@@ -146,21 +204,44 @@ extension TodoView {
     }
     
     private var TodoList: some View {
-        VStack {
-            if (viewmodel.todos.isEmpty) {
-                VStack {
-                    Spacer()
-                    Text("まだTodoがありません！")
-                    Spacer()
-                }
-            } else {
-                List {
-                    ForEach(Todo.TodoStatus.allCases, id: \.self) { state in
-                        todoSection(for: state)
+        ZStack {
+            VStack {
+                if (viewmodel.todos.isEmpty) {
+                    VStack {
+                        Spacer()
+                        Text("まだTodoがありません！")
+                        Spacer()
                     }
+                } else {
+                    List {
+                        ForEach(Todo.TodoStatus.allCases, id: \.self) { state in
+                            todoSection(for: state)
+                        }
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
-                .clipShape(RoundedRectangle(cornerRadius: 20))
             }
+            
+            VStack {
+                Spacer()
+                
+                HStack {
+                    Spacer()
+                    
+                    Button {
+                        activeSheetState = .addTodo
+                    } label: {
+                        Image(systemName: "plus")
+                            .foregroundStyle(.white)
+                            .font(.system(size: 20, weight: .bold))
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .frame(width: 50, height: 50)
+                    .background(Circle().fill(Color.cardBackground))
+                }
+                .padding()
+            }
+            .padding()
         }
     }
     
