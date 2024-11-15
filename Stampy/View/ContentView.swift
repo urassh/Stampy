@@ -7,38 +7,40 @@
 
 import SwiftUI
 
-class LoginUser: ObservableObject {
-    static let shared = LoginUser()
-    
-    @Published var loginUser: AppUser = .init(id: "12345678-1234-1234-1234-1234567890AB", name: "urassh")
-    @Published var isSigningIn: Bool = false
-    
-    private init() {}
-}
-
 struct ContentView: View {
     @StateObject private var loginUser = LoginUser.shared
     
     var body: some View {
-        if !loginUser.isSigningIn {
-            SignInView()
-        } else {
-            TabView {
-                MapView()
-                    .tabItem {
-                        Image(systemName: "map.fill")
-                        Text("Map")
+        Group {
+            if !loginUser.isSigningIn {
+                SignInView()
+            } else {
+                TabView {
+                    MapView()
+                        .tabItem {
+                            Image(systemName: "map.fill")
+                            Text("Map")
+                        }
+                    TodoView()
+                        .tabItem {
+                            Image(systemName: "list.bullet.rectangle.fill")
+                            Text("Todo")
+                        }
+                    ProfileView()
+                        .tabItem {
+                            Image(systemName: "person.fill")
+                            Text("Profile")
+                        }
+                }
+            }
+        }
+        .onAppear {
+            Task {
+                if let email = loginUser.email, let password = loginUser.password {
+                    if let appUser = await SignInUseCase().execute(email: email, password: password) {
+                        loginUser.signIn(user: appUser, email: email, password: password)
                     }
-                TodoView()
-                    .tabItem {
-                        Image(systemName: "list.bullet.rectangle.fill")
-                        Text("Todo")
-                    }
-                ProfileView()
-                    .tabItem {
-                        Image(systemName: "person.fill")
-                        Text("Profile")
-                    }
+                }
             }
         }
     }
