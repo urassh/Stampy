@@ -6,8 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 
 class SignInViewModel: ObservableObject {
+    let loginUser = LoginUser.shared
+    
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var errorMessage: String = ""
@@ -22,7 +25,9 @@ class SignInViewModel: ObservableObject {
     
     func signIn() {
         Task {
-            if await SignInUseCase().execute(email: email, password: password) == .failed {
+            if let appUser = await SignInUseCase().execute(email: email, password: password) {
+                loginUser.signIn(user: appUser, email: email, password: password)
+            } else {
                 DispatchQueue.main.async {
                     self.errorMessage = "ログインに失敗しました"
                 }
