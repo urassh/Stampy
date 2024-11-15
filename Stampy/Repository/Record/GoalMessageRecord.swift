@@ -13,6 +13,7 @@ struct GoalMessageRecord: Codable {
     let goal_id: String
     let content: String
     let type: String
+    let created_at: Date
     
     static func from(_ goalMessage: GoalMessage) -> Self {
         let type: String = {
@@ -31,7 +32,8 @@ struct GoalMessageRecord: Codable {
             sender_id: goalMessage.sender.id,
             goal_id: goalMessage.goal.id.uuidString,
             content: goalMessage.content,
-            type: type
+            type: type,
+            created_at: goalMessage.createdAt
         )
     }
 }

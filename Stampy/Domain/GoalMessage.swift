@@ -12,6 +12,7 @@ protocol GoalMessage {
     var content: String { get }
     var goal: Goal { get }
     var sender: AppUser { get }
+    var createdAt: Date { get }
     
     static var type: String { get }
 }
@@ -21,6 +22,7 @@ struct TextMessage : Identifiable, GoalMessage {
     let text: String
     let goal: Goal
     let sender: AppUser
+    let createdAt: Date
     
     var content: String { text }
     static var type: String {
@@ -41,6 +43,7 @@ struct StampMessage : Identifiable, GoalMessage {
     let stamp: Stamp
     let goal: Goal
     let sender: AppUser
+    let createdAt: Date
     
     var content: String { stamp.toString }
     static var type: String {

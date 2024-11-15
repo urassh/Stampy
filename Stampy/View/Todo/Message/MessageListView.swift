@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct MessageListView : View {
+    private let textMessages: [TextMessage] = []
+    
     var body: some View {
         ScrollView {
-            ForEach(0...10, id: \.self) { _ in
-                messageCell
+            ForEach(textMessages) { message in
+                messageCell(message)
                     .padding(.all, 8)
+                    .onTapGesture {
+                    
+                    }
                 
                 Divider()
             }
@@ -21,7 +26,7 @@ struct MessageListView : View {
 }
 
 extension MessageListView {
-    private var messageCell: some View {
+    private func messageCell(_ message: TextMessage) -> some View {
         HStack {
             Image("Sample")
                 .resizable()
@@ -31,7 +36,7 @@ extension MessageListView {
             Spacer()
             
             VStack (alignment: .leading) {
-                Text("うらっしゅ")
+                Text(message.sender.name)
                     .font(.callout)
                 
                 HStack (alignment: .top, spacing: 4) {
@@ -44,13 +49,11 @@ extension MessageListView {
                         .foregroundStyle(.secondary)
                         .font(.callout)
                         .bold()
-                        
-                    
                 }
                 
                 Spacer()
                 
-                Text("3分前")
+                Text("\(message.createdAt.distance(to: Date()))分前")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

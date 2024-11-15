@@ -89,7 +89,7 @@ extension TodoView {
             case .todoList:
                 TodoList
             case .message:
-                MessageView()
+                MessageView(goal: viewmodel.weekGoal!, todos: viewmodel.todos)
             }
         }
     }

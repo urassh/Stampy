@@ -16,13 +16,13 @@ struct MessageView: View {
         .init(title: "スタンプ", color: .cyan, content: AnyView(StampListView())),
         .init(title: "メッセージ", color: .green, content: AnyView(MessageListView())),
     ]
+    private let viewmodel: MessageViewModel
+    
+    init(goal: Goal, todos: [Todo]) {
+        viewmodel = .init(goal: goal, todos: todos)
+    }
     
     var body: some View {
         TopTabBar(tabs: Self.tabs, selectedTabId: Self.tabs[0].id)
     }
-}
-
-
-#Preview {
-    MessageView()
 }

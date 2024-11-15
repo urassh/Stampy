@@ -27,10 +27,10 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
                 return {
                     switch record.type {
                     case TextMessage.type:
-                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender)
+                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender, createdAt: record.created_at)
                     case StampMessage.type:
                         guard let stamp = Stamp.fromString(record.content) else { return nil }
-                        return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender)
+                        return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender, createdAt: record.created_at)
                     default:
                         return nil
                     }
@@ -57,13 +57,13 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
                 let goalMessage: GoalMessage? = {
                     switch record.type {
                     case TextMessage.type:
-                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender)
+                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender, createdAt: record.created_at)
                     case StampMessage.type:
                         guard let stamp = Stamp.fromString(record.content) else {
                             print("Failed to convert \(record.content) to Stamp.")
                             return nil
                         }
-                        return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender)
+                        return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender, createdAt: record.created_at)
                     default:
                         return nil
                     }

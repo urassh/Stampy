@@ -142,7 +142,7 @@ extension MapUserSheet {
                     ForEach (Stamp.allCases, id: \.self) { stamp in
                         Button {
                             Task {
-                                await delegate.send(message: StampMessage(id: UUID(), stamp: stamp, goal: mapUser.goal, sender: mapUser.user))
+                                await delegate.send(message: StampMessage(id: UUID(), stamp: stamp, goal: mapUser.goal, sender: mapUser.user, createdAt: Date()))
                             }
                             
                             withAnimation(.easeInOut(duration: 0.2)) {
@@ -189,6 +189,8 @@ extension MapUserSheet {
                 .onSubmit {
                     Task {
                         await sendMessage()
+                        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user, createdAt: Date()))
+
                     }
                 }
                 .focused($isFocus)
