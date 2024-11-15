@@ -20,6 +20,11 @@ struct SignInView: View {
             CustomTextField(initialText: "", placeholder: "password", delegate: viewmodel.passwordCoordinator)
                 .padding(.bottom, 20)
             
+            if !viewmodel.errorMessage.isEmpty {
+                Text(viewmodel.errorMessage)
+                    .foregroundStyle(.red)
+            }
+            
             Button {
                 viewmodel.signIn()
             } label: {

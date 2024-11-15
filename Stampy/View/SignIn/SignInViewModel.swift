@@ -10,6 +10,7 @@ import Foundation
 class SignInViewModel: ObservableObject {
     @Published var email: String = ""
     @Published var password: String = ""
+    @Published var errorMessage: String = ""
     
     var emailCoordinator: EmailCoordinator {
         return EmailCoordinator(parent: self)
@@ -20,7 +21,11 @@ class SignInViewModel: ObservableObject {
     }
     
     func signIn() {
-        
+        Task {
+            if await SignInUseCase().execute(email: email, password: password) == .failed {
+                errorMessage = "ログインに失敗しました"
+            }
+        }
     }
     
     class EmailCoordinator: CustomTextFieldDelegate {
