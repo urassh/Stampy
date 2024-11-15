@@ -16,6 +16,7 @@ class LocationGateway: LocationGatewayProtocol {
             let snapshot = try await db.collection("locations").getDocuments()
             return try snapshot.documents.map { try $0.data(as: LocationRecord.self) }
         } catch {
+            print(error)
             return []
         }
     }

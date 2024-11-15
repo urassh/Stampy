@@ -25,7 +25,6 @@ class GetMapUsersUseCase {
             let mapUser = MapUser(user: user!, goal: goal, todo: todos, position: clLocation)
             mapUsers.append(mapUser)
         }
-        
         return mapUsers
     }
 }

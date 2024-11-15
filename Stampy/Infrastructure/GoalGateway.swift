@@ -50,7 +50,7 @@ class GoalGateway: GoalGatewayProtocol {
     
     func addGoal(record: GoalRecord) async {
         do {
-            _ = try db.collection("goals").addDocument(from: record)
+            try db.collection("goals").document(record.id).setData(from: record)
         } catch {
             print("Error adding goal: \(error.localizedDescription)")
         }

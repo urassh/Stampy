@@ -9,7 +9,7 @@ import Foundation
 
 class GoalMessageRepository : GoalMessageRepositoryProtocol {
     private let goalMessageGateway: GoalMessageGatewayProtocol = GoalMessageGateway()
-    private let userGateway: UserGatewayProtocol = UserDummyGateway()
+    private let userGateway: UserGatewayProtocol = UserGateway()
     
     func getGoalMessages(goal: Goal) async -> [any GoalMessage] {
         let records = await goalMessageGateway.getGoalMessages(goalId: goal.id.uuidString)

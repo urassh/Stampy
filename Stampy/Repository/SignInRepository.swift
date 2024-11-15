@@ -16,13 +16,9 @@ class SignInRepository: SignInRepositoryProtocol {
             return nil
         }
         
-//        print(uid)
-        
         guard let userRecord = await userGateway.fetch(id: uid) else {
             return nil
         }
-        
-//        dump(userRecord)
         
         let appUser = AppUser(id: userRecord.uid, name: userRecord.name)
         
