@@ -61,7 +61,7 @@ extension ProfileView {
                 .foregroundStyle(Color.white)
                 .font(.title2)
             
-            Text("@\(LoginUser.shared.id)")
+            Text("@\(LoginUser.shared.loginUser.id)")
                 .foregroundStyle(Color.white.opacity(0.9))
                 .font(.callout)
         }

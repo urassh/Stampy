@@ -24,7 +24,7 @@ struct MapUser : Identifiable, Equatable {
         self.position = position
     }
     
-    static let sample: MapUser = .init(user: LoginUser.shared, goal: .Empty.newTitle("SampleGoal!"), todo: [.ExampleDone, .ExampleDone, .ExampleYet, .ExampleYet], position: .init(latitude: 35.681284, longitude: 139.7667))
+    static let sample: MapUser = .init(user: LoginUser.shared.loginUser, goal: .Empty.newTitle("SampleGoal!"), todo: [.ExampleDone, .ExampleDone, .ExampleYet, .ExampleYet], position: .init(latitude: 35.681284, longitude: 139.7667))
     
     static func == (lhs: MapUser, rhs: MapUser) -> Bool {
         lhs.id == rhs.id

@@ -18,8 +18,8 @@ class SignInUseCase {
             return .failed
         }
         
-        LoginUser.shared = appUser
-        LoginUser.isSigningIn = true
+        LoginUser.shared.loginUser = appUser
+        LoginUser.shared.isSigningIn = true
         
         return .success
     }
