@@ -9,11 +9,13 @@ import SwiftUI
 
 struct UserCardView: View {
     let mapUser: MapUser
+    @State var image = Image(systemName: "person.circle.fill")
     
     var body: some View {
         VStack {
-            Image("Sample")
+            image
                 .resizable()
+                .scaledToFill()
                 .frame(width: 100, height: 100)
                 .clipShape (
                     Circle()
@@ -42,6 +44,15 @@ struct UserCardView: View {
         }
         .frame(width: 250, height: 200)
         .shadow(radius: 7)
+        .onAppear {
+            Task {
+                let image = await GetImageUseCase().execute(id: mapUser.user.id)
+                
+                DispatchQueue.main.async {
+                    self.image = image
+                }
+            }
+        }
     }
 }
 

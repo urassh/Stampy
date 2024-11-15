@@ -9,4 +9,5 @@ import Foundation
 
 protocol AuthGatewayProtocol {
     func signIn(withEmail email: String, password: String) async -> String?
+    func signUp(withEmail email: String, password: String) async -> String?
 }

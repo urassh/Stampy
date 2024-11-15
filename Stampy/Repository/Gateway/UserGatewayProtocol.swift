@@ -7,4 +7,5 @@
 
 protocol UserGatewayProtocol {
     func fetch(id: String) async -> UserRecord?
+    func create(id: String, name: String) async
 }

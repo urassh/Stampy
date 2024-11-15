@@ -25,9 +25,11 @@ class LoginUser: ObservableObject {
     }
     
     func signIn(user: AppUser, email: String, password: String) {
-        self.loginUser = user
-        
-        self.isSigningIn = true
+        DispatchQueue.main.async {
+            self.loginUser = user
+            
+            self.isSigningIn = true
+        }
         
         let userDefaults = UserDefaults.standard
         userDefaults.set(email, forKey: "userEmail")

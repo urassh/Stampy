@@ -13,10 +13,12 @@ class SignInRepository: SignInRepositoryProtocol {
     
     func signIn(withEmail email: String, password: String) async -> AppUser? {
         guard let uid = await authGateway.signIn(withEmail: email, password: password) else {
+            print("failed to get uid from authGateway")
             return nil
         }
         
         guard let userRecord = await userGateway.fetch(id: uid) else {
+            print("failed to get userRecord from userGateway")
             return nil
         }
         
