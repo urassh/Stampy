@@ -17,7 +17,7 @@ protocol GoalMessage {
     static var type: String { get }
 }
 
-struct TextMessage : Identifiable, GoalMessage {
+struct TextMessage : Identifiable, GoalMessage, Equatable {
     let id: UUID
     let text: String
     let goal: Goal
@@ -36,9 +36,13 @@ struct TextMessage : Identifiable, GoalMessage {
         
         return !hasYetTodo
     }
+    
+    static func == (lhs: TextMessage, rhs: TextMessage) -> Bool {
+        lhs.id == rhs.id
+    }
 }
 
-struct StampMessage : Identifiable, GoalMessage {
+struct StampMessage : Identifiable, GoalMessage, Equatable {
     let id: UUID
     let stamp: Stamp
     let goal: Goal
@@ -48,5 +52,9 @@ struct StampMessage : Identifiable, GoalMessage {
     var content: String { stamp.toString }
     static var type: String {
         "stamp"
+    }
+    
+    static func == (lhs: StampMessage, rhs: StampMessage) -> Bool {
+        lhs.id == rhs.id
     }
 }

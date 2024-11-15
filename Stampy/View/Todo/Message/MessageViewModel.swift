@@ -24,7 +24,13 @@ class MessageViewModel: ObservableObject {
         
         DispatchQueue.main.async {
             self.stampMessages = fetchedStamps
-            self.textMessages = fetchedTexts
+            self.textMessages = [
+                TextMessage(id: UUID(), text: "がんばれカカロット、おまえがナンバーワンだ！", goal: self.goal, sender: AppUser(id: "1", name: "shuto"), createdAt: Date())
+            ]
         }
+    }
+    
+    var getTodos: [Todo] {
+        todos
     }
 }

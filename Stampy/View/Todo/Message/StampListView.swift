@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct StampListView : View {
+    private let stampMessages: [StampMessage]
+    
+    init(stampMessages: [StampMessage]) {
+        self.stampMessages = stampMessages
+    }
+    
     var body: some View {
         ScrollView {
-            ForEach(0...10, id: \.self) { _ in
-                messageCell
+            ForEach(stampMessages) { message in
+                messageCell(message)
                     .padding(.all, 8)
                 
                 Divider()
@@ -21,7 +27,7 @@ struct StampListView : View {
 }
 
 extension StampListView {
-    private var messageCell: some View {
+    private func messageCell(_ message: StampMessage) -> some View {
         HStack (spacing: 4) {
             ZStack {
                 Image("Sample")
@@ -29,7 +35,7 @@ extension StampListView {
                     .frame(width: 72, height: 72)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 
-                Text("👍")
+                Text("\(message.stamp.toUIString)")
                     .font(.title2)
                     .background(
                         Circle()
@@ -41,12 +47,12 @@ extension StampListView {
             Spacer()
             
             VStack (alignment: .leading) {
-                Text("うらっしゅさんから「GOOD」が送られました!! ")
+                Text("\(message.sender.name)さんから「\(message.stamp.toString)」が送られました!! ")
                     .font(.callout)
                 
                 Spacer()
                 
-                Text("3分前")
+                Text(message.createdAt.formattedElapsedTime())
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
