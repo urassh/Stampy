@@ -23,7 +23,6 @@ class GetMapUsersUseCase {
             let user = await userRepository.get(id: location.user_id)
             let goal = await goalRepository.getWeekGoal(user_id: user!.id) ?? .Empty
             let todos = goal.isEmpty() ? [] : await todoRepository.getTodos(from: goal)
-            let image = await storageGateway.download(name: user!.id)
             let mapUser = MapUser(user: user!, goal: goal, todo: todos, position: clLocation)
             mapUsers.append(mapUser)
         }

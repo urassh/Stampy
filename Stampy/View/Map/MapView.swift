@@ -31,7 +31,7 @@ struct MapView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.vertical, 16)
+                    .padding()
                 
                 Spacer()
                 
@@ -44,11 +44,14 @@ struct MapView: View {
                                 .onTapGesture {
                                     selectMapUser = mapUser
                                 }
+                                .padding()
                         }
                     }
+                    .padding(.horizontal, 0)
                 }
+                .padding(.vertical, 20)
+                .frame(maxWidth: .infinity)
             }
-            .padding()
         }
         .onChange(of: selectMapUser) {
             if (selectMapUser == nil) { return }
