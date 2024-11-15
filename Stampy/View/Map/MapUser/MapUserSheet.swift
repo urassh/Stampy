@@ -174,19 +174,31 @@ extension MapUserSheet {
                 .background(Color(uiColor: .secondarySystemBackground))
                 .clipShape(Capsule())
                 .overlay(
-                    Image(systemName: "paperplane")
-                        .font(.title2)
-                        .padding(.trailing)
-                        .foregroundStyle(.gray), alignment: .trailing)
+                    Button {
+                        Task {
+                            await sendMessage()
+                            isFocus.toggle()
+                        }
+                    } label: {
+                        Image(systemName: "paperplane")
+                            .font(.title2)
+                            .padding(.trailing)
+                            .foregroundStyle(.gray)
+                    }
+                    , alignment: .trailing)
                 .onSubmit {
                     Task {
-                        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user))
+                        await sendMessage()
                     }
-                    
                 }
                 .focused($isFocus)
         }
         .padding(.horizontal, 32)
+    }
+    
+    private func sendMessage() async {
+        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user))
+        message = ""
     }
 }
 

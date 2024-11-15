@@ -32,7 +32,7 @@ class GoalMessageGateway: GoalMessageGatewayProtocol {
 
     func saveGoalMessage(goalMessage: GoalMessageRecord) async {
         do {
-            try db.collection("goalMessages").addDocument(from: goalMessage)
+            try db.collection("goalMessages").document(goalMessage.id).setData(from: goalMessage)
         } catch {
             print("Error saving goal message: \(error.localizedDescription)")
         }
