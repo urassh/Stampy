@@ -37,6 +37,26 @@ class GoalMessageGateway: GoalMessageGatewayProtocol {
             print("Error saving goal message: \(error.localizedDescription)")
         }
     }
+    
+    func updateGoalMessage(goalMessage: GoalMessageRecord) async {
+        do {
+            let querySnapshot = try await db.collection("goalMessages")
+                .whereField("id", isEqualTo: goalMessage.id)
+                .getDocuments()
+            
+            guard let document = querySnapshot.documents.first else {
+                print("goalMessages not found")
+                return
+            }
+            
+            try await db.collection("goalMessages").document(document.documentID).updateData([
+                "is_read": true
+            ])
+            print("goalMessages updated successfully")
+        } catch {
+            print("Error updating goalMessages: \(error.localizedDescription)")
+        }
+    }
 
     func registerOnReceiveHandler(goal: Goal, handler: @escaping (_ goal: GoalMessageRecord) -> Void) {
         Self.notifyTarget = goal

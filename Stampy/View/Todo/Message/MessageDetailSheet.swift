@@ -12,6 +12,10 @@ struct MessageDetailSheet : View {
     
     init(message: TextMessage) {
         self.message = message
+        
+        Task {
+            await PostReadMessageUseCase().execute(message: message)
+        }
     }
     
     var body: some View {

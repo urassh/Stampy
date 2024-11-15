@@ -53,28 +53,33 @@ struct MessageListView: View {
 
 extension MessageListView {
     private func messageCell(_ message: TextMessage) -> some View {
-        HStack {
+        HStack (spacing: 12){
             Image("Sample")
                 .resizable()
                 .frame(width: 72, height: 72)
                 .clipShape(RoundedRectangle(cornerRadius: 12))
             
-            Spacer()
-            
             VStack(alignment: .leading) {
                 Text(message.sender.name)
                     .font(.callout)
                 
-                HStack(alignment: .top, spacing: 4) {
-                    Text("NEW")
-                        .foregroundStyle(.pink)
-                        .font(.callout)
-                        .bold()
-                    
-                    Text("メッセージが届いています!!")
+                if message.isRead {
+                    Text(message.content)
                         .foregroundStyle(.secondary)
                         .font(.callout)
                         .bold()
+                } else {
+                    HStack(alignment: .top, spacing: 4) {
+                        Text("NEW")
+                            .foregroundStyle(.pink)
+                            .font(.callout)
+                            .bold()
+                        
+                        Text("メッセージが届いています!!")
+                            .foregroundStyle(.secondary)
+                            .font(.callout)
+                            .bold()
+                    }
                 }
                 
                 Spacer()
@@ -83,6 +88,8 @@ extension MessageListView {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            
+            Spacer()
         }
     }
 }

@@ -27,10 +27,10 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
                 return {
                     switch record.type {
                     case TextMessage.type:
-                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender, createdAt: record.created_at)
+                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender, isRead: record.is_read, createdAt: record.created_at)
                     case StampMessage.type:
                         guard let stamp = Stamp.fromString(record.content) else { return nil }
-                        return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender, createdAt: record.created_at)
+                        return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender,  createdAt: record.created_at)
                     default:
                         return nil
                     }
@@ -47,6 +47,10 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
         await goalMessageGateway.saveGoalMessage(goalMessage: .from(goalMessage))
     }
     
+    func updateGoalMessage(goalMessage: any GoalMessage) async {
+        await goalMessageGateway.updateGoalMessage(goalMessage: .from(goalMessage))
+    }
+    
     func registerOnReceiveHandler(goal: Goal, handler: @escaping (GoalMessage) -> Void) {
         goalMessageGateway.registerOnReceiveHandler(goal: goal) { record in
             Task {
@@ -57,7 +61,7 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
                 let goalMessage: GoalMessage? = {
                     switch record.type {
                     case TextMessage.type:
-                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender, createdAt: record.created_at)
+                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender, isRead: record.is_read, createdAt: record.created_at)
                     case StampMessage.type:
                         guard let stamp = Stamp.fromString(record.content) else {
                             print("Failed to convert \(record.content) to Stamp.")

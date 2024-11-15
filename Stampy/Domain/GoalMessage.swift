@@ -12,6 +12,7 @@ protocol GoalMessage {
     var content: String { get }
     var goal: Goal { get }
     var sender: AppUser { get }
+    var isRead: Bool { get }
     var createdAt: Date { get }
     
     static var type: String { get }
@@ -22,6 +23,7 @@ struct TextMessage : Identifiable, GoalMessage, Equatable {
     let text: String
     let goal: Goal
     let sender: AppUser
+    let isRead: Bool
     let createdAt: Date
     
     var content: String { text }
@@ -30,6 +32,8 @@ struct TextMessage : Identifiable, GoalMessage, Equatable {
     }
     
     func isAvailableShow(todos: [Todo]) -> Bool {
+        if isRead { return true }
+        if todos.isEmpty { return false }
         let hasYetTodo = todos.contains(where: { todo in
             todo.isYet
         })
@@ -48,6 +52,7 @@ struct StampMessage : Identifiable, GoalMessage, Equatable {
     let goal: Goal
     let sender: AppUser
     let createdAt: Date
+    let isRead: Bool = true
     
     var content: String { stamp.toString }
     static var type: String {
