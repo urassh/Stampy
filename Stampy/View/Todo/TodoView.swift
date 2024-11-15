@@ -10,9 +10,9 @@ import SwiftUI
 struct TodoView: View {
     @ObservedObject var viewmodel: TodoViewModel = .init()
     
-    @State private var isShowGoalEdit: Bool = false
-    @State private var isShowAddTodo: Bool = false
-    @State private var isShowEditTodo: Bool = false
+    @State private var activeSheetState: ActiveSheet = .inital
+    @State private var activeSectionState: ActiveSection = .inital
+    @State private var isShowMessage: Bool = false
     @State private var selectedTodo: Todo? = nil
     
     var body: some View {
@@ -32,38 +32,44 @@ struct TodoView: View {
                 if (viewmodel.todos.isEmpty) {
                     EmptyTodo
                 } else {
-                    TodoList
+                    ActiveSection
                 }
             }
         }
         .padding()
-        .sheet(isPresented: $isShowEditTodo) {
-            TodoSheet(type: .edit(selectedTodo!), delegate: viewmodel.editTodoCoordinator(todo: selectedTodo!, onComplete: {
-                isShowEditTodo = false
-                selectedTodo = nil
-            }))
+        .sheet(isPresented: $activeSheetState.binding(for: .editTodo)) {
+            if let selectedTodo = selectedTodo {
+                TodoSheet(type: .edit(selectedTodo), delegate: viewmodel.editTodoCoordinator(todo: selectedTodo, onComplete: {
+                    activeSheetState = .inital
+                    self.selectedTodo = nil
+                }))
                 .presentationDetents([.medium])
-                
+            }
         }
-        .sheet(isPresented: $isShowAddTodo) {
+        .sheet(isPresented: $activeSheetState.binding(for: .addTodo)) {
             TodoSheet(type: .new, delegate: viewmodel.newTodoCoordinator {
-                isShowAddTodo = false
-                selectedTodo = nil
+                activeSheetState = .inital
+                self.selectedTodo = nil
             })
-                .presentationDetents([.medium])
+            .presentationDetents([.medium])
         }
-        .sheet(isPresented: $isShowGoalEdit) {
+        .sheet(isPresented: $activeSheetState.binding(for: .goalEdit)) {
             TitleSheet(type: .edit(viewmodel.weekGoal!), delegate: viewmodel.editGoalCoordinator {
-                isShowGoalEdit = false
+                activeSheetState = .inital
             })
-                .presentationDetents([.medium])
+            .presentationDetents([.medium])
+        }
+        .onChange(of: activeSheetState) {
+            if (activeSheetState != .inital) { return }
+            selectedTodo = nil
         }
         .onChange(of: selectedTodo) {
             if (selectedTodo == nil) { return }
-            isShowEditTodo = true
+            activeSheetState = .editTodo
         }
     }
 }
+
 
 extension TodoView {
     private var GoalSection: some View {
@@ -81,6 +87,17 @@ extension TodoView {
         }
     }
     
+    private var ActiveSection: some View {
+        Group {
+            switch activeSectionState {
+            case .todoList:
+                TodoList
+            case .message:
+                messageSection
+            }
+        }
+    }
+    
     private var EmptyTodo: some View {
         VStack {
             Spacer()
@@ -90,15 +107,32 @@ extension TodoView {
     }
     
     private var AddButtonSection: some View {
-        HStack {
-            AddButtonComponent(iconText: "🔥", title: "ゴールを変更", description: "あなたの一週間程度の目標を変更できます", isShow: $isShowGoalEdit)
-            AddButtonComponent(iconText: "🌱", title: "新しいTodoを追加する", isShow: $isShowAddTodo)
+        ScrollView(.horizontal) {
+            HStack {
+                ButtonComponent(iconText: "🌱", title: "新しいTodoを追加する") {
+                    activeSheetState = .addTodo
+                }
+                
+                if (activeSectionState == .todoList) {
+                    ButtonComponent(iconText: "👀", title: "メッセージを見る", description: "あなたに届いたスタンプやメッセージを見ることができます") {
+                        activeSectionState = .message
+                    }
+                } else {
+                    ButtonComponent(iconText: "👀", title: "Todo一覧を見る", description: "あなたに届いたスタンプやメッセージを見ることができます") {
+                        activeSectionState = .todoList
+                    }
+                }
+                
+                ButtonComponent(iconText: "🔥", title: "ゴールを変更", description: "あなたの一週間程度の目標を変更できます") {
+                    activeSheetState = .goalEdit
+                }
+            }
         }
     }
     
-    private func AddButtonComponent(iconText: String, title: String, description: String = "", isShow: Binding<Bool>) -> some View {
+    private func ButtonComponent(iconText: String, title: String, description: String = "",  onTapped: @escaping () -> Void) -> some View {
         Button {
-            isShow.wrappedValue.toggle()
+            onTapped()
         } label: {
             VStack(alignment: .leading) {
                 Text(iconText)
@@ -142,6 +176,15 @@ extension TodoView {
                 todoRow(for: todo)
             }
         }
+    }
+    
+    private var messageSection: some View {
+        VStack {
+            Spacer()
+            Text("Message!!")
+            Spacer()
+        }
+        
     }
     
     private func todoRow(for todo: Todo) -> some View {
