@@ -8,7 +8,7 @@
 import Foundation
 
 class GoalRepository : GoalRepositoryProtocol {
-    private let goalGateway: GoalGatewayProtocol = GoalDummyGateway()
+    private let goalGateway: GoalGatewayProtocol = GoalGateway()
     
     func getWeekGoal(user_id: String) async -> Goal? {
         guard let record = await goalGateway.fetchWeekGoal(user_id: user_id) else { return nil }

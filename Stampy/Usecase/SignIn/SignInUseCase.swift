@@ -12,7 +12,7 @@ class SignInUseCase {
         guard let appUser = await signInRepository.signIn(withEmail: email, password: password) else {
             return nil
         }
-        
+
         return appUser
     }
 }

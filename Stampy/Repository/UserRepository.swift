@@ -8,7 +8,7 @@
 import Foundation
 
 class UserRepository : UserRepositoryProtocol {
-    private let userGateway: UserGatewayProtocol = UserDummyGateway()
+    private let userGateway: UserGatewayProtocol = UserGateway()
     
     func get(id: String) async -> AppUser? {
         guard let userRecord = await userGateway.fetch(id: id) else { return nil }

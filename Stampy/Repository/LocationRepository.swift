@@ -8,7 +8,7 @@
 import Foundation
 
 class LocationRepository : LocationRepositoryProtocol {
-    private let locationGateway: LocationGatewayProtocol = LocationDummyGateway()
+    private let locationGateway: LocationGatewayProtocol = LocationGateway()
     
     func getAll() async -> [LocationRecord] {
         await locationGateway.getAll()
