@@ -27,9 +27,9 @@ struct MapView: View {
             }
             
             VStack {
-                Text("近くの頑張っている人🔥")
+                Text("目標を褒めあおう🔥")
                     .font(.largeTitle)
-                    .fontWeight(.bold)
+                    .fontWeight(.black)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
                 

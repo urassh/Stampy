@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MessageDetailSheet : View {
     private let message: TextMessage
+    @State var image = Image(systemName: "person.circle.fill")
     
     init(message: TextMessage) {
         self.message = message
@@ -20,13 +21,10 @@ struct MessageDetailSheet : View {
     
     var body: some View {
         VStack (alignment: .leading) {
-            Text("あなたへのメッセージ")
-                .font(.largeTitle)
-                .bold()
-            
             HStack (spacing: 16) {
-                Image("Sample")
+                image
                     .resizable()
+                    .scaledToFill()
                     .frame(width: 120, height: 120)
                     .clipShape(RoundedRectangle(cornerRadius: 20))
                     .padding(.leading, 16)
@@ -53,13 +51,17 @@ struct MessageDetailSheet : View {
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .shadow(radius: 10)
             
-            
             Spacer()
         }
         .padding()
-        .ignoresSafeArea()
-        .background(Color.cyan.opacity(0.4))
-        
-        
+        .onAppear {
+            Task {
+                let image = await GetImageUseCase().execute(id: message.sender.id)
+                
+                DispatchQueue.main.async {
+                    self.image = image
+                }
+            }
+        }
     }
 }

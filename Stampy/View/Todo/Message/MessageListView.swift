@@ -45,6 +45,7 @@ struct MessageListView: View {
             }) {
                 MessageDetailSheet(message: selectedMessage!)
                     .presentationDetents([.medium])
+                    .presentationBackground(Material.ultraThin)
             }
             .alert(isPresented: $isShowAlert) { // Alert modifier
                 Alert(

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import EffectsLibrary
 
 struct TodoView: View {
     @ObservedObject var viewmodel: TodoViewModel = .init()
@@ -16,19 +17,23 @@ struct TodoView: View {
     @State private var selectedTodo: Todo? = nil
     
     var body: some View {
-        VStack(spacing: 24) {
-            if (viewmodel.weekGoal == nil || viewmodel.weekGoal!.title.isEmpty) {
-                Text("今週のゴールがまだ設定されていません。")
-                    .font(.title3)
-                    .fontWeight(.semibold)
-                TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
+        ZStack {
+            VStack(spacing: 24) {
+                if (viewmodel.weekGoal == nil || viewmodel.weekGoal!.title.isEmpty) {
+                    Text("今週のゴールがまだ設定されていません。")
+                        .font(.title3)
+                        .fontWeight(.semibold)
+                    TitleSheet(type: .new, delegate: viewmodel.newGoalCoordinator {
+                        
+                    })
+                } else {
+                    GoalSection
                     
-                })
-            } else {
-                GoalSection
-                
-                ActiveSection
+                    ActiveSection
+                }
             }
+            
+            ParticleSystem(todoDone: $viewmodel.todoDone)
         }
         .padding()
         .sheet(isPresented: $activeSheetState.binding(for: .editTodo)) {
