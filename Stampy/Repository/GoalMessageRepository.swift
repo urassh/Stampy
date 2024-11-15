@@ -54,7 +54,7 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
                 guard let userRecord = await self.userGateway.fetch(id: record.sender_id) else { return }
                 let sender = AppUser(id: userRecord.uid, name: userRecord.name)
                 
-                guard let goalMessage: GoalMessage? = {
+                let goalMessage: GoalMessage? = {
                     switch record.type {
                     case TextMessage.type:
                         return TextMessage(id: id, text: record.content, goal: goal, sender: sender)
@@ -67,7 +67,11 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
                     default:
                         return nil
                     }
-                }() else { return }
+                }()
+                
+                if let goalMessage {
+                    handler(goalMessage)
+                }
             }
         }
     }

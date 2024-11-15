@@ -141,9 +141,9 @@ extension MapUserSheet {
                 HStack(spacing: 12) {
                     ForEach (Stamp.allCases, id: \.self) { stamp in
                         Button {
-//                            Task {
-//                                await delegate.send(message: StampMessage(id: UUID(), stamp: stamp, goal: mapUser.goal, sender: mapUser.user))
-//                            }
+                            Task {
+                                await delegate.send(message: StampMessage(id: UUID(), stamp: stamp, goal: mapUser.goal, sender: mapUser.user))
+                            }
                             
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 pushStamp = stamp

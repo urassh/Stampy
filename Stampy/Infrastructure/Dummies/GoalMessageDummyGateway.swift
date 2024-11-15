@@ -27,7 +27,7 @@ class GoalMessageDummyGateway: GoalMessageGatewayProtocol {
             content: "good",
             type: "stamp"),
     ]
-    private var onReceiveHandlers: [(_ goal: GoalMessageRecord) -> Void] = []
+    private static var onReceiveHandlers: [(_ goal: GoalMessageRecord) -> Void] = []
     private var notifyTarget: Goal?
     
     func getGoalMessages(goalId: String) async -> [GoalMessageRecord] {
@@ -47,11 +47,14 @@ class GoalMessageDummyGateway: GoalMessageGatewayProtocol {
     
     func registerOnReceiveHandler(goal: Goal, handler: @escaping (_ goal: GoalMessageRecord) -> Void) {
         notifyTarget = goal
-        onReceiveHandlers.append(handler)
+        Self.onReceiveHandlers.append(handler)
+        
+        notifyAll(goalMessage: GoalMessageRecord(id: "12345678-1234-1234-1234-1234567890AB", sender_id: "12345678-1234-1234-1234-1234567890AB", goal_id: "12345678-1234-1234-1234-1234567890AB", content: "test!!", type: "text"))
     }
     
     private func notifyAll(goalMessage: GoalMessageRecord) {
-        for handler in onReceiveHandlers {
+        for handler in Self.onReceiveHandlers {
+            print("handler called")
             handler(goalMessage)
         }
     }
