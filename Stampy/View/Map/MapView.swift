@@ -9,6 +9,7 @@ import SwiftUI
 import MapKit
 
 struct MapView: View {
+    @ObservedObject var loginUser = LoginUser.shared
     @ObservedObject var viewmodel: MapViewModel = MapViewModel()
     @StateObject private var locationManager = LocationManager()
     @State var position: MapCameraPosition = .userLocation(fallback: .automatic)
@@ -18,8 +19,10 @@ struct MapView: View {
     var body: some View {
         ZStack {
             Map(position: $position) {
-                if let location = locationManager.location {
-                    Marker("Current Location", coordinate: location.coordinate)
+                if let selectMapUser {
+                    Marker(selectMapUser.user.name, coordinate: selectMapUser.position)
+                } else if let location = locationManager.location {
+                    Marker(loginUser.loginUser.name, coordinate: location.coordinate)
                 }
             }
             
@@ -49,11 +52,20 @@ struct MapView: View {
         }
         .onChange(of: selectMapUser) {
             if (selectMapUser == nil) { return }
+            withAnimation {
+                position = MapCameraPosition.region(
+                    MKCoordinateRegion(
+                        center: selectMapUser!.position,
+                        span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+                    )
+                )
+            }
             isShowUserSheet = true
         }
         .sheet(isPresented: $isShowUserSheet, onDismiss: {
             isShowUserSheet = false
             selectMapUser = nil
+            position = .userLocation(fallback: .automatic)
         }) {
             MapUserSheet(mapUser: selectMapUser!, delegate: viewmodel)
                 .presentationDetents([.medium])
