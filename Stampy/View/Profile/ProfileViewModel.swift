@@ -6,9 +6,11 @@
 //
 
 import Foundation
+import SwiftUI
 
 class ProfileViewModel: ObservableObject {
     @Published var weekGoal: Goal?
+    @Published var image: Image = Image(systemName: "person.circle.fill")
 
     func getLoginUser() -> AppUser {
         LoginUser.shared.loginUser
@@ -21,6 +23,16 @@ class ProfileViewModel: ObservableObject {
         
         DispatchQueue.main.async {
             self.weekGoal = fetchedGoal == nil ? .Empty : fetchedGoal
+        }
+    }
+    
+    func getImage() {
+        Task {
+            let image = await GetImageUseCase().execute(id: getLoginUser().id)
+            
+            DispatchQueue.main.async {
+                self.image = image
+            }
         }
     }
 }
