@@ -17,6 +17,7 @@ class MapViewModel : ObservableObject {
             let loginUser = LoginUser.shared.loginUser
             
             for mapUser in fetchedMapUsers {
+                if mapUser.user.id == loginUser.id { continue }
                 await PostMessageUseCase().execute(message: StampMessage(id: UUID(), stamp: Stamp.random, goal: mapUser.goal, sender: loginUser, createdAt: Date()))
             }
             

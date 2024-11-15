@@ -22,9 +22,12 @@ class MessageViewModel: ObservableObject {
         let fetchedStamps = await GetStampMessageUseCase().execute(goal: goal)
         let fetchedTexts = await GetTextMessageUseCase().execute(goal: goal)
         
+        let timeSortedStamps = fetchedStamps.sorted { $0.createdAt > $1.createdAt }
+        let timeSortedTexts = fetchedTexts.sorted { $0.createdAt > $1.createdAt }
+        
         DispatchQueue.main.async {
-            self.stampMessages = fetchedStamps
-            self.textMessages = fetchedTexts
+            self.stampMessages = timeSortedStamps
+            self.textMessages = timeSortedTexts
         }
     }
     
