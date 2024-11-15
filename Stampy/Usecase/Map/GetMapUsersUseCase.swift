@@ -12,7 +12,6 @@ class GetMapUsersUseCase {
     private let locationRepository: LocationRepositoryProtocol = LocationRepository()
     private let goalRepository: GoalRepositoryProtocol = GoalRepository()
     private let todoRepository: TodoRepositoryProtocol = TodoRepository()
-    private let storageGateway = StorageGateway()
     
     func execute(_ location: CLLocationCoordinate2D) async -> [MapUser] {
         var mapUsers: [MapUser] = []
