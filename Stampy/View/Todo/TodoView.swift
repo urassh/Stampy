@@ -27,7 +27,7 @@ struct TodoView: View {
             } else {
                 GoalSection
                 
-                AddButtonSection
+                ButtonSection
                 
                 if (viewmodel.todos.isEmpty) {
                     EmptyTodo
@@ -106,7 +106,7 @@ extension TodoView {
         }
     }
     
-    private var AddButtonSection: some View {
+    private var ButtonSection: some View {
         ScrollView(.horizontal) {
             HStack {
                 if (activeSectionState == .todoList) {
