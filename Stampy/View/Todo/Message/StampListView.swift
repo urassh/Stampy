@@ -35,7 +35,7 @@ extension StampListView {
                         Circle()
                             .foregroundStyle(.white)
                     )
-                    .offset(x: 30, y: 20)
+                    .offset(x: 30, y: 30)
             }
             
             Spacer()
