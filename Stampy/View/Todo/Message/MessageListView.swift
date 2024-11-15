@@ -26,7 +26,7 @@ struct MessageListView: View {
                             if message.isAvailableShow(todos: viewmodel.getTodos) {
                                 selectedMessage = message
                             } else {
-                                isShowAlert = true // Show alert if not available
+                                isShowAlert = true
                             }
                         }
                     
