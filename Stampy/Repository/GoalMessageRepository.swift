@@ -14,33 +14,34 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
     func getGoalMessages(goal: Goal) async -> [any GoalMessage] {
         let records = await goalMessageGateway.getGoalMessages(goalId: goal.id.uuidString)
         var messages: [any GoalMessage] = []
-        
+
         for record in records {
-            let userRecord = await userGateway.fetch(id: record.sender_id)
-            
-            let fetchedMessages = records.compactMap { record -> GoalMessage? in
-                guard let id = UUID(uuidString: record.id) else { return nil }
-                guard userRecord != nil else { return nil }
-                
-                let sender = AppUser(id: userRecord!.uid, name: userRecord!.name)
-                
-                return {
-                    switch record.type {
-                    case TextMessage.type:
-                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender, isRead: record.is_read, createdAt: record.created_at)
-                    case StampMessage.type:
-                        guard let stamp = Stamp.fromString(record.content) else { return nil }
-                        return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender,  createdAt: record.created_at)
-                    default:
-                        return nil
-                    }
-                }()
+            guard let userRecord = await userGateway.fetch(id: record.sender_id) else {
+                continue
             }
             
-            messages = fetchedMessages
+            if let id = UUID(uuidString: record.id) {
+                let sender = AppUser(id: record.sender_id, name: userRecord.name)
+
+                if let message = createMessage(from: record, goal: goal, sender: sender, id: id) {
+                    messages.append(message)
+                }
+            }
         }
-        
+
         return messages
+    }
+    
+    private func createMessage(from record: GoalMessageRecord, goal: Goal, sender: AppUser, id: UUID) -> GoalMessage? {
+        switch record.type {
+        case TextMessage.type:
+            return TextMessage(id: id, text: record.content, goal: goal, sender: sender, isRead: record.is_read, createdAt: record.created_at)
+        case StampMessage.type:
+            guard let stamp = Stamp.fromString(record.content) else { return nil }
+            return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender, createdAt: record.created_at)
+        default:
+            return nil
+        }
     }
     
     func saveGoalMessage(goalMessage: any GoalMessage) async {
