@@ -16,7 +16,7 @@ class TodoViewModel : ObservableObject {
     
     @Published var weekGoal: Goal? = nil
     @Published var todos: [Todo] = []
-    private let loginUser = LoginUser.shared
+    private let loginUser = LoginUser.shared.loginUser
     private var cancellables = Set<AnyCancellable>()
     
     init() {

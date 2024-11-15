@@ -7,32 +7,40 @@
 
 import SwiftUI
 
-class LoginUser {
-    static let shared: AppUser = .init(id: "12345678-1234-1234-1234-1234567890AB", name: "urassh")
+class LoginUser: ObservableObject {
+    static let shared = LoginUser()
+    
+    @Published var loginUser: AppUser = .init(id: "12345678-1234-1234-1234-1234567890AB", name: "urassh")
+    @Published var isSigningIn: Bool = false
     
     private init() {}
 }
 
 struct ContentView: View {
+    @StateObject private var loginUser = LoginUser.shared
+    
     var body: some View {
-        TabView {
-            MapView()
-                .tabItem{
-                    Image(systemName: "map.fill")
-                    Text("Map")
-                }
-            TodoView()
-                .tabItem {
-                    Image(systemName: "list.bullet.rectangle.fill")
-                    Text("Todo")
-                }
-            ProfileView()
-                .tabItem {
-                    Image(systemName: "person.fill")
-                    Text("Profile")
-                }
+        if !loginUser.isSigningIn {
+            SignInView()
+        } else {
+            TabView {
+                MapView()
+                    .tabItem {
+                        Image(systemName: "map.fill")
+                        Text("Map")
+                    }
+                TodoView()
+                    .tabItem {
+                        Image(systemName: "list.bullet.rectangle.fill")
+                        Text("Todo")
+                    }
+                ProfileView()
+                    .tabItem {
+                        Image(systemName: "person.fill")
+                        Text("Profile")
+                    }
+            }
         }
-        
     }
 }
 
