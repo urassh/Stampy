@@ -10,13 +10,18 @@ import MapKit
 
 struct MapView: View {
     @ObservedObject var viewmodel: MapViewModel = MapViewModel()
+    @StateObject private var locationManager = LocationManager()
     @State var position: MapCameraPosition = .userLocation(fallback: .automatic)
     @State var isShowUserSheet: Bool = false
     @State var selectMapUser: MapUser?
     
     var body: some View {
         ZStack {
-            Map(position: $position)
+            Map(position: $position) {
+                if let location = locationManager.location {
+                    Marker("Current Location", coordinate: location.coordinate)
+                }
+            }
             
             VStack {
                 Text("近くの頑張っている人🔥")
@@ -55,6 +60,7 @@ struct MapView: View {
         }
         .onAppear {
             viewmodel.getMapUsers()
+            locationManager.startUpdatingLocation()
         }
     }
 }
