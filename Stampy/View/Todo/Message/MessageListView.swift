@@ -34,9 +34,15 @@ struct MessageListView: View {
                 }
             }
             .onChange(of: selectedMessage) {
-                isShowMessageDetail = true
+                if selectedMessage != nil {
+                    isShowMessageDetail = true
+                } else {
+                    isShowMessageDetail = false
+                }
             }
-            .sheet(isPresented: $isShowMessageDetail) {
+            .sheet(isPresented: $isShowMessageDetail, onDismiss: {
+                selectedMessage = nil
+            }) {
                 MessageDetailSheet(message: selectedMessage!)
                     .presentationDetents([.medium])
             }

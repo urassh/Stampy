@@ -27,13 +27,10 @@ struct CheckBoxConst: View {
     let isOn: Bool
     
     var body: some View {
-        HStack{
-            VStack {
-                Image(systemName: isOn
-                      ? "checkmark.circle.fill"
-                      : "circle")
-                Spacer()
-            }
+        HStack(alignment: .center) {
+            Image(systemName: isOn
+                  ? "checkmark.circle.fill"
+                  : "circle")
             
             Text(label)
                 .lineLimit(nil)

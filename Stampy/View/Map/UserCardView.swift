@@ -14,43 +14,39 @@ struct UserCardView: View {
         VStack {
             Image("Sample")
                 .resizable()
-                .frame(width: 120, height: 120)
+                .frame(width: 100, height: 100)
                 .clipShape (
-                    RoundedRectangle(cornerRadius: 12)
+                    Circle()
                 )
-            
-            VStack(alignment: .leading) {
-                Text(mapUser.user.name)
-                    .font(.headline)
-                Text(mapUser.goal.isEmpty() ? "まだ目標がありません!!" : mapUser.goal.title)
-                    .font(.title3)
-                
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 10) {
-                        ForEach(mapUser.todos) { todo in
-                            CheckBoxConst(label: todo.title, isOn: todo.isDone)
-                        }
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                .overlay {
+                    Circle().stroke(.white, lineWidth: 4)
                 }
+                .shadow(radius: 7)
+            
+            ZStack {
+                RoundedRectangle(cornerRadius: 30)
+                    .fill(Color("StampyDarkColor"))
+                
+                VStack {
+                    Text(mapUser.user.name)
+                        .font(.headline)
+                        .foregroundStyle(.white)
+                        .padding(.bottom, 5)
+                    Text(mapUser.goal.isEmpty() ? "まだ目標がありません!!" : mapUser.goal.title)
+                        .font(.title3)
+                        .fontWeight(.bold)
+                        .foregroundStyle(Color("StampyAccentColor"))
+                }
+                .padding()
             }
         }
-        .padding(EdgeInsets.init(top: 20, leading: 20, bottom: 20, trailing: 20))
-        .frame(width: 180, height: 300)
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color.white.opacity(0.2),
-                    Color.white.opacity(0.6)
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            ).blur(radius: 4.0)
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 12))
-        .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(Color.gray.opacity(0.3), lineWidth: 1)
-        )
+        .frame(width: 250, height: 200)
+        .shadow(radius: 7)
     }
+}
+
+import MapKit
+
+#Preview {
+    UserCardView(mapUser: MapUser(user: .init(id: "111", name: "うらっしゅ"), goal: .init(title: ""), todo: [.ExampleYet, .ExampleDone], position: CLLocationCoordinate2D(latitude: 35.66096452408053, longitude: 139.85507717314323)))
 }

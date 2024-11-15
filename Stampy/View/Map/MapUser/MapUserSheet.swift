@@ -13,6 +13,8 @@ protocol SendGoalMessageDelegate {
 }
 
 struct MapUserSheet : View {
+    @ObservedObject var loginUser = LoginUser.shared
+    
     @State var message: String = ""
     @FocusState var isFocus: Bool
     @State var isFront: Bool = true

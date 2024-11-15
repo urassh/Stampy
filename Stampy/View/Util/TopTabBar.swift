@@ -31,12 +31,20 @@ struct TopTabBar: View {
                                     .foregroundStyle(
                                         selectedTabId == tab.id ? .white : .primary
                                     )
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 8)
+                                    .background {
+                                        if selectedTabId == tab.id {
+                                            Capsule()
+                                                .fill(tab.color)
+                                                .matchedGeometryEffect(id: tab.id, in: tabNamespace)
+                                        }
+                                    }
                             }
                             .id(tab.id)
-                            .padding()
-                            .matchedGeometryEffect(id: tab.id, in: tabNamespace, isSource: true)
                         }
                     }
+                    .padding(.horizontal)
                 }
                 .onChange(of: selectedTabId, { _, newTabId in
                     if let newTabId,
@@ -52,13 +60,6 @@ struct TopTabBar: View {
                     }
                 })
             }
-            .background {
-                if let selectedTabId,
-                   let color = tabs.first(where: { $0.id == selectedTabId })?.color {
-                    color
-                        .matchedGeometryEffect(id: selectedTabId, in: tabNamespace, isSource: false)
-                }
-            }
             
             VStack {
                 Spacer()
@@ -70,7 +71,6 @@ struct TopTabBar: View {
                 }
                 Spacer()
             }
-            
         }
         .ignoresSafeArea(edges: [.bottom])
         .animation(.easeInOut, value: selectedTabId)
