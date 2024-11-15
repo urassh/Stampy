@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct GoalMessageRecord {
+struct GoalMessageRecord: Codable {
     let id: String
     let sender_id: String
     let goal_id: String
