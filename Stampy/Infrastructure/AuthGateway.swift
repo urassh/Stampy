@@ -17,6 +17,17 @@ class AuthGateway: AuthGatewayProtocol {
             
             return result.user.uid
         } catch {
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
+    func signUp(withEmail email: String, password: String) async -> String? {
+        do {
+            let result = try await auth.createUser(withEmail: email, password: password)
+            return result.user.uid
+        } catch {
+            print("Error signing up: \(error.localizedDescription)")
             return nil
         }
     }

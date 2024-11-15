@@ -10,6 +10,7 @@ class SignInUseCase {
     
     func execute(email: String, password: String) async -> AppUser? {
         guard let appUser = await signInRepository.signIn(withEmail: email, password: password) else {
+            print("failed to signIn")
             return nil
         }
 
