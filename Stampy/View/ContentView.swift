@@ -17,8 +17,10 @@ class LoginUser: ObservableObject {
 }
 
 struct ContentView: View {
+    @StateObject private var loginUser = LoginUser.shared
+    
     var body: some View {
-        if !LoginUser.shared.isSigningIn {
+        if !loginUser.isSigningIn {
             SignInView()
         } else {
             TabView {
