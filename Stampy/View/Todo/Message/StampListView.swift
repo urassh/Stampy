@@ -32,7 +32,7 @@ struct StampListView : View {
 
 extension StampListView {
     private func messageCell(_ message: StampMessage) -> some View {
-        HStack (spacing: 4) {
+        HStack (spacing: 12) {
             ZStack {
                 Image("Sample")
                     .resizable()
@@ -48,8 +48,6 @@ extension StampListView {
                     .offset(x: 30, y: 30)
             }
             
-            Spacer()
-            
             VStack (alignment: .leading) {
                 Text("\(message.sender.name)さんから「\(message.stamp.toString)」が送られました!! ")
                     .font(.callout)
@@ -60,6 +58,8 @@ extension StampListView {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
+            
+            Spacer()
         }
     }
 }

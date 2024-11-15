@@ -8,5 +8,6 @@
 protocol GoalMessageGatewayProtocol {
     func getGoalMessages(goalId: String) async -> [GoalMessageRecord]
     func saveGoalMessage(goalMessage: GoalMessageRecord) async
+    func updateGoalMessage(goalMessage: GoalMessageRecord) async
     func registerOnReceiveHandler(goal: Goal, handler: @escaping (GoalMessageRecord) -> Void)
 }

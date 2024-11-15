@@ -197,7 +197,7 @@ extension MapUserSheet {
     }
     
     private func sendMessage() async {
-        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user, createdAt: Date()))
+        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user, isRead: false, createdAt: Date()))
         message = ""
     }
 }

@@ -22,6 +22,7 @@ class GoalMessageDummyGateway: GoalMessageGatewayProtocol {
             goal_id: "12345678-1234-1234-1234-1234567890AB",
             content: "Rails頑張ってね!!",
             type: "text",
+            is_read: false,
             created_at: Date()
         ),
         GoalMessageRecord(
@@ -30,6 +31,7 @@ class GoalMessageDummyGateway: GoalMessageGatewayProtocol {
             goal_id: "12345678-1234-1234-1234-1234567890AB",
             content: "good",
             type: "stamp",
+            is_read: true,
             created_at: Date()),
     ]
     private static var onReceiveHandlers: [(_ goal: GoalMessageRecord) -> Void] = []
@@ -47,6 +49,22 @@ class GoalMessageDummyGateway: GoalMessageGatewayProtocol {
         
         if (goalMessage.goal_id == target.id.uuidString) {
             notifyAll(goalMessage: goalMessage)
+        }
+    }
+    
+    func updateGoalMessage(goalMessage: GoalMessageRecord) async {
+        if let index = Self.goalMessages.firstIndex(where: { $0.id == goalMessage.id }) {
+            let beforeMessage = Self.goalMessages[index]
+            let newMessage = GoalMessageRecord(
+                id: goalMessage.id,
+                sender_id: goalMessage.sender_id,
+                goal_id: goalMessage.goal_id,
+                content: goalMessage.content,
+                type: goalMessage.type,
+                is_read: true,
+                created_at: goalMessage.created_at
+            )
+            Self.goalMessages[index] = newMessage
         }
     }
     
