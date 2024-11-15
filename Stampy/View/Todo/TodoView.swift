@@ -143,7 +143,7 @@ extension TodoView {
                     .font(.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(.black.opacity(0.8))
-                    .multilineTextAlignment(.gleading)
+                    .multilineTextAlignment(.leading)
                 Text(description)
                     .font(.caption)
                     .fontWeight(.light)
