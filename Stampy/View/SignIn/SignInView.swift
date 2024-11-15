@@ -7,15 +7,29 @@
 
 import SwiftUI
 
-struct SignInView: View, CustomTextFieldDelegate {
-    @State var userNameText: String = ""
-    
-    func textDidChange(to newText: String) {
-        userNameText = newText
-    }
+struct SignInView: View {
+    @ObservedObject var viewmodel: SignInViewModel = .init()
     
     var body: some View {
-        CustomTextField(initialText: "", placeholder: "Username", delegate: self)
+        VStack {
+            Text("Stampy")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+            
+            CustomTextField(initialText: "", placeholder: "email", delegate: viewmodel.emailCoordinator)
+            CustomTextField(initialText: "", placeholder: "password", delegate: viewmodel.passwordCoordinator)
+                .padding(.bottom, 20)
+            
+            Button {
+                viewmodel.signIn()
+            } label: {
+                Text("SignIn")
+                    .foregroundStyle(.white)
+            }
+            .padding()
+            .background(.blue.opacity(0.8))
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+        }
     }
 }
 
