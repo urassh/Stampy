@@ -19,6 +19,7 @@ class SignInUseCase {
         }
         
         LoginUser.shared = appUser
+        LoginUser.isSigningIn = true
         
         return .success
     }

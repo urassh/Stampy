@@ -23,7 +23,9 @@ class SignInViewModel: ObservableObject {
     func signIn() {
         Task {
             if await SignInUseCase().execute(email: email, password: password) == .failed {
-                errorMessage = "ログインに失敗しました"
+                DispatchQueue.main.async {
+                    self.errorMessage = "ログインに失敗しました"
+                }
             }
         }
     }
