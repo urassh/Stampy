@@ -24,3 +24,9 @@ class MapViewModel : ObservableObject {
         }
     }
 }
+
+extension MapViewModel : SendGoalMessageDelegate {
+    func send(message: any GoalMessage) async {
+        await PostMessageUseCase().execute(message: message)
+    }
+}

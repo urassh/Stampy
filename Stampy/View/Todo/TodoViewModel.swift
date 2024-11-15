@@ -42,6 +42,9 @@ class TodoViewModel : ObservableObject {
             .compactMap { $0 }
             .sink { [weak self] goal in
                 self?.getTodos(for: goal)
+                OnReceiveMessageUseCase().execute(goal: goal) { message in
+                    print("messageが届きました!!")
+                }
             }
             .store(in: &cancellables)
     }

@@ -50,7 +50,7 @@ struct MapView: View {
             isShowUserSheet = false
             selectMapUser = nil
         }) {
-            MapUserSheet(mapUser: selectMapUser!)
+            MapUserSheet(mapUser: selectMapUser!, delegate: viewmodel)
                 .presentationDetents([.medium])
         }
         .onAppear {

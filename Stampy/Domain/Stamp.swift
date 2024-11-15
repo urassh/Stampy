@@ -52,6 +52,10 @@ enum Stamp {
         }
     }
     
+    static var allCases: [Stamp] {
+        [.good, .clap, .heart, .fire, .watch, .rock, .handshake]
+    }
+    
     static func fromString(_ string: String) -> Stamp? {
         switch string {
         case "good":

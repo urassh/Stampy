@@ -8,20 +8,17 @@
 import SwiftUI
 import CoreLocation
 
+protocol SendGoalMessageDelegate {
+    func send(message: GoalMessage) async
+}
+
 struct MapUserSheet : View {
-    static let stampPattern: [String] = [
-        "👍",
-        "👏",
-        "❤️",
-        "🔥",
-        "👀",
-        "👊",
-        "🤝"
-    ]
     @State var message: String = ""
     @FocusState var isFocus: Bool
     @State var isFront: Bool = true
+    @State var pushStamp: Stamp?
     let mapUser: MapUser
+    let delegate: SendGoalMessageDelegate
     
     var body: some View {
         VStack (spacing: 16) {
@@ -142,9 +139,27 @@ extension MapUserSheet {
             
             ScrollView(.horizontal) {
                 HStack(spacing: 12) {
-                    ForEach (Self.stampPattern, id: \.self) { stamp in
-                        Text(stamp)
-                            .font(.system(size: 52))
+                    ForEach (Stamp.allCases, id: \.self) { stamp in
+                        Button {
+                            Task {
+                                await delegate.send(message: StampMessage(id: UUID(), stamp: stamp, goal: mapUser.goal, sender: mapUser.user))
+                            }
+                            
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                pushStamp = stamp
+                            }
+                        } label: {
+                            Text(stamp.toUIString)
+                                .font(.system(size: 52))
+                                .scaleEffect(pushStamp == stamp ? 1.2 : 1.0)
+                        }
+                        .onChange(of: pushStamp) {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                withAnimation {
+                                    pushStamp = nil
+                                }
+                            }
+                        }
                     }
                 }
             }.frame(height: 60)
@@ -164,7 +179,10 @@ extension MapUserSheet {
                         .padding(.trailing)
                         .foregroundStyle(.gray), alignment: .trailing)
                 .onSubmit {
-                    // submit
+                    Task {
+                        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user))
+                    }
+                    
                 }
                 .focused($isFocus)
         }
@@ -175,6 +193,12 @@ extension MapUserSheet {
 extension Float {
     func format() -> String {
         return String(format: "%.1f", self)
+    }
+}
+
+struct SendGoalMessagedelegateMock : SendGoalMessageDelegate {
+    func send(message: any GoalMessage) async {
+        
     }
 }
 
@@ -189,5 +213,5 @@ extension Float {
             Todo(id: UUID(), title: "Task4", status: .Yet, createdAt: Date())
         ],
         position: CLLocationCoordinate2D(latitude: 35.681111, longitude: 139.766667)
-    ))
+    ), delegate: SendGoalMessagedelegateMock())
 }

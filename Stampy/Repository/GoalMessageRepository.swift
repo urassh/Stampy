@@ -46,4 +46,33 @@ class GoalMessageRepository : GoalMessageRepositoryProtocol {
     func saveGoalMessage(goalMessage: any GoalMessage) async {
         await goalMessageGateway.saveGoalMessage(goalMessage: .from(goalMessage))
     }
+    
+    func registerOnReceiveHandler(goal: Goal, handler: @escaping (GoalMessage) -> Void) {
+        goalMessageGateway.registerOnReceiveHandler(goal: goal) { record in
+            Task {
+                guard let id = UUID(uuidString: record.id) else { return }
+                guard let userRecord = await self.userGateway.fetch(id: record.sender_id) else { return }
+                let sender = AppUser(id: userRecord.uid, name: userRecord.name)
+                
+                let goalMessage: GoalMessage? = {
+                    switch record.type {
+                    case TextMessage.type:
+                        return TextMessage(id: id, text: record.content, goal: goal, sender: sender)
+                    case StampMessage.type:
+                        guard let stamp = Stamp.fromString(record.content) else {
+                            print("Failed to convert \(record.content) to Stamp.")
+                            return nil
+                        }
+                        return StampMessage(id: id, stamp: stamp, goal: goal, sender: sender)
+                    default:
+                        return nil
+                    }
+                }()
+                
+                if let goalMessage {
+                    handler(goalMessage)
+                }
+            }
+        }
+    }
 }
