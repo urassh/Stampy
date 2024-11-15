@@ -12,7 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         Group {
-            if !loginUser.isSigningIn {
+            if !false {
                 SignInView()
             } else {
                 TabView {
