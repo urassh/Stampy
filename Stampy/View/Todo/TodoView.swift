@@ -29,11 +29,7 @@ struct TodoView: View {
                 
                 ButtonSection
                 
-                if (viewmodel.todos.isEmpty) {
-                    EmptyTodo
-                } else {
-                    ActiveSection
-                }
+                ActiveSection
             }
         }
         .padding()
@@ -93,19 +89,11 @@ extension TodoView {
             case .todoList:
                 TodoList
             case .message:
-                messageSection
+                MessageView(goal: viewmodel.weekGoal!, todos: viewmodel.todos)
             }
         }
     }
-    
-    private var EmptyTodo: some View {
-        VStack {
-            Spacer()
-            Text("まだTodoがありません！")
-            Spacer()
-        }
-    }
-    
+
     private var ButtonSection: some View {
         ScrollView(.horizontal) {
             HStack {
@@ -158,12 +146,22 @@ extension TodoView {
     }
     
     private var TodoList: some View {
-        List {
-            ForEach(Todo.TodoStatus.allCases, id: \.self) { state in
-                todoSection(for: state)
+        VStack {
+            if (viewmodel.todos.isEmpty) {
+                VStack {
+                    Spacer()
+                    Text("まだTodoがありません！")
+                    Spacer()
+                }
+            } else {
+                List {
+                    ForEach(Todo.TodoStatus.allCases, id: \.self) { state in
+                        todoSection(for: state)
+                    }
+                }
+                .clipShape(RoundedRectangle(cornerRadius: 20))
             }
         }
-        .clipShape(RoundedRectangle(cornerRadius: 20))
     }
     
     private func todoSection(for state: Todo.TodoStatus) -> some View {
@@ -176,15 +174,6 @@ extension TodoView {
                 todoRow(for: todo)
             }
         }
-    }
-    
-    private var messageSection: some View {
-        VStack {
-            Spacer()
-            Text("Message!!")
-            Spacer()
-        }
-        
     }
     
     private func todoRow(for todo: Todo) -> some View {

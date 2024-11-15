@@ -13,4 +13,10 @@ extension Date {
         dateFormatter.dateFormat = "yyyy/MM/dd"
         return dateFormatter.string(from: self)
     }
+    
+    func formattedElapsedTime() -> String {
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .full
+        return formatter.localizedString(for: self, relativeTo: Date())
+    }
 }

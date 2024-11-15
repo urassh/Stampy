@@ -12,6 +12,8 @@
 ///通知を受け取ったクライアントはGateway層で届いた通知がnotifyTargetなのか比較。
 ///notifyTarget宛だったら、onReceiveHandlersに登録されている全てを実行する。
 
+import Foundation
+
 class GoalMessageDummyGateway: GoalMessageGatewayProtocol {
     private static var goalMessages: [GoalMessageRecord] = [
         GoalMessageRecord(
@@ -19,13 +21,16 @@ class GoalMessageDummyGateway: GoalMessageGatewayProtocol {
             sender_id: "87654321-4321-4321-4321-BA0987654321",
             goal_id: "12345678-1234-1234-1234-1234567890AB",
             content: "Rails頑張ってね!!",
-            type: "text"),
+            type: "text",
+            created_at: Date()
+        ),
         GoalMessageRecord(
             id: "87654321-4321-4321-4321-BA0987654321",
             sender_id: "87654321-4321-4321-4321-BA0987654321",
             goal_id: "12345678-1234-1234-1234-1234567890AB",
             content: "good",
-            type: "stamp"),
+            type: "stamp",
+            created_at: Date()),
     ]
     private static var onReceiveHandlers: [(_ goal: GoalMessageRecord) -> Void] = []
     private static var notifyTarget: Goal?
