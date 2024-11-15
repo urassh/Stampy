@@ -114,7 +114,7 @@ extension TodoView {
                         activeSheetState = .addTodo
                     }
                     
-                    ButtonComponent(iconText: "👀", title: "メッセージを見る", description: "あなたに届いたスタンプやメッセージを見ることができます") {
+                    ButtonComponent(iconText: "👀", title: "メッセージを見る", description: "届いたスタンプやメッセージを見ることができます") {
                         activeSectionState = .message
                     }
                 } else {
@@ -143,7 +143,7 @@ extension TodoView {
                     .font(.subheadline)
                     .fontWeight(.bold)
                     .foregroundStyle(.black.opacity(0.8))
-                    .multilineTextAlignment(.leading)
+                    .multilineTextAlignment(.gleading)
                 Text(description)
                     .font(.caption)
                     .fontWeight(.light)
