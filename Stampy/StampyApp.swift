@@ -7,23 +7,32 @@
 
 import SwiftUI
 import FirebaseCore
-
-class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-
-    return true
-  }
-}
+import BackgroundTasks
 
 @main
 struct StampyApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @Environment(\.scenePhase) var scenePhase
     
     var body: some Scene {
         WindowGroup {
             ContentView()
+        }
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .background {
+                scheduleBackgroundTask()
+            }
+        }
+    }
+    
+    private func scheduleBackgroundTask() {
+        let request = BGAppRefreshTaskRequest(identifier: "com.urassh.Stampy.background.addLocation")
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 60)
+        
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Could not schedule app refresh: \(error)")
         }
     }
 }

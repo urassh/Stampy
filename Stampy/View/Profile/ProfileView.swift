@@ -10,6 +10,8 @@ import MapKit
 struct ProfileView : View {
     @ObservedObject var viewmodel: ProfileViewModel = ProfileViewModel()
     
+    @State var position: MapCameraPosition = .userLocation(fallback: .automatic)
+    
     var body: some View {
         ZStack {
             Background
@@ -37,7 +39,7 @@ struct ProfileView : View {
 
 extension ProfileView {
     private var Background: some View {
-        Map()
+        Map(position: $position)
             .edgesIgnoringSafeArea(.all)
             .blur(radius: 10.0)
             .overlay {
