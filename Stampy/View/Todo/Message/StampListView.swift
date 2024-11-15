@@ -16,11 +16,15 @@ struct StampListView : View {
     
     var body: some View {
         ScrollView {
-            ForEach(stampMessages) { message in
-                messageCell(message)
-                    .padding(.all, 8)
-                
-                Divider()
+            if (stampMessages.isEmpty) {
+                ProgressView()
+            } else {
+                ForEach(stampMessages) { message in
+                    messageCell(message)
+                        .padding(.all, 8)
+                    
+                    Divider()
+                }
             }
         }
     }
