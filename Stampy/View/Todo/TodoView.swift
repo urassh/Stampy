@@ -93,7 +93,7 @@ extension TodoView {
             case .todoList:
                 TodoList
             case .message:
-                messageSection
+                MessageView()
             }
         }
     }
@@ -176,15 +176,6 @@ extension TodoView {
                 todoRow(for: todo)
             }
         }
-    }
-    
-    private var messageSection: some View {
-        VStack {
-            Spacer()
-            Text("Message!!")
-            Spacer()
-        }
-        
     }
     
     private func todoRow(for todo: Todo) -> some View {
