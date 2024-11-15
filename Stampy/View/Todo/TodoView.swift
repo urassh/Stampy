@@ -109,16 +109,16 @@ extension TodoView {
     private var AddButtonSection: some View {
         ScrollView(.horizontal) {
             HStack {
-                ButtonComponent(iconText: "🌱", title: "新しいTodoを追加する") {
-                    activeSheetState = .addTodo
-                }
-                
                 if (activeSectionState == .todoList) {
+                    ButtonComponent(iconText: "🌱", title: "新しいTodoを追加する") {
+                        activeSheetState = .addTodo
+                    }
+                    
                     ButtonComponent(iconText: "👀", title: "メッセージを見る", description: "あなたに届いたスタンプやメッセージを見ることができます") {
                         activeSectionState = .message
                     }
                 } else {
-                    ButtonComponent(iconText: "👀", title: "Todo一覧を見る", description: "あなたに届いたスタンプやメッセージを見ることができます") {
+                    ButtonComponent(iconText: "📝", title: "Todo一覧を見る", description: "あなたのTodoの状況を見ることが出来ます") {
                         activeSectionState = .todoList
                     }
                 }
