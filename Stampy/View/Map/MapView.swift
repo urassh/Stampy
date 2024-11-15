@@ -71,8 +71,9 @@ struct MapView: View {
                 .presentationDetents([.medium])
         }
         .onAppear {
-            viewmodel.getMapUsers()
             locationManager.startUpdatingLocation()
+            let location: CLLocationCoordinate2D = locationManager.location!.coordinate
+            viewmodel.getMapUsers(from: location)
         }
     }
 }
