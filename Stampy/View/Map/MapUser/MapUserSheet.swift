@@ -189,8 +189,6 @@ extension MapUserSheet {
                 .onSubmit {
                     Task {
                         await sendMessage()
-                        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user, createdAt: Date()))
-
                     }
                 }
                 .focused($isFocus)
@@ -199,7 +197,7 @@ extension MapUserSheet {
     }
     
     private func sendMessage() async {
-        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user))
+        await delegate.send(message: TextMessage(id: UUID(), text: message, goal: mapUser.goal, sender: mapUser.user, createdAt: Date()))
         message = ""
     }
 }
