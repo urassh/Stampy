@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import EffectsLibrary
 
 struct TodoView: View {
     @ObservedObject var viewmodel: TodoViewModel = .init()
