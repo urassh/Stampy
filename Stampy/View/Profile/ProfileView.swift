@@ -40,9 +40,10 @@ struct ProfileView : View {
 
 extension ProfileView {
     private var Background: some View {
-        Map(position: $position)
+        Image("background")
+            .resizable()
+            .scaledToFill()
             .edgesIgnoringSafeArea(.all)
-            .blur(radius: 10.0)
             .overlay {
                 Color.black.opacity(0.5)
                     .edgesIgnoringSafeArea(.all)
